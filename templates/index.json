@@ -1,0 +1,261 @@
+{
+  "sections": {
+    "featured-navigation": {
+      "type": "featured-navigation",
+      "settings": {
+        "menu": "popular-treatments",
+        "show_title": false,
+        "text_size_mobile": "text-lg",
+        "text_size_desktop": "default",
+        "display": "list_mobile_paragraph_desktop",
+        "paragraph_separator": "none",
+        "superscript": "index",
+        "text_alignment": "text-left",
+        "show_image_on_hover": false,
+        "color_scheme": "primary"
+      }
+    },
+    "1639716926e5c2155e": {
+      "type": "marquee",
+      "settings": {
+        "text": "Ingredients-focused skincare products   —   High-tech treatments   —   Experienced Team   —",
+        "repeat_text": true,
+        "link": "",
+        "text_size": "text-lg",
+        "font": "heading",
+        "speed": 280,
+        "direction": "",
+        "color_scheme": "primary",
+        "image": "shopify:\/\/shop_images\/AeRSkinLab-ColourBar-Animation_333f2a09-9c9d-4668-b8d5-84ba8209d346.gif",
+        "color_gradient_left": "#dce7ff",
+        "color_gradient_center": "#ebefdd",
+        "color_gradient_right": "#e3d9f2"
+      }
+    },
+    "1639716929117141ac": {
+      "type": "featured-collection",
+      "disabled": true,
+      "settings": {
+        "title": "Popular Products",
+        "collection": "serums",
+        "grid": 3,
+        "rows": 1,
+        "grid_mobile": "1",
+        "show_view_all": false,
+        "color_scheme": "primary"
+      }
+    },
+    "1654725578d1543fae": {
+      "type": "video-with-text-overlay",
+      "settings": {
+        "video_url": "https:\/\/cdn.shopify.com\/videos\/c\/o\/v\/dcc4f3abaf404213bb6abb49fa4dcc36.mp4",
+        "video_style": "four-three",
+        "video_style_desktop": "widescreen",
+        "fallback_image": "shopify:\/\/shop_images\/AER-891-RGB-LowRes-1800x800_0f849144-4e48-470a-a086-0340a233c0bd.jpg",
+        "title": "PRECISION INJECTIONS, THREADLIFTS, THE LATEST IN LASER TECHNOLOGY AND BODY SCULPTING <br>",
+        "heading_size": "text-2xl lg:text-3xl",
+        "text": "",
+        "content_position": "justify-start items-end text-left",
+        "content_width_desktop": "lg:w-full",
+        "text_color": "secondary",
+        "btn_inline": true,
+        "cta_link": "",
+        "cta_text": "BOOK NOW",
+        "cta_style": "link"
+      }
+    },
+    "1639720346a274feef": {
+      "type": "text-columns-with-images",
+      "blocks": {
+        "16397203460c969267-0": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": false,
+            "image": "shopify:\/\/shop_images\/AER-207-RGB-LowRes-800x800_aac59842-01df-487e-ab89-f412214d470f.jpg",
+            "subtitle": "",
+            "title": "01",
+            "text": "<p>Experience our thoughtfully designed flagship location at 1540 West 2nd Avenue executed by award winning architects Leckie Studio. Enter AE.R’s immersive world with a space encapsulating the ideals of AE.R curated with raw and natural materials connected by an expansive sculpture of light. Designed to evoke wonder, calmness and to instil our values that everything is considered to <em><strong>Re:form your skin<\/strong><\/em>. <\/p><p>Proudly featured in <a href=\"https:\/\/www.wallpaper.com\/architecture\/aer-dermatology-clinic-leckie-studio-vancouver-canada\" target=\"_blank\" title=\"https:\/\/www.wallpaper.com\/architecture\/aer-dermatology-clinic-leckie-studio-vancouver-canada\">Wallpaper* Magazine<\/a> | <a href=\"https:\/\/www.dezeen.com\/2022\/07\/04\/aer-skinlab-vancouver-leckie-studio-interiors\/\" title=\"https:\/\/www.dezeen.com\/2022\/07\/04\/aer-skinlab-vancouver-leckie-studio-interiors\/\">Dezeen<\/a> | <a href=\"https:\/\/www.frameweb.com\/article\/institutions\/leckie-studio-treats-stone-as-a-biophilic-element-for-a-down-to-earth-dermatology-clinic\" title=\"https:\/\/www.frameweb.com\/article\/institutions\/leckie-studio-treats-stone-as-a-biophilic-element-for-a-down-to-earth-dermatology-clinic\">FRAMƎ <\/a><\/p>",
+            "cta_link": "",
+            "cta_text": "",
+            "color_scheme": "primary"
+          }
+        },
+        "16397203460c969267-1": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": false,
+            "image": "shopify:\/\/shop_images\/AER-891-RGB-LowRes-800x800.jpg",
+            "subtitle": "",
+            "title": "02",
+            "text": "<p>Dr. Charles Scudamore and the team at AE.R Skinlab will expertly consult your goals and desires with a clear vision. Whether it may be: <a href=\"\/products\/botox\" title=\"BOTOX® COSMETIC\"><strong>BOTOX® Cosmetic<\/strong><\/a>, JUVÉDERM®, Restylane® and Perlane®, SCULPTRA®, Teosyal®, Ultherapy®, <a href=\"\/products\/coolsculpting®\" title=\"Coolsculpting®\"><strong>Coolsculpting®<\/strong><\/a>, <a href=\"\/products\/trusculpt®-flex-plus\" title=\"truSculpt® FLEX PLUS\"><strong>truSculpt® FLEX PLUS<\/strong><\/a>, <a href=\"\/products\/trusculpt®-id\" title=\"truSculpt® ID\"><strong>truSculpt® ID<\/strong><\/a>, <a href=\"\/products\/thermage®\" title=\"Thermage®\"><strong>Thermage®<\/strong><\/a>, or our various other technologies, AE.R Skinlab will tailor an approach specifically for you.<\/p>",
+            "cta_link": "",
+            "cta_text": "",
+            "color_scheme": "primary"
+          }
+        },
+        "16397203460c969267-2": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": false,
+            "image": "shopify:\/\/shop_images\/AER-146-RGB-LowRes-800x800_facc9094-8251-4b76-bc48-601592a9994f.jpg",
+            "subtitle": "",
+            "title": "03",
+            "text": "<p>Consider our specially designed AE.R Skin product line with natural ingredients sourced from Canada & South Korea. Our comprehensive range features the finest quality raw materials and is formulated and manufactured in our hometown of beautiful Vancouver, British Columbia.<\/p>",
+            "cta_link": "",
+            "cta_text": "",
+            "color_scheme": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "16397203460c969267-0",
+        "16397203460c969267-1",
+        "16397203460c969267-2"
+      ],
+      "settings": {
+        "title": "AE.R EXPERIENCE",
+        "crop": "1",
+        "text_size_mobile": "text-lg",
+        "text_size_desktop": "lg:text-2xl",
+        "text_alignment": "text-left",
+        "stacked": true,
+        "small_first_column": false,
+        "border_top": true,
+        "border_bottom": false
+      }
+    },
+    "1639762930fbf0025f": {
+      "type": "rich-text",
+      "settings": {
+        "title": "",
+        "text": "",
+        "text_size_mobile": "text-sm",
+        "text_size_desktop": "default",
+        "font": "body",
+        "text_alignment": "text-center",
+        "cta_link": "shopify:\/\/pages\/how-it-works",
+        "cta_text": "THE FULL EXPERIENCE",
+        "cta_style": "link",
+        "desktop_width": "full",
+        "desktop_alignment": "center",
+        "color_scheme": "primary"
+      }
+    },
+    "1639763055f990632f": {
+      "type": "blog-posts",
+      "disabled": true,
+      "settings": {
+        "title": "Journal",
+        "blog": "journal",
+        "post_limit": 3,
+        "blog_show_images": true,
+        "blog_show_author": false,
+        "blog_show_date": false,
+        "show_view_all": true,
+        "crop": "1",
+        "color_scheme": "primary"
+      }
+    },
+    "16397644074f0c5c21": {
+      "type": "image-with-text-overlay",
+      "disabled": true,
+      "settings": {
+        "indent_image": false,
+        "height": "natural",
+        "image_focal_point": "object-center",
+        "title": "CURATED INGREDIENTS",
+        "heading_size": "text-2xl lg:text-3xl",
+        "text": "<p>Carefully curated natural ingredients from Canada & South Korea, formulated and manufactured in Vancouver, BC.<\/p>",
+        "content_position": "justify-center items-center text-center",
+        "content_width_desktop": "lg:w-1\/2",
+        "text_color": "white",
+        "background_color": "primary",
+        "btn_inline": false,
+        "arrow_position": "right",
+        "cta_link": "#",
+        "cta_text": "Learn More",
+        "cta_style": "button",
+        "cta_rounded": true,
+        "cta_gradient": true
+      }
+    },
+    "165054910258cd0a24": {
+      "type": "testimonials",
+      "disabled": true,
+      "blocks": {
+        "1650549102bf1f2ea2-0": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "<p>A quote from a customer or staff member can help show of your products' unique selling points.<\/p>",
+            "source": "Source"
+          }
+        },
+        "1650549102bf1f2ea2-1": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "<p>A quote from a customer or staff member can help show of your products' unique selling points.<\/p>",
+            "source": "Source"
+          }
+        },
+        "1650549102bf1f2ea2-2": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "<p>A quote from a customer or staff member can help show of your products' unique selling points.<\/p>",
+            "source": "Source"
+          }
+        }
+      },
+      "block_order": [
+        "1650549102bf1f2ea2-0",
+        "1650549102bf1f2ea2-1",
+        "1650549102bf1f2ea2-2"
+      ],
+      "settings": {
+        "heading": "What our customers say",
+        "text_style": "body",
+        "text_size": "text-lg",
+        "text_align": "text-left",
+        "color_scheme": "primary"
+      }
+    },
+    "16397645084060bcb2": {
+      "type": "image-with-text",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/AER-592-RGB-LowRes-1800x800_80738b82-213f-4136-aa6c-5e3a2969e32a.jpg",
+        "image_position": "right",
+        "image_size": "two_thirds",
+        "indent_image": false,
+        "fill_image": false,
+        "hide_borders": false,
+        "background_color": "primary",
+        "title": "THE AE.R STUDIO",
+        "richtext": "<p>A. 1540 West 2nd Avenue # 207<br\/>Vancouver BC V6J 1H2<br\/><\/p><p>P. 604 262 4111<\/p>",
+        "text_size": "text-base",
+        "font": "body",
+        "text_alignment": "text-center",
+        "text_position": "items-center",
+        "color_scheme": "primary",
+        "cta_link": "https:\/\/aerskinlab.janeapp.com\/",
+        "cta_text": "Book a Consult",
+        "cta_style": "button",
+        "cta_rounded": true,
+        "cta_gradient": false
+      }
+    }
+  },
+  "order": [
+    "featured-navigation",
+    "1639716926e5c2155e",
+    "1639716929117141ac",
+    "1654725578d1543fae",
+    "1639720346a274feef",
+    "1639762930fbf0025f",
+    "1639763055f990632f",
+    "16397644074f0c5c21",
+    "165054910258cd0a24",
+    "16397645084060bcb2"
+  ]
+}

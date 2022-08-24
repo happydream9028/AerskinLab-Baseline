@@ -1,0 +1,149 @@
+{% liquid
+  assign text_size_class = section.settings.text_size 
+  assign speed_number = section.settings.speed | plus: 0 
+  assign link = section.settings.link 
+  assign text = section.settings.text 
+  assign font = section.settings.font 
+  assign section_color = section.settings.color_scheme 
+  assign direction = section.settings.direction 
+  assign repeat_text = section.settings.repeat_text 
+%}
+
+<section class="border-t-grid border-grid-color">
+  {% render 'marquee' with
+    id: section.id
+    text_size_class: text_size_class,
+    speed_number: speed_number,
+    link: link,
+    text: text,
+    font: font,
+    section_color: section_color,
+    direction: direction,
+    repeat_text: repeat_text,
+    bg_image: section.settings.image,
+    color_gradient_left: section.settings.color_gradient_left,
+    color_gradient_center: section.settings.color_gradient_center,
+    color_gradient_right: section.settings.color_gradient_right
+  %}
+</section>
+
+{% schema %}
+  {
+    "name": "Marquee",
+    "settings": [
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Text",
+        "default": "Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store."
+      },
+      {
+        "type": "checkbox",
+        "id": "repeat_text",
+        "default": true,
+        "label": "Repeat text",
+        "info": "Automatically repeat text to create an infinity effect."
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": "Link"
+      },
+      {
+        "type": "select",
+        "id": "text_size",
+        "label": "Text size",
+        "options": [
+          { "value": "text-sm", "label": "S"},
+          { "value": "text-base", "label": "M"},
+          { "value": "text-lg", "label": "L"},
+          { "value": "text-xl", "label": "XL"},
+          { "value": "text-2xl", "label": "2XL"},
+          { "value": "text-2xl lg:text-3xl", "label": "2XL / desktop 3XL"},
+          { "value": "text-2xl lg:text-4xl", "label": "2XL / desktop 4XL"},
+          { "value": "text-2xl lg:text-5xl", "label": "2XL / desktop 5XL" },
+          { "value": "text-2xl lg:text-6xl", "label": "2XL / desktop 6XL" },
+          { "value": "text-2xl lg:text-7xl", "label": "2XL / desktop 7XL" }
+        ],
+        "default":   "text-2xl lg:text-7xl"
+      },
+      {
+        "type": "select",
+        "id": "font",
+        "label": "Font",
+        "options": [
+          {
+            "value": "heading",
+            "label": "Heading"
+          },
+          {
+            "value": "body",
+            "label": "Body"
+          }
+        ],
+        "default": "heading"
+      },
+      {
+        "type": "range",
+        "id": "speed",
+        "min": 20,
+        "max": 300,
+        "step": 10,
+        "label": "Speed",
+        "default": 150
+      },
+      {
+        "type": "select",
+        "id": "direction",
+        "label": "Direction",
+        "options": [
+            { "value": "", "label": "Right to left"},
+            { "value": "reverse", "label": "Left to right"}
+        ],
+        "default":   ""
+      },
+      {
+        "type":      "header",
+        "content":   "Color"
+      },
+      {
+        "type": "select",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "options": [
+            { "value": "primary", "label": "Primary"},
+            { "value": "secondary", "label": "Secondary"},
+            { "value": "tertiary", "label": "Tertiary"}
+        ],
+        "default":   "secondary"
+      },
+      {
+        "type":      "header",
+        "content":   "Custom Background"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Background image"
+      },
+      {
+        "type": "color",
+        "id": "color_gradient_left",
+        "label": "Color left"
+      },
+      {
+        "type": "color",
+        "id": "color_gradient_center",
+        "label": "Color center"
+      },
+      {
+        "type": "color",
+        "id": "color_gradient_right",
+        "label": "Color right"
+      }
+    ],
+    "presets": [{
+        "name": "Marquee"
+    }]
+  }
+{% endschema %}

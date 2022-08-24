@@ -1,0 +1,12 @@
+
+{%- if layout == 'theme' -%}
+<script>
+window.baseAssetsUrl = '{{ 'theme.js' | asset_url | split: 'assets/theme.js' | first }}';
+</script>
+<script type="module" src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+{%- endif -%} {%- if layout == 'giftcard' -%}
+<script>
+window.baseAssetsUrl = '{{ 'giftcard.min.js' | asset_url | split: 'assets/giftcard.min.js' | first }}';
+</script>
+<script type="module" src="{{ 'giftcard.min.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}

@@ -1,0 +1,90 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "content_width": "lg:w-full",
+        "content_position": "lg:justify-start",
+        "color_scheme": "primary",
+        "override_header_footer_color_scheme": false
+      }
+    },
+    "1641453878fbae955a": {
+      "type": "image-with-text",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/AER-466-RGB-LowRes-1200x800_d4cfaac3-e314-407e-ab6a-52508a02e3dd.jpg",
+        "image_position": "left",
+        "image_size": "half",
+        "indent_image": false,
+        "fill_image": false,
+        "hide_borders": true,
+        "background_color": "primary",
+        "title": "VANCOUVER",
+        "richtext": "<p><\/p><p>#207 - 1540 West 2nd Avenue<br\/>Vancouver BC<\/p><p>V6J 1H2<\/p><p><strong>HOURS <\/strong>Monday to Saturday 9am to 7pm<\/p>",
+        "text_size": "text-base",
+        "font": "body",
+        "text_alignment": "text-left",
+        "text_position": "items-center",
+        "color_scheme": "primary",
+        "cta_link": "",
+        "cta_text": "",
+        "cta_style": "link",
+        "cta_rounded": false,
+        "cta_gradient": false
+      }
+    },
+    "1641453889aa34e3a0": {
+      "type": "image-with-text",
+      "disabled": true,
+      "settings": {
+        "image_position": "right",
+        "image_size": "half",
+        "indent_image": false,
+        "fill_image": false,
+        "hide_borders": true,
+        "background_color": "primary",
+        "title": "TORONTO",
+        "richtext": "<p>VISIT US<\/p><p>123 fake street, <br\/>suburb, Vancouver, <br\/>Canada, 1234 <\/p><p><br\/>CONTACT US<\/p><p>123.456.78<br\/>vancouver@aerskinlab.com<br\/>@aerskinclab.vancouver<\/p>",
+        "text_size": "text-base",
+        "font": "body",
+        "text_alignment": "text-left",
+        "text_position": "items-center",
+        "color_scheme": "primary",
+        "cta_link": "",
+        "cta_text": "",
+        "cta_style": "link",
+        "cta_rounded": false,
+        "cta_gradient": false
+      }
+    },
+    "164145390060e003b5": {
+      "type": "image-with-text-overlay",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/AER-891-RGB-LowRes-1800x800_0f849144-4e48-470a-a086-0340a233c0bd.jpg",
+        "indent_image": false,
+        "height": "natural",
+        "image_focal_point": "object-center",
+        "title": "Clean injections and High-tech facials Done in 30 minutes",
+        "heading_size": "text-2xl lg:text-4xl",
+        "text": "",
+        "content_position": "justify-start items-end text-left",
+        "content_width_desktop": "lg:w-2\/3",
+        "text_color": "white",
+        "background_color": "primary",
+        "btn_inline": true,
+        "arrow_position": "right",
+        "cta_link": "#",
+        "cta_text": "Book Now",
+        "cta_style": "button",
+        "cta_rounded": true,
+        "cta_gradient": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "1641453878fbae955a",
+    "1641453889aa34e3a0",
+    "164145390060e003b5"
+  ]
+}

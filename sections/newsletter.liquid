@@ -1,0 +1,72 @@
+{%- comment -%}
+  This is a required section for the Shopify Theme Store.
+  It is available when you add "Newsletter" section on the Theme Editor.
+
+  Theme Store required settings
+  - Heading: title of the newsletter section
+  - Subheading: description of the newsletter section
+{%- endcomment -%}
+{%- liquid
+  assign section_color = section.settings.color_scheme
+  assign text_size_class = section.settings.text_size
+-%}
+
+{% render 'newsletter',
+    section_color: section_color,
+    text_size_class: text_size_class,
+    section_title: section.settings.section_title,
+    subheading: section.settings.subheading
+%}
+
+{% schema %}
+  {
+    "name": "Newsletter",
+    "settings": [
+      {
+        "type": "text",
+        "id": "section_title",
+        "label": "Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "subheading",
+        "label": "Subheading",
+        "default": "<p>Receive special offers and first look at new products.</p>"
+      },
+      {
+        "type": "select",
+        "id": "text_size",
+        "label": "Text size",
+        "options": [
+          { "value": "text-sm", "label": "S"},
+          { "value": "text-base", "label": "M"},
+          { "value": "text-lg", "label": "L"},
+          { "value": "text-xl", "label": "XL"}
+        ],
+        "default":   "text-base"
+      },
+      {
+        "type": "paragraph",
+        "content": "Any customers who sign up will have an account created for them in Shopify. [View customers](/admin/customers?query=&accepts_marketing=1)"
+      },
+      {
+        "type":      "header",
+        "content":   "Color"
+      },
+      {
+        "type": "select",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "options": [
+            { "value": "primary", "label": "Primary"},
+            { "value": "secondary", "label": "Secondary"},
+            { "value": "tertiary", "label": "Tertiary"}
+        ],
+        "default":   "primary"
+      }
+    ],
+    "presets": [{
+      "name": "Newsletter"
+    }]
+  }
+{% endschema %}

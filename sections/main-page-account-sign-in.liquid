@@ -1,0 +1,179 @@
+{%- liquid
+  assign section_color = 'tertiary' 
+  assign text_align = section.settings.text_alignment 
+  assign block_heading_level = 'h2' 
+  assign ratio = section.settings.crop | plus: 0
+  assign col_span = 'lg:col-span-6'
+
+-%}
+
+<section class="text-{{ section_color }}-text bg-{{ section_color }}-background">
+  <div class="section-x-padding py-theme lg:flex border-b-grid border-grid-color w-full mb-16">
+    <div class="{{ section.settings.content_width }}">
+      <div class="{%- if section.settings.content_position == 'lg:justify-center' -%}text-center{%- endif -%}">
+        <h1 class="font-heading {{ settings.template_heading_size }} break-words">{{ page.title }}</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="pb-16 page lg:w-2/3 mx-auto px-4">
+
+    <ul class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+      {%- assign block_color = section_color -%}
+
+      <li class="{{ col_span }} bg-{{ block_color }}-background text-{{ block_color }}-text text-base {{ text_align }}">
+        <h4 class="uppercase opacity-50 mb-4 font-heading">Shopping with us?</h4>
+        <div class="rounded-lg border border-grid-color overflow-hidden">
+          {%- if section.settings.image != blank -%}
+          <div class="bg-{{ block_color }}-background {% unless settings.fill_image_to_border_edge %}pt-2 px-2 lg:pt-4 lg:px-4{% else %}{% endunless %}">
+            <div class="relative">
+              {%- assign image = section.settings.image -%}
+              {% render 'image-crop' with
+                  image: image,
+              ratio: ratio
+              %}
+            </div>
+          </div>
+          {%- endif -%}
+
+          <div class="section-x-padding py-theme">
+            <div class="flex flex-col justify-center h-full px-4 m-auto">
+              {% if section.settings.title != '' %}
+              <h4 class="font-heading text-2xl">{{ section.settings.title }}</h4>
+              {% endif %}
+              <div class="rte uppercase {% if section.settings.title != '' %}mt-2{% endif %}">{{ section.settings.text }}</div>
+              <div class="mt-4">
+                <a href="/account/login" class="inline-flex justify-center items-center text-base px-10 py-1 rounded-full bg-transparent text-primary-text border-text border-primary-text hover:bg-primary-text hover:border-primary-accent hover:text-primary-accent">
+                  <span class="{% if settings.button_uppercase %}uppercase{% endif %}">Sign In</span>
+                </a>
+                <p class="uppercase opacity-50 font-heading mt-4">Or<br>
+                  <a href="/account" class="underline">Make an account</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <li class="{{ col_span }} bg-{{ block_color }}-background text-{{ block_color }}-text text-base {{ text_align }}">
+        <h4 class="uppercase opacity-50 mb-4 font-heading">Booking a treatment?</h4>
+        <div class="rounded-lg border border-grid-color overflow-hidden">
+          {%- if section.settings.image_2 != blank -%}
+          <div class="bg-{{ block_color }}-background {% unless settings.fill_image_to_border_edge %}pt-2 px-2 lg:pt-4 lg:px-4{% else %}{% endunless %}">
+            <div class="relative">
+              {%- assign image_2 = section.settings.image_2 -%}
+              {% render 'image-crop' with
+                  image: image_2,
+              ratio: ratio
+              %}
+            </div>
+          </div>
+          {%- endif -%}
+
+          <div class="section-x-padding py-theme">
+            <div class="flex flex-col justify-center h-full px-4 m-auto">
+              {% if section.settings.title_2 != '' %}
+              <h4 class="font-heading text-2xl">{{ section.settings.title_2 }}</h4>
+              {% endif %}
+              <div class="rte uppercase {% if section.settings.title_2 != '' %}mt-2{% endif %}">{{ section.settings.text_2 }}</div>
+              <div class="mt-4">
+                <a href="https://aerskinlab.janeapp.com/" target="_blank" class="inline-flex justify-center items-center text-base px-10 py-1 rounded-full bg-transparent text-primary-text border-text border-primary-text hover:bg-primary-text hover:border-primary-accent hover:text-primary-accent">
+                  <span class="{% if settings.button_uppercase %}uppercase{% endif %}">Sign In</span>
+                </a>
+                <p class="uppercase opacity-50 font-heading mt-4">Or<br>
+                  <a href="https://aerskinlab.janeapp.com/" class="underline">Make an account</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "Account/Sign In",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Products Login Content"
+      },
+      {
+        "id": "image",
+        "type": "image_picker",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>Share blog posts, products, or promotions with your customers. Use this text to describe products, share details on availability and style, or as a space to display recent reviews or FAQs.</p>"
+      },
+      {
+        "type": "header",
+        "content": "Treatments Login Content"
+      },
+      {
+        "id": "image_2",
+        "type": "image_picker",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "title_2",
+        "label": "Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "text_2",
+        "label": "Text",
+        "default": "<p>Share blog posts, products, or promotions with your customers. Use this text to describe products, share details on availability and style, or as a space to display recent reviews or FAQs.</p>"
+      },
+      {
+        "type": "header",
+        "content": "Section Style"
+      },
+      {
+        "type": "select",
+        "id": "crop",
+        "label": "Crop images",
+        "options": [
+          {
+            "value": "0",
+            "label": "No crop"
+          },
+          {
+            "value": "1.6",
+            "label": "Landscape"
+          },
+          {
+            "value": "1",
+            "label": "Square"
+          },
+          {
+            "value": "0.8",
+            "label": "Portrait"
+          }
+        ],
+        "default": "1"
+      },
+      {
+        "type": "select",
+        "id": "text_alignment",
+        "label": "Text alignment",
+        "options": [
+          { "value": "text-left", "label": "Left"},
+          { "value": "text-center", "label": "Center"},
+          { "value": "text-right", "label": "Right"}
+        ],
+        "default":   "text-left"
+      }
+    ]
+  }
+{% endschema %}

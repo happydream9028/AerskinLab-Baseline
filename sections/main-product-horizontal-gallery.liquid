@@ -1,0 +1,1362 @@
+{% comment %}theme-check-disable TemplateLength{% endcomment %}
+{%- liquid
+  assign section_color = section.settings.color_scheme
+  assign current_variant = product.selected_or_first_available_variant
+  assign featured_media = current_variant.featured_media | default: product.featured_media
+  assign enable_video_looping = section.settings.enable_video_looping
+  assign desktop_image_height = section.settings.desktop_image_height
+  assign no_social_blocks = true
+  for block in section.blocks
+    if block.settings.position == 'product_extra'
+      assign no_social_blocks = false
+      break
+    endif
+  endfor
+-%}
+
+<section class="bg-primary-background text-primary-text" x-data="ThemeSection_{{ section.id | handleize | replace: '-', '_' }}()" x-init="mounted()" data-section-id="{{ section.id }}" data-alpine-id="{{ section.id | handleize | replace: '-', '_' }}" data-section-type="product" data-enable-history-state="true" data-enable-image-zoom={{ section.settings.enable_image_zoom | json }} data-variant-image-behaviour="{{ section.settings.variant_image_behaviour }}" data-product-horizontal-gallery>
+
+  {%- liquid
+    assign current_variant = product.selected_or_first_available_variant
+    assign featured_media = current_variant.featured_media | default: product.featured_media
+    assign has_interactive_media = false
+    assign image_index = 0
+    if product.media.size > 1
+      assign slideshow_enabled = true
+    endif
+  -%}
+  {%- for media in product.media -%}
+    {%- if media.media_type != 'image' -%}
+      {%- assign has_interactive_media = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  <div class="relative col-span-full {% if product.media.size > 1 %}pb-8{% endif %} product-media-container bg-{{ section_color }}-background text-{{ section_color }}-text {% unless settings.fill_image_to_border_edge %}border-b-grid border-grid-color lg:border-0{% endunless %}" data-product-single-media-group>
+    <div id="splide" class="splide splide--product lg:sticky lg:top-sticky-header {% unless settings.fill_image_to_border_edge %}lg:py-4{% endunless %} " data-drag-disabled="{{ has_interactive_media }}" {% if slideshow_enabled %}data-slideshow-enabled="true"{% endif %}>
+      <div id="splide-track" class="transition-max-height splide__track {% if settings.fill_image_to_border_edge %}border-b-grid border-grid-color{% endif %} {% unless settings.fill_image_to_border_edge %}lg:px-4{% endunless %} ">
+        <ul id="splide-list" class="splide__list w-full {% if settings.fill_image_to_border_edge %}{% else %}lg:gap-4{% endif%}">
+        {%- if featured_media != null -%}
+          {%- assign media = featured_media -%}
+          <li data-first-media class="splide__slide bg-{{ section_color }}-background relative {% if settings.fill_image_to_border_edge %}lg:border-r-grid lg:border-grid-color{% endif %}" data-index="0">
+            {%- render 'product-media_horizontal-gallery-template',
+              media: media,
+              image_index: image_index,
+              desktop_image_height: desktop_image_height,
+              slideshow_enabled: slideshow_enabled,
+              section_color: section_color,
+              enable_video_looping: enable_video_looping
+            -%}
+          </li>
+          {%- if media.media_type == 'image' -%}
+            {%- assign image_index = image_index | plus: 1 -%}
+          {%- endif -%}
+        {%- endif -%}
+        {% for media in product.media %}
+            {%- unless media.id == featured_media.id -%}
+            <li {% if featured_media == null and forloop.first %}data-first-media{% endif %} class="splide__slide bg-{{ section_color }}-background relative {% if settings.fill_image_to_border_edge %}lg:border-r-grid lg:border-grid-color{% endif %}" data-index="{% if featured_media == null %}{{ forloop.index0 }}{% else %}{{ forloop.index }}{% endif %}">
+              {%- render 'product-media_horizontal-gallery-template',
+                media: media,
+                image_index: image_index,
+                desktop_image_height: desktop_image_height,
+                slideshow_enabled: slideshow_enabled,
+                section_color: section_color,
+                enable_video_looping: enable_video_looping
+              -%}
+            </li>
+            {%- if media.media_type == 'image' -%}
+              {%- assign image_index = image_index | plus: 1 -%}
+            {%- endif -%}
+            {% endunless %}
+          {% endfor %}
+        </ul>
+      </div>
+      {% assign first_3d_model = product.media | where: "media_type", "model" | first %}
+      <div class="js-enabled splide__arrows text-{{ section_color }}-text absolute right-0 {% if first_3d_model %}bottom-slide-arrows lg:bottom-auto{% endif %} mr-1 lg:mr-4 text-right mt-2 ">
+        <button class="splide__arrow splide__arrow--prev w-8">
+          <span class="visually-hidden">{{ 'sections.slideshow.previous_slide' | t }}</span>
+          <span class="block">{% render 'icon-previous' %}</span>
+        </button>
+        <button class="splide__arrow splide__arrow--next w-8">
+          <span class="visually-hidden">{{ 'sections.slideshow.next_slide' | t }}</span>
+          <span class="block">{% render 'icon-next' %}</span>
+        </button>
+      </div>
+      {%- if first_3d_model -%}
+        <div class="section-x-padding text-center">
+          <button aria-label="{{ 'products.product.view_in_space_label' | t }}"
+                  class="product-single__view-in-space mt-4 mb-2 lg:my-4 w-full py-2 pl-2 pr-4 max-w-sm text-center border-text border-{{ section_color }}-text"
+                  data-shopify-xr
+                  data-shopify-model3d-id="{{ first_3d_model.id }}"
+                  data-shopify-title="{{ product.title }}"
+                  data-shopify-xr-hidden>
+            <span class="inline-block w-6 align-middle">{% render 'icon-3d-model' %}</span><span class="text-sm">{{ 'products.product.view_in_space' | t }}</span>
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-12 gap-gutter bg-border grid-flow-row-dense lg:border-t-grid border-grid-color">
+
+    <div class="lg:col-start-10 lg:col-end-13 bg-{{ section_color }}-background text-{{ section_color }}-text h-full section-x-padding">
+      <div class="lg:sticky lg:top-sticky-header py-theme product-block-area">
+        {%- assign product_form_id = 'product-form-' | append: section.id -%}
+        {%- assign tab_counter = 0 -%}
+        {%- for block in section.blocks -%}
+          {% assign supported_blocks = 'title, vendor, price, variant_picker, quantity_selector, buy_buttons' %}
+          {%- if block.settings.position == 'product_form' or supported_blocks contains block.type or block.type == '@app' -%}
+            {%- case block.type -%}
+              {%- when '@app' -%}
+                {% if section.settings.app_block_area == 'product_form' %}
+                  <div class="mt-8">
+                  {%- render block -%}
+                  </div>
+                {% endif %}
+              {%- when 'title' -%}
+                <h1 {{ block.shopify_attributes }} class="product-title-block mt-4 break-words font-heading {{ settings.template_heading_size }}">{{ product.title }}</h1>
+              {%- when 'vendor' -%}
+                {%- liquid
+                  assign use_collection_vendor_link = false
+                  for collection in product.collections
+                  if collection.title == product.vendor
+                    assign use_collection_vendor_link = true
+                    assign vendor_collection = collection
+                    break
+                  endif
+                  endfor
+                -%}
+                {%- if use_collection_vendor_link -%}
+                <p {{ block.shopify_attributes }} class="relative z-10 product-vendor-block"><a class="text-base mt-4 text-{{ section_color }}-meta" href="{{ vendor_collection.url }}">{{ vendor_collection.title }}</a></p>
+                {%- else -%}
+                <p {{ block.shopify_attributes }} class="relative z-10 product-vendor-block text-base mt-4 text-{{ section_color }}-meta">{{ product.vendor | link_to_vendor }}</p>
+                {%- endif -%}
+              {%- when 'price' -%}
+                {%- liquid
+                  if settings.template_heading_size contains "lg:"
+                    assign price_text_size = 'text-base lg:text-2xl'
+                  else
+                    assign price_text_size = 'text-base'
+                  endif
+                -%}
+                <div {{ block.shopify_attributes }} data-price-wrapper class="product-price-block mt-8 {{ price_text_size }}" :class="{ 'invisible': !current_variant }">
+                  <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+                  <span data-product-price x-html="formatMoney(current_price)" :class="{ 'text-{{ section_color }}-accent': current_variant && product.compare_at_price_max && current_variant.compare_at_price > current_variant.price, 'invisible': !current_variant }">
+                    {{ current_variant.price | money }}
+                  </span>
+
+                  {% if product.compare_at_price_max > product.price %}
+                  <template x-if="current_variant && product.compare_at_price_max && current_variant.compare_at_price > current_variant.price">
+                    <span>
+                      <span class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
+                      <s data-compare-price
+                        x-html="formatMoney(current_variant.compare_at_price)">
+                        {% if current_variant.compare_at_price > current_variant.price %}
+                          {{ current_variant.compare_at_price | money }}
+                        {% endif %}
+                      </s>
+                    </span>
+                  </template>
+                  {% endif %}
+
+                  <template x-if="current_variant && current_variant.unit_price">
+                    <div class="text-sm" data-unit-price-wrapper>
+                      <span class="visually-hidden">
+                        {{- 'products.product.unit_price_label' | t -}}
+                      </span>
+                      <span x-html="formatMoney(current_variant.unit_price)">
+                        {{- current_variant.unit_price | money -}}
+                      </span>
+                      <span aria-hidden="true">
+                        /
+                      </span>
+                      <span class="visually-hidden">
+                        {{- 'general.accessibility.unit_price_separator' | t -}}
+                      </span>
+                      <span x-html="current_variant.unit_price_measurement.reference_value != 1? current_variant.unit_price_measurement.reference_value :''">
+                        {%- if current_variant.unit_price_measurement.reference_value != 1 -%}
+                          {{- current_variant.unit_price_measurement.reference_value -}}
+                        {%- endif -%}
+                      </span><!--
+                      --><span x-html="current_variant.unit_price_measurement.reference_unit">
+                        {{- current_variant.unit_price_measurement.reference_unit -}}
+                      </span>
+                    </div>
+                  </template>
+                </div>
+              {%- when 'variant_picker' -%}
+                {%- assign option_style = block.settings.option_style -%}
+                {% unless product.has_only_default_variant %}
+                  {% for option in product.options_with_values %}
+                    {% liquid
+                      if settings.enable_color_swatches
+                        assign is_color = false
+                        assign swatch_trigger = 'products.product.color_swatch_trigger' | t | downcase
+                        assign option_downcase = option.name | downcase
+                        if option_downcase contains swatch_trigger
+                          assign is_color = true
+                        elsif swatch_trigger == 'color' and option_downcase contains 'colour'
+                          assign is_color = true
+                        endif
+                      endif
+                    %}
+                    {% assign option_array_index = forloop.index0 %}
+                    {%- assign label_class = 'block' -%}
+                    {%- if block.settings.hide_option_labels -%}
+                      {%- assign label_class = 'visually-hidden' -%}
+                    {%- endif -%}
+
+                    <fieldset class="product-variant-picker-block js-enabled mt-8">
+                      {%- if option_style == 'drop_down' -%}
+                        <label class="{{ label_class }}" for="Option{{ option.position }}">
+                          {{ option.name }}:
+                        </label>
+                      {%- else -%}
+                        <legend class="{{ label_class }}">
+                          {{ option.name }}: {% if is_color %}<span x-text="options[{{ forloop.index0 }}]"></span>{% endif %}
+                        </legend>
+                      {%- endif -%}
+                      {%- case option_style -%}
+                        {%- when 'radio' -%}
+                          <div class="mt-2">
+                            {% for value in option.values %}
+                              {% assign variant_label_state = true %}
+                              {% if product.options.size == 1 %}
+                                {% unless product.variants[forloop.index0].available %}
+                                  {% assign variant_label_state = false %}
+                                {% endunless %}
+                              {% endif %}
+                              <div class="block relative variant-input">
+                                <input class="custom-input cursor-pointer absolute top-0 left-0 w-full h-full opacity-0" @change="optionChange()" type="radio" id="Option{{ option.position }}-{{ value | escape }}" name="options[{{ option.name }}]" value="{{ value | escape }}" {% if option.selected_value == value %} checked{% endif %} data-single-option-selector>
+                                <label class="flex items-center py-1  {% unless variant_label_state %}text-{{ section_color }}-meta line-through{% else %}cursor-pointer{% endunless %}" for="Option{{ option.position }}-{{ value | escape }}">
+                                  <template x-if="options[{{ option_array_index }}] === '{{ value | escape }}'">
+                                    <span class="w-2 h-2 mr-1 inline-block rounded-full bg-{{ section_color }}-text border-checkbox border-{{ section_color }}-text"></span>
+                                  </template>
+                                  <template x-if="options[{{ option_array_index }}] !== '{{ value | escape }}'">
+                                    <span class="w-2 h-2 mr-1 inline-block rounded-full bg-transparent border-checkbox border-{{ section_color }}-text"></span>
+                                  </template>
+                                  <span>{{ value }}</span>
+                                </label>
+                              </div>
+                            {% endfor %}
+                          </div>
+                        {%- when 'text_underline' -%}
+                          <div class="mt-2 flex flex-wrap items-center justify-start -mx-1">
+                            {% for value in option.values %}
+                              {% assign variant_label_state = true %}
+                              {% if product.options.size == 1 %}
+                                {% unless product.variants[forloop.index0].available %}
+                                  {% assign variant_label_state = false %}
+                                {% endunless %}
+                              {% endif %}
+                              <div class="relative variant-input">
+                                <input class="custom-input cursor-pointer absolute top-0 left-0 w-full h-full opacity-0" @change="optionChange()" type="radio" id="Option{{ option.position }}-{{ value | escape }}" name="options[{{ option.name }}]" value="{{ value | escape }}" {% if option.selected_value == value %} checked{% endif %} data-single-option-selector>
+                                <label class="block p-1 {% unless variant_label_state %}text-{{ section_color }}-meta line-through{% else %}cursor-pointer{% endunless %}" for="Option{{ option.position }}-{{ value | escape }}">
+                                  <span :class="{ 'border-b-text border-{{ section_color }}-text': options[{{ option_array_index }}] === '{{ value | escape }}' }">{{ value }}</span>
+                                </label>
+                              </div>
+                            {% endfor %}
+                          </div>
+                        {%- when 'buttons' -%}
+                          <div class="mt-2 flex flex-wrap items-center justify-start -mx-1">
+                            {% for value in option.values %}
+                              {% assign variant_label_state = true %}
+                              {% if product.options.size == 1 %}
+                                {% unless product.variants[forloop.index0].available %}
+                                  {% assign variant_label_state = false %}
+                                {% endunless %}
+                              {% endif %}
+                              {% liquid
+                                assign color_image = value | handle | append: '.' | append: 'png' | file_img_url: '50x' | prepend: 'https:'
+                                assign color_swatch_fallback = value | split: ' ' | last | handle
+                              %}
+                              <div class="relative variant-input px-1">
+                                <input class="custom-input cursor-pointer absolute top-0 left-0 w-full h-full opacity-0" @change="optionChange()" type="radio" id="Option{{ option.position }}-{{ value | escape }}" name="options[{{ option.name }}]" value="{{ value | escape }}" {% if option.selected_value == value %} checked{% endif %} data-single-option-selector>
+                                <label
+                                  :class="{ 'border-{{ section_color }}-text': options[{{ option_array_index }}] === '{{ value | escape }}', 'border-transparent': options[{{ option_array_index }}] !== '{{ value | escape }}' }"
+                                  class="relative block {% unless is_color %}p-2 min-w-4{% else %}p-0.5{% endunless %} {% render 'button-style', section_color: section_color %} border-text text-center cursor-pointer  {% unless variant_label_state %}line-through{% endunless %} {% if is_color %}cursor-pointer{% endif %}" for="Option{{ option.position }}-{{ value | escape }}"
+                                  title="{{ option.value }}"
+                                  >
+                                  {%- if is_color %}
+                                  {%- unless variant_label_state -%}
+                                    <span class="absolute top-0 left-0 bottom-0 z-10 h-0.5 w-full bg-{{ section_color }}-text transform top-1/2 -translate-y-1/2 -rotate-45"></span>
+                                  {%- endunless -%}
+                                  <span class="block w-10 h-10 {% render 'button-style', section_color: section_color %}" style="background-image: url({{ color_image }}); background-color: {{ color_swatch_fallback }};"></span>
+                                  {%- endif -%}
+                                  <span {% if is_color %}class="visually-hidden"{% endif %}>{{ value }}</span>
+                                </label>
+                              </div>
+                            {% endfor %}
+                          </div>
+                        {%- when 'drop_down' -%}
+                          <select
+                            id="Option{{ option.position }}"
+                            @change="optionChange()"
+                            name="options[{{ option.name | escape }}]"
+                            class="mt-2 w-full appearance-none rounded-none bg-{{ section_color }}-background text-{{ section_color }}-text border-b-text py-1 border-{{ section_color }}-text text-{{ section_color }}-text pr-6"
+                            data-single-option-selector>
+                            {% for value in option.values %}
+                              <option
+                                class="text-initial"
+                                value="{{ value | escape }}"
+                                {% if option.selected_value == value %}selected="selected"{% endif %}>
+                                  {{ value }}
+                              </option>
+                            {% endfor %}
+                          </select>
+                      {% endcase %}
+                    </fieldset>
+                  {% endfor %}
+                {% endunless %}
+              {%- when 'quantity_selector' -%}
+                <div {{ block.shopify_attributes }} class="product-quantity-block mt-8">
+                  <label class="{{ label_class }}" for="Quantity">{{ 'products.product.quantity' | t }}:</label>
+                  <div class="mt-2 flex items-center -mx-2">
+                    <button type="button" class="fill-current p-2 w-7 h-7" @click="if(quantity>0){quantity--}"
+                          aria-label="'{ 'general.accessibility.decrement_one' | t }}">{% render 'icon-minus' %}</button>
+                    <input form="{{ product_form_id }}" class="appearance-none bg-transparent w-10 text-center border-b-text border-{{ section_color }}-text p-2" type="number" id="Quantity" name="quantity" value="1" min="1" x-model="quantity" >
+                    <button type="button" class="fill-current p-2 w-7 h-7"  @click="quantity++"
+                          aria-label="{{ 'general.accessibility.increment_one' | t }}">{% render 'icon-plus' %}</button>
+                  </div>
+                </div>
+              {%- when 'buy_buttons' -%}
+                {% form 'product', product, id: product_form_id, data-product-form: '', data-product-handle: product.handle, data-enable-history-state: 'true', data-product-form: '', x-ref: 'productForm' %}
+                  {{ form | payment_terms }}
+
+                  <div class="no-js hidden">
+                    <label class="block mt-theme" for="variant_{{ section.id }}">Variant</label>
+                    <select x-ref="singleVariantSelector" name="id" id="variant_{{ section.id }}" class="mt-2 appearance-none rounded-none bg-{{ section_color }}-background text-{{ section_color }}-text border-b-grid py-1 border-{{ section_color }}-text text-{{ section_color }}-text pr-6">
+                      {% for variant in product.variants %}
+                        <option
+                          {% if variant == current_variant %}selected="selected"{% endif %}
+                          {% unless variant.available %}disabled="disabled"{% endunless %}
+                          x-bind:selected="currentVariantId === {{ variant.id }}"
+                          value="{{ variant.id }}">
+                            {{ variant.title }}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  {%- if settings.ajax_cart_method == 'page' or settings.show_cart_on_add == false -%}
+                    <div  class="mt-4 mb-8"
+                          x-show="addedToCart"
+                          x-cloak
+                          x-transition:enter="transition ease duration-300"
+                          x-transition:enter-start="opacity-0"
+                          x-transition:enter-end="opacity-100"
+                          x-transition:leave="transition ease duration-300"
+                          x-transition:leave-start="opacity-100"
+                          x-transition:leave-end="opacity-0">
+                      <p>{{ 'cart.popup.added_to_cart' | t }}!</p>
+                      <p class="accent-links-{{ section_color }}">{{ 'products.product.add_to_cart_confirm_html' | t: cart_url: routes.cart_url, link_url: routes.all_products_collection_url }}.</p>
+                    </div>
+                  {%- endif -%}
+
+                  <div class="add-to-cart-container mt-8">
+                    {%- if block.settings.enable_payment_button -%}
+                      {%- capture cta_button_class -%}{% render 'button-style' %} bg-transparent text-{{ section_color }}-text border-text border-{{ section_color }}-text hover:border-{{ section_color }}-accent hover:text-{{ section_color }}-accent{%- endcapture -%}
+                    {%- else -%}
+                      {%- capture cta_button_class -%}{% render 'button-style' %} {% render 'button-color', section_color: section_color %}{%- endcapture -%}
+                    {%- endif -%}
+
+                    <button
+                      id="addToCartButton"
+                      @click="$store.drawer.cartOpener = $event.currentTarget"
+                      class="add-to-cart px-1 py-2 w-full {% if settings.button_uppercase %}uppercase{% endif %} {{ cta_button_class }}
+                      {% unless current_variant.available %}opacity-50 cursor-not-allowed{% endunless %}"
+                      type="submit"
+                      :class="{ 'opacity-50 cursor-not-allowed': !currentVariantAvailable }"
+                      :disabled="!currentVariantAvailable || loading"
+                      {% unless current_variant.available %}disabled="disabled"{% endunless %}>
+                        <span class="no-js">
+                          {% if current_variant.available %}
+                            {{ 'products.product.add_to_cart' | t }}{% if settings.buttons_show_arrow %}&nbsp;&rarr;{% endif %}
+                          {% else %}
+                            {{ 'products.product.sold_out' | t }}
+                          {% endif %}
+                        </span>
+                        <template x-if="current_variant">
+                          <div>
+                            <template x-if="currentVariantAvailable">
+                              <span>{{ 'products.product.add_to_cart' | t }}{% if settings.buttons_show_arrow %}&nbsp;&rarr;{% endif %}</span>
+                            </template>
+                            <template x-if="!currentVariantAvailable">
+                              <span>{{ 'products.product.sold_out' | t }}</span>
+                            </template>
+                          </div>
+                        </template>
+                        <template x-if="!current_variant">
+                          <span> {{ 'products.product.unavailable' | t }}</span>
+                        </template>
+                    </button>
+
+                    {%- if block.settings.enable_payment_button -%}
+                      {%- assign button_color = settings.button_color -%}
+                      {%- if button_color == 'transparent_background_text_border' -%}
+                        {%- assign button_color = 'text_background' -%}
+                      {%- endif -%}
+                      <div class="mt-2 payment-button-wrapper {% render 'button-style' %}  color-{{ section_color }} style-{{ button_color }}">{{ form | payment_button }}</div>
+                    {%- endif -%}
+
+                  </div>
+                {% endform %}
+                {% if block.settings.show_pickup_availability %}
+                  <template x-if="$store.availability.current_variant.available && currentVariantAvailability">
+                    <div class="mt-4 lg:w-3/4 flex items-start" :class="{'opacity-50': $store.availability.loading}" :aria-busy="$store.availability.loading">
+                      <div class="w-3 mr-3 pt-1">
+                        <template x-if="currentVariantAvailability.available">
+                          {% render 'icon-in-stock' %}
+                        </template>
+                        <template x-if="!currentVariantAvailability.available">
+                          {% render 'icon-out-of-stock' %}
+                        </template>
+                      </div>
+                      <div class="flex-auto">
+                        <h2 x-html="currentVariantAvailability.pickup_text"></h2>
+                        <small class="block mt-2" x-html="currentVariantAvailability.pickup_time"></small>
+                        <button type="button" @click="$store.drawer.availabilityOpener = $event.currentTarget; $store.drawer.availabilityDrawerOpen = !$store.drawer.availabilityDrawerOpen" aria-haspopup="dialog" class="mt-2 hover:text-{{ section_color }}-accent text-sm items-center justify-center {% if settings.links_show_underline %}border-b-text border-{{ section_color }}-text hover:border-{{ section_color }}-accent pb-1{% endif %}">
+                          <span class="{% if settings.links_uppercase %}uppercase{% endif %}" x-text="currentVariantAvailability.modal_text"></span>
+                          {% if settings.links_show_arrow %}&nbsp;&rarr;{% endif %}
+                        </button>
+                      </div>
+                    </div>
+                  </template>
+                  <div class=""
+                      data-product-title="{{ product.title | escape }}"
+                      data-has-only-default-variant="{{ product.has_only_default_variant }}"
+                      data-base-url="{{ shop.url }}{{ routes.root_url }}"
+                      data-section-color="{{ section_color }}"
+                      data-store-availability>
+                  </div>
+                {% endif %}
+              {%- when 'text' -%}
+                {% render 'product-block-text', block: block %}
+              {%- when 'richtext' -%}
+                {% render 'product-block-richtext', block: block %}
+              {%- when 'collapsible_tab' -%}
+                {% render 'product-block-collapsible-tab',
+                  block: block,
+                  tab_counter: tab_counter
+                %}
+                {%- assign tab_counter = tab_counter | plus: 1 -%}
+              {%- when 'icon_list' -%}
+                {% render 'product-block-icon-list',
+                  block: block
+                  section_color: section_color
+                %}
+              {%- when 'popup' -%}
+                {% render 'product-block-popup',
+                  block: block
+                  section_color: section_color
+                %}
+              {%- when 'share_buttons' -%}
+                <div class="mt-8" {{ block.shopify_attributes }}>
+                {% render 'social-sharing', tag: 'h2', share_title: product.title, share_permalink: product.url, share_image: product, section_color: section_color %}
+                </div>
+            {%- endcase -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+    <div class="product-description {% if no_social_blocks %}lg:col-start-1{% else %}lg:col-start-4{% endif %} lg:col-end-10 bg-{{ section_color }}-background text-{{ section_color }}-text h-full section-x-padding py-theme product-block-area">
+      {%- assign tab_counter = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.settings.position == 'product_description' or block.type == 'description' or block.type == '@app' -%}
+          {%- case block.type -%}
+          {%- when '@app' -%}
+            {% if section.settings.app_block_area == 'product_description' %}
+              <div class="mt-8">
+              {%- render block -%}
+              </div>
+            {% endif %}
+          {%- when 'description' -%}
+            {%- liquid
+              assign enable_collapsible_tabs = block.settings.enable_collapsible_tabs
+              assign truncate_description = block.settings.truncate_description
+            -%}
+            {% render 'product-block-description',
+              enable_collapsible_tabs: enable_collapsible_tabs
+              truncate_description: truncate_description,
+              section_color: section_color
+            %}
+          {%- when 'text' -%}
+            {% render 'product-block-text', block: block %}
+          {%- when 'richtext' -%}
+            {% render 'product-block-richtext', block: block %}
+          {%- when 'collapsible_tab' -%}
+            {% render 'product-block-collapsible-tab',
+              block: block,
+              tab_counter: tab_counter
+            %}
+            {%- assign tab_counter = tab_counter | plus: 1 -%}
+          {%- when 'icon_list' -%}
+            {% render 'product-block-icon-list',
+              block: block
+              section_color: section_color
+            %}
+          {%- when 'popup' -%}
+            {% render 'product-block-popup',
+              block: block
+              section_color: section_color
+            %}
+          {%- when 'share_buttons' -%}
+            <div class="mt-8" {{ block.shopify_attributes }}>
+            {% render 'social-sharing', tag: 'h2', share_title: product.title, share_permalink: product.url, share_image: product, section_color: section_color %}
+            </div>
+          {%- endcase -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- unless no_social_blocks -%}
+    <div class="lg:col-start-1 lg:col-end-4 bg-{{ section_color }}-background text-{{ section_color }}-text h-full section-x-padding py-theme product-block-area">
+      {%- assign tab_counter = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.settings.position == 'product_extra' or block.type == '@app' -%}
+          {%- case block.type -%}
+            {%- when '@app' -%}
+              {%- if section.settings.app_block_area == 'product_extra' -%}
+                <div class="mt-8">
+                {%- render block -%}
+                </div>
+              {%- endif -%}
+            {%- when 'text' -%}
+              {% render 'product-block-text', block: block %}
+            {%- when 'richtext' -%}
+              {% render 'product-block-richtext', block: block %}
+            {%- when 'collapsible_tab' -%}
+              {% render 'product-block-collapsible-tab',
+                block: block,
+                tab_counter: tab_counter
+              %}
+              {%- assign tab_counter = tab_counter | plus: 1 -%}
+            {%- when 'icon_list' -%}
+              {% render 'product-block-icon-list',
+                block: block
+                section_color: section_color
+              %}
+            {%- when 'popup' -%}
+              {% render 'product-block-popup',
+                block: block
+                section_color: section_color
+              %}
+            {%- when 'share_buttons' -%}
+              <div class="mt-8" {{ block.shopify_attributes }}>
+              {% render 'social-sharing', tag: 'h2', share_title: product.title, share_permalink: product.url, share_image: product, section_color: section_color %}
+              </div>
+          {%- endcase -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- endunless -%}
+  </div>
+
+  {% unless product == empty %}
+    <script type="application/json" data-product-json>
+      {{ product | json }}
+    </script>
+    <script type="application/json" data-selected-variant-json>
+      {{ current_variant | json }}
+    </script>
+    <script type="application/json" data-featured-media-id>
+      {{ featured_media.id | json }}
+    </script>
+    {% if section.settings.enable_image_zoom %}
+    {% assign product_image_media = product.media | where: 'media_type', 'image' %}
+    <script type="application/json" data-product-images>
+    {
+      {% for media in product_image_media %}
+        "{{ media.id }}": {
+          "fullSizeUrl": {{ media | img_url: 'master' | json }},
+          "width": {{ media.width | json }},
+          "height": {{ media.height | json }},
+          "aspectRatio": {{ media.aspect_ratio | json }},
+          "alt": {{ media.alt | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    }
+    </script>
+    {% endif %}
+    <script type="application/json" id="ModelJson-{{ section.id }}">
+        {{ product.media | where: 'media_type', 'model' | json }}
+    </script>
+  {% endunless %}
+</section>
+
+{%- if section.settings.enable_image_zoom -%}
+  {% render 'photoswipe' %}
+{%- endif -%}
+
+{%- if section.settings.override_header_footer_color_scheme -%}
+  {%- render 'header-footer-color-scheme-override', section_color: section_color -%}
+{%- endif -%}
+
+{% assign current_variant = product.selected_or_first_available_variant %}
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "url": {{ shop.url | append: product.url | json }},
+  {%- if product.featured_media -%}
+    {%- assign media_size = product.featured_media.preview_image.width | append: 'x' -%}
+    "image": [
+      {{ product.featured_media | img_url: media_size | prepend: "https:" | json }}
+    ],
+  {%- endif -%}
+  "description": {{ product.description | strip_html | json }},
+  {%- if current_variant.sku != blank -%}
+    "sku": {{ current_variant.sku | json }},
+  {%- endif -%}
+  "brand": {
+    "@type": "Thing",
+    "name": {{ product.vendor | json }}
+  },
+  "offers": [
+    {%- for variant in product.variants -%}
+      {
+        "@type" : "Offer",
+        {%- if variant.sku != blank -%}
+          "sku": {{ variant.sku | json }},
+        {%- endif -%}
+        "availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+        "price" : {{ variant.price | divided_by: 100.00 | json }},
+        "priceCurrency" : {{ cart.currency.iso_code | json }},
+        "url" : {{ shop.url | append: variant.url | json }}
+      }{% unless forloop.last %},{% endunless %}
+  {%- endfor -%}
+  ]
+}
+</script>
+
+{% schema %}
+  {
+    "name": "Feature product main",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Images"
+      },
+      {
+        "type": "range",
+        "id": "desktop_image_height",
+        "label": "Desktop image height",
+        "min": 50,
+        "max": 100,
+        "step": 5,
+        "default": 70,
+        "unit": "%"
+      },
+      {
+        "type": "select",
+        "id": "variant_image_behaviour",
+        "label": "Variant image change behaviour",
+        "options": [
+            { "value": "swap", "label": "Swap with first image"},
+            { "value": "scroll", "label": "Scroll to image"}
+        ],
+        "default":   "swap"
+      },
+      {
+        "type": "header",
+        "content": "App blocks"
+      },
+      {
+        "type": "select",
+        "id": "app_block_area",
+        "label": "App block area",
+        "options": [
+            { "value": "product_extra", "label": "Social"},
+            { "value": "product_description", "label": "Description"},
+            { "value": "product_form", "label": "Product form"}
+        ],
+        "default":   "product_form",
+        "info": "This is where app blocks will be displayed."
+      },
+      {
+        "type": "header",
+        "content": "Media",
+        "info": "Learn more about [media types](https://help.shopify.com/manual/products/product-media)"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_image_zoom",
+        "label": "Enable image zoom"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_video_looping",
+        "label":  "Enable video looping",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Color"
+      },
+      {
+        "type": "select",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "options": [
+            { "value": "primary", "label": "Primary"},
+            { "value": "secondary", "label": "Secondary"},
+            { "value": "tertiary", "label": "Tertiary"}
+        ],
+        "default":   "primary"
+      },
+      {
+        "type": "checkbox",
+        "id": "override_header_footer_color_scheme",
+        "label": "Use this color scheme for header and footer",
+        "info": "This will only apply to the product template",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "title",
+        "name": "Title",
+        "limit": 1
+      },
+      {
+        "type": "price",
+        "name": "Price",
+        "limit": 1
+      },
+      {
+        "type": "variant_picker",
+        "name": "Variant picker",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "select",
+            "id": "option_style",
+            "label": "Options style",
+            "options": [
+              { "value": "text_underline", "label": "Text with underline"},
+              { "value": "radio", "label": "Radio"},
+              { "value": "buttons", "label": "Button"},
+              { "value": "drop_down", "label": "Drop down"}
+            ],
+            "default":   "text_underline"
+          },
+          {
+            "type": "checkbox",
+            "id": "hide_option_labels",
+            "label": "Hide option labels"
+          }
+        ]
+      },
+      {
+        "type": "quantity_selector",
+        "name": "Quantity selector",
+        "limit": 1
+      },
+      {
+        "type": "buy_buttons",
+        "name": "Buy buttons",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "enable_payment_button",
+            "label": "Show dynamic checkout button",
+            "info": "Each customer will see their preferred payment method from those available on your store, such as PayPal or Apple Pay. [Learn more](https://help.shopify.com/manual/using-themes/change-the-layout/dynamic-checkout)",
+            "default": true
+          },
+          {
+            "type": "header",
+            "content": "Pickup Availability"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_pickup_availability",
+            "label": "Show pickup availability [Learn more](https://help.shopify.com/en/manual/sell-in-person/pos-classic/shopify-pos-from-admin/buy-online-pickup-in-store#show-pickup-availability-to-your-customers)",
+            "default": true
+          }
+        ]
+      },
+      {
+        "type": "vendor",
+        "name": "Vendor",
+        "limit": 1
+      },
+      {
+        "type": "description",
+        "name": "Description",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "enable_collapsible_tabs",
+            "label":  "Enable collapsible tabs",
+            "default": false,
+            "info": "Turn your H2 headings into collapsible tabs. Learn more about [this feature](https://support.switchthemes.co/article/207-product-page-accordions)"
+          },
+          {
+            "type": "checkbox",
+            "id": "truncate_description",
+            "label":  "Truncate description",
+            "default": false,
+            "info": "Suitable for products with variant images and large descriptions. Requires collapsible tabs above to be disabled."
+          }
+        ]
+      },
+      {
+        "type": "share_buttons",
+        "name": "Share buttons",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "select",
+            "id": "position",
+            "label": "Section area",
+            "options": [
+               { "value": "product_form", "label": "Product form"},
+               { "value": "product_description", "label": "Description"},
+               { "value": "product_extra", "label": "Extra information"}
+            ],
+            "default":   "product_extra"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "name": "Text",
+        "settings": [
+          {
+            "type": "select",
+            "id": "position",
+            "label": "Section area",
+            "options": [
+               { "value": "product_form", "label": "Product form"},
+               { "value": "product_description", "label": "Description"},
+               { "value": "product_extra", "label": "Extra information"}
+            ],
+            "default":   "product_extra"
+          },
+          {
+            "type": "text",
+            "id": "text",
+            "default": "Text block",
+            "label": "Text"
+          },
+          {
+            "type": "select",
+            "id": "font",
+            "label": "Font",
+            "options": [
+              {
+                "value": "heading",
+                "label": "Heading"
+              },
+              {
+                "value": "body",
+                "label": "Body"
+              }
+            ],
+            "default": "body"
+          },
+          {
+            "type": "select",
+            "id": "text_size",
+            "label": "Text size",
+            "options": [
+                { "value": "text-sm", "label": "S"},
+                { "value": "text-base", "label": "M"},
+                { "value": "text-base lg:text-lg", "label": "M / desktop L"},
+                { "value": "text-base lg:text-xl", "label": "M / desktop XL"},
+                { "value": "text-base lg:text-2xl", "label": "M / desktop 2XL"}
+            ],
+            "default":   "text-base"
+          },
+          {
+            "type": "select",
+            "id": "icon",
+            "label": "Icon",
+            "options": [
+              { "value": "none", "label": "None"},
+              { "value": "box", "label": "Box"},
+              { "value": "chat-bubble", "label": "Chat bubble"},
+              { "value": "check-mark", "label": "Check mark"},
+              { "value": "coat-hanger", "label": "Coat hanger"},
+              { "value": "dryer", "label": "Dryer"},
+              { "value": "eye", "label": "Eye"},
+              { "value": "globe", "label": "Globe"},
+              { "value": "heart", "label": "Heart"},
+              { "value": "iron", "label": "Iron"},
+              { "value": "leaf", "label": "Leaf"},
+              { "value": "leather", "label": "Leather"},
+              { "value": "like", "label": "Like"},
+              { "value": "lock", "label": "Lock"},
+              { "value": "map-pin", "label": "Map pin"},
+              { "value": "pants", "label": "Pants"},
+              { "value": "person", "label": "Person"},
+              { "value": "plane", "label": "Plane"},
+              { "value": "price-tag", "label": "Price tag"},
+              { "value": "question-mark", "label": "Question mark"},
+              { "value": "return", "label": "Return"},
+              { "value": "ruler", "label": "Ruler"},
+              { "value": "shirt", "label": "Shirt"},
+              { "value": "shoe", "label": "Shoe"},
+              { "value": "star", "label": "Star"},
+              { "value": "truck", "label": "Truck"},
+              { "value": "washing", "label": "Washing"}
+            ],
+            "default":   "none"
+          }
+        ]
+      },
+      {
+        "type": "richtext",
+        "name": "Rich text",
+        "settings": [
+          {
+            "type": "select",
+            "id": "position",
+            "label": "Section area",
+            "options": [
+               { "value": "product_form", "label": "Product form"},
+               { "value": "product_description", "label": "Description"},
+               { "value": "product_extra", "label": "Extra information"}
+            ],
+            "default":   "product_extra"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+          }
+        ]
+      },
+      {
+        "type": "collapsible_tab",
+        "name": "Collapsible tab",
+        "settings": [
+          {
+            "type": "select",
+            "id": "position",
+            "label": "Section area",
+            "options": [
+               { "value": "product_form", "label": "Product form"},
+               { "value": "product_description", "label": "Description"},
+               { "value": "product_extra", "label": "Extra information"}
+            ],
+            "default":   "product_extra"
+          },
+          {
+            "type": "text",
+            "id": "heading",
+            "default": "Collapsible tab",
+            "label": "Heading",
+            "info": "Include a heading that expands the content"
+          },
+          {
+            "type": "select",
+            "id": "heading_text_style",
+            "label": "Heading text style",
+            "options": [
+              {
+                "value": "heading",
+                "label": "Heading"
+              },
+              {
+                "value": "body",
+                "label": "Body"
+              }
+            ],
+            "default": "heading"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Tab content"
+          },
+          {
+            "type": "page",
+            "id": "page",
+            "label": "Tab content from page"
+          },
+          {
+            "type": "select",
+            "id": "icon",
+            "label": "Icon",
+            "options": [
+              { "value": "none", "label": "None"},
+              { "value": "box", "label": "Box"},
+              { "value": "chat-bubble", "label": "Chat bubble"},
+              { "value": "check-mark", "label": "Check mark"},
+              { "value": "coat-hanger", "label": "Coat hanger"},
+              { "value": "dryer", "label": "Dryer"},
+              { "value": "eye", "label": "Eye"},
+              { "value": "globe", "label": "Globe"},
+              { "value": "heart", "label": "Heart"},
+              { "value": "iron", "label": "Iron"},
+              { "value": "leaf", "label": "Leaf"},
+              { "value": "leather", "label": "Leather"},
+              { "value": "like", "label": "Like"},
+              { "value": "lock", "label": "Lock"},
+              { "value": "map-pin", "label": "Map pin"},
+              { "value": "pants", "label": "Pants"},
+              { "value": "person", "label": "Person"},
+              { "value": "plane", "label": "Plane"},
+              { "value": "price-tag", "label": "Price tag"},
+              { "value": "question-mark", "label": "Question mark"},
+              { "value": "return", "label": "Return"},
+              { "value": "ruler", "label": "Ruler"},
+              { "value": "shirt", "label": "Shirt"},
+              { "value": "shoe", "label": "Shoe"},
+              { "value": "star", "label": "Star"},
+              { "value": "truck", "label": "Truck"},
+              { "value": "washing", "label": "Washing"}
+            ],
+            "default":   "none"
+          }
+        ]
+      },
+      {
+        "type": "icon_list",
+        "name": "Icon list",
+        "settings": [
+          {
+            "type": "select",
+            "id": "position",
+            "label": "Section area",
+            "options": [
+               { "value": "product_form", "label": "Product form"},
+               { "value": "product_description", "label": "Description"},
+               { "value": "product_extra", "label": "Extra information"}
+            ],
+            "default":   "product_extra"
+          },
+          {
+            "type": "text",
+            "id": "heading",
+            "default": "Icon list",
+            "label": "Heading"
+          },
+          {
+            "type": "select",
+            "id": "text_color",
+            "label": "Text color",
+            "options": [
+              {
+                "value": "text",
+                "label": "Text"
+              },
+              {
+                "value": "secondary",
+                "label": "Secondary"
+              }
+            ],
+            "default": "secondary"
+          },
+          {
+            "type": "header",
+            "content": "Item 1"
+          },
+          {
+            "type": "text",
+            "id": "text_1",
+            "default": "List item",
+            "label": "Text"
+          },
+          {
+            "type": "select",
+            "id": "icon_1",
+            "label": "Icon",
+            "options": [
+              { "value": "box", "label": "Box"},
+              { "value": "chat-bubble", "label": "Chat bubble"},
+              { "value": "check-mark", "label": "Check mark"},
+              { "value": "coat-hanger", "label": "Coat hanger"},
+              { "value": "dryer", "label": "Dryer"},
+              { "value": "eye", "label": "Eye"},
+              { "value": "globe", "label": "Globe"},
+              { "value": "heart", "label": "Heart"},
+              { "value": "iron", "label": "Iron"},
+              { "value": "leaf", "label": "Leaf"},
+              { "value": "leather", "label": "Leather"},
+              { "value": "like", "label": "Like"},
+              { "value": "lock", "label": "Lock"},
+              { "value": "map-pin", "label": "Map pin"},
+              { "value": "pants", "label": "Pants"},
+              { "value": "person", "label": "Person"},
+              { "value": "plane", "label": "Plane"},
+              { "value": "price-tag", "label": "Price tag"},
+              { "value": "question-mark", "label": "Question mark"},
+              { "value": "return", "label": "Return"},
+              { "value": "ruler", "label": "Ruler"},
+              { "value": "shirt", "label": "Shirt"},
+              { "value": "shoe", "label": "Shoe"},
+              { "value": "star", "label": "Star"},
+              { "value": "truck", "label": "Truck"},
+              { "value": "washing", "label": "Washing"}
+            ],
+            "default":   "box"
+          },
+          {
+            "type": "header",
+            "content": "Item 2"
+          },
+          {
+            "type": "text",
+            "id": "text_2",
+            "default": "List item",
+            "label": "Text"
+          },
+          {
+            "type": "select",
+            "id": "icon_2",
+            "label": "Icon",
+            "options": [
+              { "value": "box", "label": "Box"},
+              { "value": "chat-bubble", "label": "Chat bubble"},
+              { "value": "check-mark", "label": "Check mark"},
+              { "value": "coat-hanger", "label": "Coat hanger"},
+              { "value": "dryer", "label": "Dryer"},
+              { "value": "eye", "label": "Eye"},
+              { "value": "globe", "label": "Globe"},
+              { "value": "heart", "label": "Heart"},
+              { "value": "iron", "label": "Iron"},
+              { "value": "leaf", "label": "Leaf"},
+              { "value": "leather", "label": "Leather"},
+              { "value": "like", "label": "Like"},
+              { "value": "lock", "label": "Lock"},
+              { "value": "map-pin", "label": "Map pin"},
+              { "value": "pants", "label": "Pants"},
+              { "value": "person", "label": "Person"},
+              { "value": "plane", "label": "Plane"},
+              { "value": "price-tag", "label": "Price tag"},
+              { "value": "question-mark", "label": "Question mark"},
+              { "value": "return", "label": "Return"},
+              { "value": "ruler", "label": "Ruler"},
+              { "value": "shirt", "label": "Shirt"},
+              { "value": "shoe", "label": "Shoe"},
+              { "value": "star", "label": "Star"},
+              { "value": "truck", "label": "Truck"},
+              { "value": "washing", "label": "Washing"}
+            ],
+            "default":   "ruler"
+          },
+          {
+            "type": "header",
+            "content": "Item 3"
+          },
+          {
+            "type": "text",
+            "id": "text_3",
+            "default": "List item",
+            "label": "Text"
+          },
+          {
+            "type": "select",
+            "id": "icon_3",
+            "label": "Icon",
+            "options": [
+              { "value": "box", "label": "Box"},
+              { "value": "chat-bubble", "label": "Chat bubble"},
+              { "value": "check-mark", "label": "Check mark"},
+              { "value": "coat-hanger", "label": "Coat hanger"},
+              { "value": "dryer", "label": "Dryer"},
+              { "value": "eye", "label": "Eye"},
+              { "value": "globe", "label": "Globe"},
+              { "value": "heart", "label": "Heart"},
+              { "value": "iron", "label": "Iron"},
+              { "value": "leaf", "label": "Leaf"},
+              { "value": "leather", "label": "Leather"},
+              { "value": "like", "label": "Like"},
+              { "value": "lock", "label": "Lock"},
+              { "value": "map-pin", "label": "Map pin"},
+              { "value": "pants", "label": "Pants"},
+              { "value": "person", "label": "Person"},
+              { "value": "plane", "label": "Plane"},
+              { "value": "price-tag", "label": "Price tag"},
+              { "value": "question-mark", "label": "Question mark"},
+              { "value": "return", "label": "Return"},
+              { "value": "ruler", "label": "Ruler"},
+              { "value": "shirt", "label": "Shirt"},
+              { "value": "shoe", "label": "Shoe"},
+              { "value": "star", "label": "Star"},
+              { "value": "truck", "label": "Truck"},
+              { "value": "washing", "label": "Washing"}
+            ],
+            "default":   "globe"
+          },
+          {
+            "type": "header",
+            "content": "Item 4"
+          },
+          {
+            "type": "text",
+            "id": "text_4",
+            "default": "List item",
+            "label": "Text"
+          },
+          {
+            "type": "select",
+            "id": "icon_4",
+            "label": "Icon",
+            "options": [
+              { "value": "box", "label": "Box"},
+              { "value": "chat-bubble", "label": "Chat bubble"},
+              { "value": "check-mark", "label": "Check mark"},
+              { "value": "coat-hanger", "label": "Coat hanger"},
+              { "value": "dryer", "label": "Dryer"},
+              { "value": "eye", "label": "Eye"},
+              { "value": "globe", "label": "Globe"},
+              { "value": "heart", "label": "Heart"},
+              { "value": "iron", "label": "Iron"},
+              { "value": "leaf", "label": "Leaf"},
+              { "value": "leather", "label": "Leather"},
+              { "value": "like", "label": "Like"},
+              { "value": "lock", "label": "Lock"},
+              { "value": "map-pin", "label": "Map pin"},
+              { "value": "pants", "label": "Pants"},
+              { "value": "person", "label": "Person"},
+              { "value": "plane", "label": "Plane"},
+              { "value": "price-tag", "label": "Price tag"},
+              { "value": "question-mark", "label": "Question mark"},
+              { "value": "return", "label": "Return"},
+              { "value": "ruler", "label": "Ruler"},
+              { "value": "shirt", "label": "Shirt"},
+              { "value": "shoe", "label": "Shoe"},
+              { "value": "star", "label": "Star"},
+              { "value": "truck", "label": "Truck"},
+              { "value": "washing", "label": "Washing"}
+            ],
+            "default":   "washing"
+          },
+          {
+            "type": "header",
+            "content": "Item 5"
+          },
+          {
+            "type": "text",
+            "id": "text_5",
+            "default": "List item",
+            "label": "Text"
+          },
+          {
+            "type": "select",
+            "id": "icon_5",
+            "label": "Icon",
+            "options": [
+              { "value": "box", "label": "Box"},
+              { "value": "chat-bubble", "label": "Chat bubble"},
+              { "value": "check-mark", "label": "Check mark"},
+              { "value": "coat-hanger", "label": "Coat hanger"},
+              { "value": "dryer", "label": "Dryer"},
+              { "value": "eye", "label": "Eye"},
+              { "value": "globe", "label": "Globe"},
+              { "value": "heart", "label": "Heart"},
+              { "value": "iron", "label": "Iron"},
+              { "value": "leaf", "label": "Leaf"},
+              { "value": "leather", "label": "Leather"},
+              { "value": "like", "label": "Like"},
+              { "value": "lock", "label": "Lock"},
+              { "value": "map-pin", "label": "Map pin"},
+              { "value": "pants", "label": "Pants"},
+              { "value": "person", "label": "Person"},
+              { "value": "plane", "label": "Plane"},
+              { "value": "price-tag", "label": "Price tag"},
+              { "value": "question-mark", "label": "Question mark"},
+              { "value": "return", "label": "Return"},
+              { "value": "ruler", "label": "Ruler"},
+              { "value": "shirt", "label": "Shirt"},
+              { "value": "shoe", "label": "Shoe"},
+              { "value": "star", "label": "Star"},
+              { "value": "truck", "label": "Truck"},
+              { "value": "washing", "label": "Washing"}
+            ],
+            "default":   "truck"
+          }
+        ]
+      },
+      {
+        "type": "popup",
+        "name": "Pop-up",
+        "settings": [
+          {
+            "type": "select",
+            "id": "position",
+            "label": "Section area",
+            "options": [
+               { "value": "product_form", "label": "Product form"},
+               { "value": "product_description", "label": "Description"},
+               { "value": "product_extra", "label": "Extra information"}
+            ],
+            "default":   "product_extra"
+          },
+          {
+            "type": "select",
+            "id": "icon",
+            "label": "Icon",
+            "options": [
+              { "value": "none", "label": "None"},
+              { "value": "box", "label": "Box"},
+              { "value": "chat-bubble", "label": "Chat bubble"},
+              { "value": "check-mark", "label": "Check mark"},
+              { "value": "coat-hanger", "label": "Coat hanger"},
+              { "value": "dryer", "label": "Dryer"},
+              { "value": "eye", "label": "Eye"},
+              { "value": "globe", "label": "Globe"},
+              { "value": "heart", "label": "Heart"},
+              { "value": "iron", "label": "Iron"},
+              { "value": "leaf", "label": "Leaf"},
+              { "value": "leather", "label": "Leather"},
+              { "value": "like", "label": "Like"},
+              { "value": "lock", "label": "Lock"},
+              { "value": "map-pin", "label": "Map pin"},
+              { "value": "pants", "label": "Pants"},
+              { "value": "person", "label": "Person"},
+              { "value": "plane", "label": "Plane"},
+              { "value": "price-tag", "label": "Price tag"},
+              { "value": "question-mark", "label": "Question mark"},
+              { "value": "return", "label": "Return"},
+              { "value": "ruler", "label": "Ruler"},
+              { "value": "shirt", "label": "Shirt"},
+              { "value": "shoe", "label": "Shoe"},
+              { "value": "star", "label": "Star"},
+              { "value": "truck", "label": "Truck"},
+              { "value": "washing", "label": "Washing"}
+            ],
+            "default":   "none"
+          },
+          {
+            "type": "text",
+            "id": "text",
+            "default": "Pop-up link text",
+            "label": "Link label"
+          },
+          {
+            "id": "page",
+            "type": "page",
+            "label": "Page"
+          },
+          {
+            "type": "select",
+            "id": "text_color",
+            "label": "Text color",
+            "options": [
+              {
+                "value": "text",
+                "label": "Text"
+              },
+              {
+                "value": "secondary",
+                "label": "Secondary"
+              }
+            ],
+            "default": "secondary"
+          }
+        ]
+      },
+      {
+        "type": "@app"
+      }
+    ]
+  }
+{% endschema %}

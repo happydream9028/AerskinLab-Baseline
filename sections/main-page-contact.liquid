@@ -1,0 +1,176 @@
+{% comment %}theme-check-disable UndefinedObject{% endcomment %}
+{%- assign section_color = section.settings.color_scheme -%}
+<div class="relative border-b-grid border-grid-color section-x-padding py-theme {%- if section.settings.content_position == 'lg:justify-center' -%}text-center{%- endif -%}">
+  <h1 class="font-heading {{ settings.template_heading_size }} break-words">{{ page.title }}</h1>
+</div>
+<section class="page grid grid-cols-1 lg:grid-cols-2 pt-theme-double">
+  
+  <div class="lg:p-16 pt-8 pb-16 px-8 text-{{ section_color }}-text bg-{{ section_color }}-background lg:flex {{ section.settings.content_position }}">
+    <div class="w-full">
+      <div class="flex flex-wrap">
+        {% for block in section.blocks %}
+          <div class="lg:w-1/2 mb-16">
+            {{ block.settings.content }}
+          </div>
+        {% endfor %}
+      </div>
+      {% if section.settings.cta_link %}
+        {% if section.settings.button_style == 'solid' %}
+          <a href="{{ section.settings.cta_link }}" class="px-5 w-50 inline-flex justify-between items-center text-base py-2 rounded-full {% render 'button-color', section_color: text_color %} ">
+        {% else %}
+          <style>
+            #btn-{{ section.id }} line, #btn-{{ section.id }} path{stroke: {{ section.settings.color_btn_text }}};
+          </style>
+          <a id="btn-{{ section.id }}" href="{{ section.settings.cta_link }}" class="px-5 w-50 inline-flex justify-between items-center text-base py-2 rounded-full border-primary-text {% render 'button-color', section_color: text_color %}"
+          style="color: {{ section.settings.color_btn_text }}; background: linear-gradient(45deg, {{ section.settings.gradient_1 }} 0%, {{ section.settings.gradient_2 }} 50%, {{ section.settings.gradient_3 }} 100%);">
+        {% endif %}
+            <span class="{% if settings.button_uppercase %}uppercase{% endif %}">{{ section.settings.cta_text }}</span>
+            {% if settings.buttons_show_arrow %}<span class="arrow-right-long w-20px inline-flex color-black">{% render 'icon-arrow-right-long' %}</span>{% endif %}
+          </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="lg:px-4 lg:p-16 px-8 text-{{ section_color }}-text bg-{{ section_color }}-background">
+    {%- assign formId = 'ContactForm' -%}
+    {% form 'contact', id: formId %}
+      {% render 'form-status', form: form, form_id: formId, section_color: section_color %}
+
+      <label class="block uppercase" for="ContactFormName">{{ 'contact.form.name' | t }}</label>
+      <input type="text"
+        class="w-full py-1 bg-transparent border-b-text border-current"
+        name="contact[name]"
+        id="ContactFormName"
+        value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}"
+        required
+        aria-required="true">
+      <label class="mt-4 block uppercase" for="ContactFormEmail">{{ 'contact.form.email' | t }}</label>
+      <input type="email"
+        name="contact[email]"
+        id="ContactFormEmail"
+        class="w-full py-1 bg-transparent border-b-text border-current {% if form.errors contains 'email' %}border-theme-color{% endif %}"
+        value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+        spellcheck="false"
+        autocomplete="off"
+        autocapitalize="off"
+        required
+        aria-required="true">
+
+      <label class="mt-4 block uppercase" for="ContactFormPhone">{{ 'contact.form.phone' | t }}</label>
+      <input type="tel"
+        name="contact[phone]"
+        id="ContactFormPhone"
+        class="w-full py-1 bg-transparent border-b-text border-current"
+        value="{% if form[phone] %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+        pattern="[0-9\-]*">
+
+      <label class="mt-4 block uppercase" for="ContactFormMessage">{{ 'contact.form.message' | t }}</label>
+      <textarea rows="10"
+        name="contact[body]"
+        id="ContactFormMessage"
+        required
+        aria-required="true"
+        class="block mt-1 p-2 w-full border-text border-current text-sm bg-transparent">
+        {%- if form.body -%}
+          {{- form.body -}}
+        {%- endif -%}
+      </textarea>
+
+      <div class="relative mt-4 w-50">
+        <input type="submit" class="text-left w-full uppercase cursor-pointer px-5 py-2 rounded-full {% render 'button-color', section_color: section_color %}" value="{{ 'contact.form.submit' | t }}">
+        <div class="absolute right-4 bottom-2 cursor-pointer">
+          <span class="arrow-right-long w-20px inline-flex color-black">{% render 'icon-arrow-right-long' %}</span>
+        </div>
+      </div>
+    {% endform %}
+  </div>
+</section>
+
+{%- if section.settings.override_header_footer_color_scheme -%}
+  {%- render 'header-footer-color-scheme-override', section_color: section_color -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Pages - contact",
+  "settings": [
+    {
+      "type":      "header",
+      "content":   "Color"
+    },
+    {
+       "type": "select",
+       "id": "color_scheme",
+       "label": "Color scheme",
+       "options": [
+          { "value": "primary", "label": "Primary"},
+          { "value": "secondary", "label": "Secondary"},
+          { "value": "tertiary", "label": "Tertiary"}
+       ]
+    },
+    {
+      "type": "checkbox",
+      "id": "override_header_footer_color_scheme",
+      "label": "Use this color scheme for header and footer",
+      "info": "This will only apply to the contact page template",
+      "default": false
+    },
+    {
+      "type":      "header",
+      "content":   "CTA"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button Style",
+      "options": [
+         { "value": "solid", "label": "Solid"},
+         { "value": "gradient", "label": "Gradient"}
+      ]
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Text"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Link"
+    },
+    {
+      "type": "color",
+      "id": "color_btn_text",
+      "label": "Button text color"
+    },
+    {
+      "type": "color",
+      "id": "gradient_1",
+      "label": "Gradient color 1"
+    },
+    {
+      "type": "color",
+      "id": "gradient_2",
+      "label": "Gradient color 2"
+    },
+    {
+      "type": "color",
+      "id": "gradient_3",
+      "label": "Gradient color 3"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "info",
+      "name": "Info",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

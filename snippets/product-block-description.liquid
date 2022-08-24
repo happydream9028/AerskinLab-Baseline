@@ -1,0 +1,54 @@
+{%- if enable_collapsible_tabs or truncate_description -%}
+  {%- if enable_collapsible_tabs -%}
+    <div class="js-enabled accordian mt-8 {{ block.shopify_attributes }}">
+      {%- liquid
+        assign description_parts = product.description | replace: '<h2 data-mce-fragment="1">', '<h2>' | split: '<h2>'
+        assign counter = 1
+      -%}
+      {% for part in description_parts %}
+          {% unless part == blank %}
+          {% if part contains '</h2>' %}
+            {% assign part_parts = part | split: '</h2>' %}
+            {% assign heading_handle = part_parts.first | handle %}
+            <div class="{% if counter == 1 %}mt-8{% endif %} -mx-2 lg:-mx-4 section-x-padding py-2 border-t-grid border-theme-color {% if forloop.last %}border-b-grid{% endif %}" x-data="{ open: false }" x-cloak>
+              <h2 class="{{ settings.base_heading_size }}" >
+                <button @click="open = !open" class="font-heading cursor-pointer flex justify-between items-center w-full" :aria-expanded="open ? true : 'false'">
+                  {{ part_parts.first }}
+                  <span class="inline-block w-5 h-5" x-show="!open">{%- render 'icon-plus' %}</span>
+                  <span class="inline-block w-5 h-5" x-show="open">{%- render 'icon-minus' %}</span></button>
+              </h2>
+              <div class="py-4 rte" x-show="open" id="{{ heading_handle }}">{{ part_parts.last }}</div>
+            </div>
+            {% assign counter = counter | plus: 1 %}
+          {% else %}
+          <div class="rte">
+          {{ part }}
+          </div>
+          {% endif %}
+        {% endunless %}
+      {% endfor %}
+    </div>
+  {%- else -%}
+    <div class="js-enabled  mt-8 {{ block.shopify_attributes }}" x-data="{ open: false }" x-cloak>
+      <div class="rte text-sm" x-show="!open">
+      {{ product.description | strip_newlines | truncatewords: 25 | newline_to_br }}
+      </div>
+      <button @click="open = !open" x-show="!open" :aria-expanded="open ? true : 'false'" class="mt-4 inline-flex justify-start items-center hover:text-{{ section_color }}-accent text-base items-center justify-center {% if settings.links_show_underline %}border-b-text border-{{ section_color }}-text hover:border-{{ section_color }}-accent pb-1{% endif %} cursor-pointer">
+        <span class="{% if settings.links_uppercase %}uppercase{% endif %}">{{ 'products.product.read_more' | t }}</span>
+        <span class="inline-block w-5 h-5 ml-2">{%- render 'icon-plus' %}</span>
+      </button>
+      <div class="rte text-sm" x-show="open">
+        {{ product.description }}
+      </div>  
+    </div>
+  {%- endif -%}
+  <noscript>
+  <div class="rte mt-8">
+    {{ product.description }}
+  </div>
+  </noscript>
+{%- else -%}
+<div class="rte mt-8 text-sm {{ block.shopify_attributes }}">
+  {{ product.description }}
+</div>
+{%- endif -%}

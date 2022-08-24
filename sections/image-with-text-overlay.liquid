@@ -1,0 +1,257 @@
+{%- liquid
+  assign heading_size_class = section.settings.heading_size 
+  assign height = section.settings.height 
+  assign image_focal_point = section.settings.image_focal_point
+  assign content_position = section.settings.content_position
+  assign content_width_desktop = section.settings.content_width_desktop 
+  assign text_color = section.settings.text_color 
+  assign background = section.settings.background_color 
+  assign image = section.settings.image 
+  assign image_mobile = section.settings.image_mobile 
+  assign indent_image = section.settings.indent_image 
+  assign title = section.settings.title 
+  assign text = section.settings.text 
+  assign cta_link = section.settings.cta_link 
+  assign cta_text  = section.settings.cta_text 
+  assign cta_style  = section.settings.cta_style
+  assign btn_inline = section.settings.btn_inline
+  assign cta_rounded = section.settings.cta_rounded
+  assign cta_gradient = section.settings.cta_gradient
+  assign arrow_position = section.settings.arrow_position
+-%}
+<section class="image-with-text-overlay">
+  {%- render 'image-with-text-overlay',
+    height: height,
+    image_focal_point: image_focal_point,
+    image: image,
+    image_mobile: image_mobile,
+    indent_image: indent_image,
+    content_position: content_position,
+    heading_size_class: heading_size_class,
+    text_color: text_color,
+    background: background,
+    content_width_desktop: content_width_desktop,
+    title: title,
+    text: text,
+    btn_inline: btn_inline,
+    cta_link: cta_link,
+    cta_text: cta_text,
+    cta_style: cta_style,
+    cta_rounded: cta_rounded,
+    cta_gradient: cta_gradient,
+    arrow_position: arrow_position
+  -%}
+</section>
+
+{% schema %}
+{
+  "name": "Image with text overlay",
+  "class": "has-full-screen-setting",
+  "settings": [
+    {
+      "id": "image",
+      "type": "image_picker",
+      "label": "Image",
+      "info": "1800 x 800px .jpg recommended"
+    },
+    {
+      "id": "image_mobile",
+      "type": "image_picker",
+      "label": "Image - mobile",
+      "info": "800 x 1200px .jpg recommended"
+    },
+    {
+      "type": "checkbox",
+      "id": "indent_image",
+      "label": "Indent image",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Height",
+      "options": [
+        { "value": "natural", "label": "Natural"},
+        { "value": "h-1/3", "label": "One third"},
+        { "value": "h-1/2", "label": "One half"},
+        { "value": "h-3/4", "label": "Three quarters"},
+        { "value": "full_screen", "label": "Full screen"}
+      ],
+      "default":   "natural"
+    },
+    {
+      "type": "select",
+      "id": "image_focal_point",
+      "label": "Image focal point",
+      "options": [
+          { "value": "object-left-top", "label": "Top left"},
+          { "value": "object-top", "label": "Top center"},
+          { "value": "object-right-top", "label": "Top right"},
+          { "value": "object-left", "label": "Left"},
+          { "value": "object-center", "label": "Center"},
+          { "value": "object-right", "label": "Right"},
+          { "value": "object-left-bottom", "label": "Bottom left"},
+          { "value": "object-bottom", "label": "Bottom center"},
+          { "value": "object-right-bottom", "label": "Bottom right"}
+      ],
+      "default":   "object-center",
+      "info": "Only applies when image is cropped. Keeps image subject in view."
+    },
+    {
+      "type":      "header",
+      "content":   "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Image with text overlay"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "text-sm", "label": "S"},
+        { "value": "text-base", "label": "M"},
+        { "value": "text-lg", "label": "L"},
+        { "value": "text-xl", "label": "XL"},
+        { "value": "text-2xl", "label": "2XL"},
+        { "value": "text-2xl lg:text-3xl", "label": "2XL / desktop 3XL"},
+        { "value": "text-2xl lg:text-4xl", "label": "2XL / desktop 4XL"},
+        { "value": "text-2xl lg:text-5xl", "label": "2XL / desktop 5XL" },
+        { "value": "text-2xl lg:text-6xl", "label": "2XL / desktop 6XL" },
+        { "value": "text-2xl lg:text-7xl", "label": "2XL / desktop 7XL" }
+      ],
+      "default":   "text-2xl lg:text-5xl"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content position",
+      "options": [
+          { "value": "justify-start items-start text-left", "label": "Top left"},
+          { "value": "justify-center items-start text-center", "label": "Top center"},
+          { "value": "justify-end items-start text-right", "label": "Top right"},
+          { "value": "justify-start items-center text-left", "label": "Left"},
+          { "value": "justify-center items-center text-center", "label": "Center"},
+          { "value": "justify-end items-center text-right", "label": "Right"},
+          { "value": "justify-start items-end text-left", "label": "Bottom left"},
+          { "value": "justify-center items-end text-center", "label": "Bottom center"},
+          { "value": "justify-end items-end text-right", "label": "Bottom right"}
+      ],
+      "default":   "justify-center items-center text-center"
+    },
+    {
+      "type": "select",
+      "id": "content_width_desktop",
+      "label": "Content width on desktop",
+      "default": "lg:w-2/3",
+      "options": [
+        {
+          "value": "lg:w-1/3",
+          "label": "One third"
+        },
+        {
+          "value": "lg:w-1/2",
+          "label": "One half"
+        },
+        {
+          "value": "lg:w-2/3",
+          "label": "Two thirds"
+        },
+        {
+          "value": "lg:w-full",
+          "label": "Full width"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text color",
+      "options": [
+          { "value": "primary", "label": "Primary"},
+          { "value": "secondary", "label": "Secondary"},
+          { "value": "tertiary", "label": "Tertiary"},
+          { "value": "white", "label": "White"},
+          { "value": "black", "label": "Black"}
+      ],
+      "default":   "primary"
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Background color",
+      "options": [
+        { "value": "primary", "label": "Primary"},
+        { "value": "secondary", "label": "Secondary"},
+        { "value": "tertiary", "label": "Tertiary"}
+      ],
+      "default":   "primary",
+      "info": "Background is visible when image is indented"
+    },
+    {
+      "type":      "header",
+      "content":   "Call to action"
+    },
+    {
+      "type": "checkbox",
+      "id": "btn_inline",
+      "label": "Inline with title"
+    },
+    {
+      "type": "radio",
+      "id": "arrow_position",
+      "label": "Arrow position",
+      "options": [
+        { "value": "left", "label": "Left"},
+        { "value": "right", "label": "Right"}
+      ],
+      "default": "right"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Text"
+    },
+    {
+      "type": "select",
+      "id": "cta_style",
+      "label": "Style",
+      "options": [
+        { "value": "link", "label": "Link"},
+        { "value": "button", "label": "Button"}
+      ],
+      "default":   "link"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_rounded",
+      "label": "Round button",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_gradient",
+      "label": "Button gradient",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text overlay"
+    }
+  ]
+}
+{% endschema %}

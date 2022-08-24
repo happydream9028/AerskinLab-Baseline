@@ -1,0 +1,239 @@
+{%- comment -%}
+  This is a required section for the Shopify Theme Store.
+  It is available when you add "Collection list" section in the Theme Editor.
+
+  Theme Store required settings
+  - Heading: title of the collection list section
+  - Collection
+{%- endcomment -%}
+{%- liquid
+  assign section_color = section.settings.color_scheme
+  assign ratio = section.settings.crop | plus: 0
+  assign counter = 0
+  assign grid_cols = 12
+  assign divisible_by_five =  section.blocks.size | modulo: 5
+  assign divisible_by_four =  section.blocks.size | modulo: 4
+  assign divisible_by_three =  section.blocks.size | modulo: 3
+
+  if divisible_by_five == 0
+    assign grid_cols = 10
+    assign col_span = 'lg:col-span-2'
+  elsif divisible_by_four == 0
+    assign col_span = 'lg:col-span-3'
+  elsif divisible_by_three == 0
+    assign col_span = 'lg:col-span-4'
+  else
+    assign col_span = 'lg:col-span-6'
+  endif
+
+  assign desktop_grid_class = 'lg:grid-cols-' | append: grid_cols
+-%}
+
+<section class="featured-collection gap-gutter border-t-grid border-grid-color">
+
+  {% if section.settings.title != '' %}
+    {%- render 'section-title',
+      title: section.settings.title,
+      section_color: section_color
+    -%}
+  {% endif %}
+
+  {%- if section.blocks.size > 0 -%}
+    <ul class="grid grid-cols-1 {{ desktop_grid_class }}  gap-gutter bg-border">
+    {% for block in section.blocks %}
+      {%- liquid
+        assign counter = counter | plus: 1
+        assign block_color = block.settings.color_scheme
+        assign text_size_class = block.settings.text_size
+        assign content_position = block.settings.content_position
+        assign text_color = block.settings.text_color
+        assign indent_image = block.settings.indent_image
+        assign collection = collections[block.settings.collection]
+      -%}
+
+      <li class="{{ col_span }} relative bg-{{ block_color }}-background" {{ block.shopify_attributes }}>
+        <a class="group h-full block relative hover:text-{{ block.settings.text_color }}-accent" href="{{ collection.url }}">
+          <div class="flex h-full justify-center items-center {% unless settings.fill_image_to_border_edge %}p-2 lg:p-4{% endunless %} {% if indent_image %}p-8 lg:p-16{% endif %}">
+            <div class="w-full relative">
+              {% if collection.image != blank or collection.products.first != blank %}
+                {%- assign image = collection.image | default: collection.products.first.featured_image -%}
+                  {% render 'image-crop' with
+                    image: image,
+                    ratio: ratio,
+                    crop: section.settings.crop
+                  %}
+              {%- else -%}
+                {% render 'placeholder-crop' with
+                  ratio: ratio,
+                  crop: section.settings.crop
+                %}
+              {%- endif -%}
+            </div>
+          </div>
+          {%- assign text_size_class = section.settings.text_size -%}
+          <div class="absolute top-0 left-0 right-0 bottom-0 z-10 py-4 section-x-padding flex {{ content_position }}">
+            <div class="text-{{ text_color }}-text {% unless settings.fill_image_to_border_edge %}p-2 lg:p-4{% endunless %} break-words w-full">
+              <div class="{{ text_size_class }} font-heading">
+                {% if collection.title == blank %}
+                  {{ 'homepage.onboarding.collection_title' | t }}
+                {% else %}
+                  {{ collection.title }}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  {%- else -%}
+    {%- render 'no-blocks' -%}
+  {%- endif -%}
+</section>
+
+
+{% schema %}
+  {
+    "name": "Collection list",
+    "max_blocks": 12,
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading"
+      },
+      {
+        "type": "select",
+        "id": "text_size",
+        "label": "Text size",
+        "options": [
+          { "value": "text-sm", "label": "S"},
+          { "value": "text-base", "label": "M"},
+          { "value": "text-lg", "label": "L"},
+          { "value": "text-xl", "label": "XL"},
+          { "value": "text-2xl", "label": "2XL"},
+          { "value": "text-2xl lg:text-3xl", "label": "2XL / desktop 3XL"},
+          { "value": "text-2xl lg:text-4xl", "label": "2XL / desktop 4XL"},
+          { "value": "text-2xl lg:text-5xl", "label": "2XL / desktop 5XL"}
+        ],
+        "default":   "text-2xl"
+      },
+      {
+        "type": "select",
+        "id": "crop",
+        "label": "Crop images",
+        "options": [
+          {
+            "value": "0",
+            "label": "No crop"
+          },
+          {
+            "value": "1.3",
+            "label": "Landscape"
+          },
+          {
+            "value": "1",
+            "label": "Square"
+          },
+          {
+            "value": "0.8",
+            "label": "Portrait"
+          }
+        ],
+        "default": "1"
+      },
+      {
+        "type": "header",
+        "content": "Color"
+      },
+      {
+        "type": "select",
+        "id": "color_scheme",
+        "label": "Heading color scheme",
+        "options": [
+            { "value": "primary", "label": "Primary"},
+            { "value": "secondary", "label": "Secondary"},
+            { "value": "tertiary", "label": "Tertiary"}
+        ],
+        "default":   "primary"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "label": "Collection",
+            "id": "collection",
+            "type": "collection"
+          },
+          {
+            "type": "checkbox",
+            "id": "indent_image",
+            "label": "Indent image",
+            "default": false
+          },
+          {
+            "type": "select",
+            "id": "color_scheme",
+            "label": "Background color",
+            "options": [
+                { "value": "primary", "label": "Primary background"},
+                { "value": "secondary", "label": "Secondary background"},
+                { "value": "tertiary", "label": "Tertiary background"}
+            ],
+            "default":   "primary"
+          },
+          {
+            "type":      "header",
+            "content":   "Content"
+          },
+          {
+            "type": "select",
+            "id": "content_position",
+            "label": "Content position",
+            "options": [
+                { "value": "justify-start items-start text-left", "label": "Top left"},
+                { "value": "justify-center items-start text-center", "label": "Top center"},
+                { "value": "justify-end items-start text-right", "label": "Top right"},
+                { "value": "justify-start items-center text-left", "label": "Left"},
+                { "value": "justify-center items-center text-center", "label": "Center"},
+                { "value": "justify-end items-center text-right", "label": "Right"},
+                { "value": "justify-start items-end text-left", "label": "Bottom left"},
+                { "value": "justify-center items-end text-center", "label": "Bottom center"},
+                { "value": "justify-end items-end text-right", "label": "Bottom right"}
+            ],
+            "default":   "justify-center items-center text-center"
+          },
+          {
+            "type": "select",
+            "id": "text_color",
+            "label": "Text color",
+            "options": [
+                { "value": "primary", "label": "Primary text"},
+                { "value": "secondary", "label": "Secondary text"},
+                { "value": "tertiary", "label": "Tertiary text"},
+                { "value": "white", "label": "White"},
+                { "value": "black", "label": "Black"}
+            ],
+            "default":   "white"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Collection list",
+        "blocks": [
+          {
+            "type": "collection"
+          },
+          {
+            "type": "collection"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,66 @@
+{%- liquid
+  assign section_color = section.settings.color_scheme
+  assign menu = section.settings.menu
+  assign text_align = section.settings.text_alignment
+-%}
+
+<section class="featured-navigation bg-{{ section_color }}-background text-{{ section_color }}-text  border-t-grid border-grid-color relative" x-data="{ current_link: '' }">
+  <div class="bg-gradient-to-r from-{{ section_color }}-background-0 via-{{ section_color }}-background to-{{ section_color }}-background w-8 absolute top-0 right-0 bottom-0 lg:hidden pointer-events-none"></div>
+  <div class="section-x-padding py-theme-half overflow-x-auto">
+    <nav role="navigation">
+      <ul class="flex lg:flex-wrap lg:{{ text_align }} whitespace-nowrap -mx-4">
+        {%- for link in linklists[menu].links -%}
+          <li class="inline-block px-4 lg:px-8">
+            <a {% if link.active %}aria-current="page"{% endif %} class="block py-theme-half hover:text-{{ section_color }}-accent" href="{{ link.url }}">{{ link.title }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Single level navigation",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "menu",
+        "label": "Menu",
+        "default": "main-menu",
+        "info": "This menu won't show dropdown items"
+      },
+      {
+        "type": "select",
+        "id": "text_alignment",
+        "label": "Text alignment",
+        "options": [
+          { "value": "justify-start", "label": "Left"},
+          { "value": "justify-center", "label": "Center"},
+          { "value": "justify-end", "label": "Right"}
+        ],
+        "default":   "justify-center"
+      },
+      {
+        "type":      "header",
+        "content":   "Color"
+      },
+      {
+        "type": "select",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "options": [
+            { "value": "primary", "label": "Primary"},
+            { "value": "secondary", "label": "Secondary"},
+            { "value": "tertiary", "label": "Tertiary"}
+        ],
+        "default":   "primary"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Single level navigation"
+      }
+    ]
+  }
+{% endschema %}

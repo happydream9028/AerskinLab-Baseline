@@ -1,0 +1,62 @@
+{%- assign section_color = 'primary' -%}
+<section id="main-cart-footer"  data-id="{{ section.id }}" class="{% if cart == empty %}hidden{% endif %}">
+  <div class="md:grid md:grid-cols-12 section-x-padding pb-theme">
+    {% if settings.cart_notes_enable %}
+      <div class="mt-4 md:col-span-5">
+        <label class="block" for="CartSpecialInstructions">{{ 'cart.general.note' | t }}</label>
+        <textarea class="block mt-1 p-2 w-full border-text border-current text-sm bg-transparent" name="note" id="CartSpecialInstructions" form="cart">{{ cart.note }}</textarea>
+      </div>
+    {% endif %}
+    <div class="mt-4 md:col-span-5 md:col-start-8 lg:col-span-4 lg:col-start-9 text-center">
+      <dl class="grid grid-cols-2 text-right js-contents">
+        {%- for discount_application in cart.cart_level_discount_applications -%}
+          <dt class="text-{{ section_color }}-accent">
+            <span class="visually-hidden">{{ 'customer.order.discount' | t }}:</span><span>{{- discount_application.title -}}</span>
+          </dt>
+          <dd class="text-{{ section_color }}-accent">
+            -{{ discount_application.total_allocated_amount | money }}
+          </dd>
+        {%- endfor -%}
+        <dt class="">{{ 'cart.general.subtotal' | t }}</dt>
+        <dd class="">{{ cart.total_price | money }}</dd>
+      </dl>
+
+      {%- capture taxes_shipping_checkout -%}
+        {%- if shop.taxes_included and shop.shipping_policy.body != blank -%}
+          {{ 'cart.general.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}
+        {%- elsif shop.taxes_included -%}
+          {{ 'cart.general.taxes_included_but_shipping_at_checkout' | t }}
+        {%- elsif shop.shipping_policy.body != blank -%}
+          {{ 'cart.general.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url }}
+        {%- else -%}
+          {{ 'cart.general.taxes_and_shipping_at_checkout' | t }}
+        {%- endif -%}
+      {%- endcapture -%}
+
+      <p class="mt-4 accent-links-{{ section_color }} text-right">
+        {{ taxes_shipping_checkout }}
+      </p>
+
+      <div class="mt-4 lg:flex justify-between items-center w-full">
+        <input class="no-js lg:mr-2 cursor-pointer p-2 w-full {% render 'button-style' %} {% render 'button-color', section_color: section_color, button_color: 'transparent_background_text_border' %}" type="submit" name="update" value="{{ 'cart.general.update' | t }}" form="cart">
+        {%- if settings.button_color == 'transparent_background_text_border' -%}
+          {%- assign button_color = 'text_background' -%}
+        {%- endif -%}
+        <input class="cursor-pointer mt-2 lg:mt-0 l p-2 w-full {% render 'button-style' %} {% render 'button-color', section_color: section_color, button_color: button_color %}" type="submit" name="checkout" class="button" value="{{ 'cart.general.checkout' | t }}" form="cart">
+      </div>
+
+      {% if additional_checkout_buttons and settings.cart_additional_buttons %}
+        <div class="additional-checkout-buttons {% render 'button-style' %} mt-2">{{ content_for_additional_checkout_buttons }}</div>
+      {% endif %}
+
+      <div class="mt-4 lg:text-right text-{{ section_color }}-accent" id="cart-errors"></div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Cart footer"
+  }
+{% endschema %}

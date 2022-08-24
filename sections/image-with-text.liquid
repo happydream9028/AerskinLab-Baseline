@@ -1,0 +1,315 @@
+{%- liquid
+  assign section_color = section.settings.color_scheme 
+  assign image_background_color = section.settings.background_color 
+  assign image_position = section.settings.image_position 
+  assign text_size_class = section.settings.text_size 
+  assign text_align = section.settings.text_alignment 
+  assign text_position = section.settings.text_position 
+  assign fill_image = section.settings.fill_image 
+  assign indent_image = section.settings.indent_image 
+  assign font = section.settings.font
+  assign hide_borders = section.settings.hide_borders
+  case section.settings.image_size 
+    when 'third' 
+      assign text_width_desktop = 'lg:col-span-8' 
+      if image_position == 'right' 
+        assign image_width_desktop = 'lg:col-start-9 lg:col-end-13' 
+      else 
+        assign image_width_desktop = 'lg:col-span-4' 
+      endif 
+    when 'half' 
+      assign text_width_desktop = 'lg:col-span-6' 
+      if image_position == 'right' 
+        assign image_width_desktop = 'lg:col-start-7 lg:col-end-13' 
+      else 
+        assign image_width_desktop = 'lg:col-span-6' 
+      endif 
+    when 'two_thirds' 
+      assign text_width_desktop = 'lg:col-span-4' 
+      if image_position == 'right' 
+        assign image_width_desktop = 'lg:col-start-5 lg:col-end-13' 
+      else 
+        assign image_width_desktop = 'lg:col-span-8' 
+      endif 
+  endcase 
+-%}
+
+<section class="grid grid-cols-1 lg:grid-cols-12 grid-flow-row-dense bg-border overflow-hidden {% unless hide_borders %}border-t-grid border-b-grid border-grid-color gap-gutter{% endunless %}">
+  <div class="bg-{{ image_background_color }}-background {{ image_width_desktop }} {% unless settings.fill_image_to_border_edge %}lg:p-4 h-full w-full{% endunless %} {% if indent_image %}lg:p-16{% endif %}">
+    <div class="relative min-h-full">
+      {%- if section.settings.image != blank -%}
+        {%- assign image = section.settings.image -%}
+        {%- if fill_image -%}
+          <div class="hidden lg:block">
+            {% render 'image-object' with
+              image: image
+            %}
+          </div>
+          <div class="block lg:hidden">
+            {% render 'responsive-image' with image: image %}
+          </div>
+        {%- else -%}
+          {% render 'responsive-image' with image: image %}
+        {%- endif -%}
+      {%- else -%}
+        <div class="bg-placeholder-bg w-full">
+          {{ 'image' | placeholder_svg_tag: 'placeholder-svg w-full h-full text-text fill-current' }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="{{ text_width_desktop }} bg-{{ section_color }}-background text-{{ section_color }}-text relative p-8 lg:p-16 flex {{ text_position }}">
+    <div class="{{ text_align }} break-words w-full">
+      
+      {% if section.settings.image_icon != blank %}
+        <div class="w-2/3 lg:w-1/3 pb-4">
+          <div class="relative">
+            {%- assign image_icon = section.settings.image_icon -%}
+            {% render 'image-crop' with
+                  image: image_icon,
+            ratio: 0
+            %}
+          </div>
+        </div>
+      {% endif %}
+      
+      {%- if section.settings.title != blank -%}
+        <h2 class="font-heading {% if section.settings.image_icon != blank %}text-lg{% else %}text-2xl{% endif %}">{{ section.settings.title }}</h2>
+      {%- endif -%}
+
+      {%- if section.settings.richtext != blank -%}
+      <div class="rte {{ text_size_class }} {% if section.settings.title != '' %}mt-4{% endif %} font-{{ font }}">
+        {{ section.settings.richtext }}
+      </div>
+      {%- endif -%}
+
+      {%- if section.settings.cta_link != blank and section.settings.cta_text != '' -%}
+      <div class="mt-4 text-0">
+        {%- case section.settings.cta_style -%}
+        {%- when 'link' -%}
+          {%- render 'link-underline',
+            section_color: section_color,
+            text: section.settings.cta_text,
+            link: section.settings.cta_link,
+          -%}
+        {%- when 'button' -%}
+          <a href="{{ section.settings.cta_link }}" class="inline-flex justify-center items-center text-base px-8 py-2 {% if section.settings.cta_rounded %}rounded-full {% else %}{% render 'button-style', section_color: section_color %} {% endif %}{% if section.settings.cta_gradient %}button-gradient {% endif %}{% render 'button-color', section_color: section_color %} ">
+            <span class="{% if settings.button_uppercase %}uppercase{% endif %}">{{ section.settings.cta_text }}{% if settings.buttons_show_arrow %}&nbsp;&rarr;{% endif %}</span>
+          </a>
+        {%- endcase -%}
+      </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Image with text",
+  "settings": [
+    {
+      "type":      "header",
+      "content":   "Content"
+    },
+    {
+      "id": "image",
+      "type": "image_picker",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position on desktop",
+      "default": "right",
+      "options": [
+        {
+          "value": "right",
+          "label": "Right"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_size",
+      "label": "Image size on desktop",
+      "default": "half",
+      "options": [
+        {
+          "value": "third",
+          "label": "One third"
+        },
+        {
+          "value": "half",
+          "label": "One half"
+        },
+        {
+          "value": "two_thirds",
+          "label": "Two thirds"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "indent_image",
+      "label": "Indent image",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "fill_image",
+      "label": "Fit image to text",
+      "default": false,
+      "info": "This setting will crop the image on desktop"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_borders",
+      "label": "Hide borders",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "background_color",
+      "label": "Background color",
+      "options": [
+          { "value": "primary", "label": "Primary background"},
+          { "value": "secondary", "label": "Secondary background"},
+          { "value": "tertiary", "label": "Tertiary background"}
+      ],
+      "default":   "primary"
+    },
+    {
+      "type":      "header",
+      "content":   "Content"
+    },
+    {
+      "id": "image_icon",
+      "type": "image_picker",
+      "label": "Optional Image above title"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "richtext",
+      "label": "Text",
+      "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text size",
+      "options": [
+        { "value": "text-sm", "label": "S"},
+        { "value": "text-base", "label": "M"},
+        { "value": "text-lg", "label": "L"},
+        { "value": "text-xl", "label": "XL"},
+        { "value": "text-2xl", "label": "2XL"},
+        { "value": "text-2xl lg:text-3xl", "label": "2XL / desktop 3XL"},
+        { "value": "text-2xl lg:text-4xl", "label": "2XL / desktop 4XL"},
+        { "value": "text-2xl lg:text-5xl", "label": "2XL / desktop 5XL"}
+      ],
+      "default":   "text-base"
+    },
+    {
+      "type": "select",
+      "id": "font",
+      "label": "Font",
+      "options": [
+        {
+          "value": "heading",
+          "label": "Heading"
+        },
+        {
+          "value": "body",
+          "label": "Body"
+        }
+      ],
+      "default": "body"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "text-left", "label": "Left"},
+        { "value": "text-center", "label": "Center"},
+        { "value": "text-right", "label": "Right"}
+      ],
+      "default":   "text-left"
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Text position",
+      "options": [
+        { "value": "items-start", "label": "Top"},
+        { "value": "items-center", "label": "Middle"},
+        { "value": "items-end", "label": "Bottom"}
+      ],
+      "default":   "items-center"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+          { "value": "primary", "label": "Primary"},
+          { "value": "secondary", "label": "Secondary"},
+          { "value": "tertiary", "label": "Tertiary"}
+      ],
+      "default":   "primary"
+    },
+    {
+      "type":      "header",
+      "content":   "Call to action"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Text"
+    },
+    {
+      "type": "select",
+      "id": "cta_style",
+      "label": "Style",
+      "options": [
+        { "value": "link", "label": "Link"},
+        { "value": "button", "label": "Button"}
+      ],
+      "default":   "link"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_rounded",
+      "label": "Round button",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_gradient",
+      "label": "Button gradient",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,245 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "content_width": "lg:w-full",
+        "content_position": "lg:justify-start",
+        "color_scheme": "primary",
+        "override_header_footer_color_scheme": false
+      }
+    },
+    "1650544946b4902402": {
+      "type": "image-columns-with-text",
+      "blocks": {
+        "2be8360a-39ab-47d5-af4d-fd6ce82d93cb": {
+          "type": "image-column",
+          "disabled": true,
+          "settings": {
+            "image": "shopify:\/\/shop_images\/AER-121-RGB-LowRes-1200x800_6496d032-a887-4b31-9e30-31256b9dd3a1.jpg",
+            "title": "MICRONEEDLING",
+            "heading_size": "text-2xl",
+            "content_position": "justify-start items-start text-left",
+            "text": "",
+            "text_color": "white",
+            "cta_link": "shopify:\/\/products\/dp4™-microneedling-dermapen",
+            "cta_text": "Learn More"
+          }
+        },
+        "48250194-c905-4755-adf0-81c2a19c70d3": {
+          "type": "image-column",
+          "disabled": true,
+          "settings": {
+            "image": "shopify:\/\/shop_images\/AER-348-RGB-LowRes-1200x800.jpg",
+            "title": "FILLERS",
+            "heading_size": "text-2xl",
+            "content_position": "justify-start items-start text-left",
+            "text": "",
+            "text_color": "white",
+            "cta_link": "#",
+            "cta_text": "Learn More"
+          }
+        },
+        "1bfa2bb9-1013-4941-9097-786f46136331": {
+          "type": "image-column",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/AER-471-RGB-LowRes-1200x800_5a65cb4b-57f7-4fbc-8d14-bafc63e12031.jpg",
+            "title": "COOLSCULPTING®",
+            "heading_size": "text-2xl",
+            "content_position": "justify-start items-start text-left",
+            "text": "",
+            "text_color": "white",
+            "cta_link": "shopify:\/\/products\/coolsculpting®",
+            "cta_text": "Learn More"
+          }
+        },
+        "992b8217-bf18-4eb2-ab78-a253b8c4b8ea": {
+          "type": "image-column",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/AER-277-RGB-LowRes-1200x800_50403bff-87e2-48d8-840f-7cddc192ea96.jpg",
+            "title": "LASER",
+            "heading_size": "text-2xl",
+            "content_position": "justify-start items-start text-left",
+            "text": "",
+            "text_color": "white",
+            "cta_link": "shopify:\/\/collections\/treatments",
+            "cta_text": "Learn More"
+          }
+        }
+      },
+      "block_order": [
+        "2be8360a-39ab-47d5-af4d-fd6ce82d93cb",
+        "48250194-c905-4755-adf0-81c2a19c70d3",
+        "1bfa2bb9-1013-4941-9097-786f46136331",
+        "992b8217-bf18-4eb2-ab78-a253b8c4b8ea"
+      ],
+      "settings": {
+        "heading": "",
+        "section_heading_size": "text-lg"
+      }
+    },
+    "16505463928ee34433": {
+      "type": "featured-links-with-image",
+      "blocks": {
+        "6b9fe745-1b01-4d94-9cb3-3e34e9510782": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/AER-218-RGB-LowRes-800x800.jpg",
+            "title": "BOTOX®",
+            "link": "shopify:\/\/collections\/botox"
+          }
+        },
+        "b9b54744-edec-40c6-b6c2-3915bc57f32e": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/AER-431-RGB-LowRes-800x800.jpg",
+            "title": "EM SCULPT",
+            "link": "#"
+          }
+        },
+        "51875478-b7b5-449a-ab5e-97a8dbc327ef": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/AER-879-RGB-LowRes-800x1200.jpg",
+            "title": "Facials",
+            "link": "#"
+          }
+        },
+        "08c46d33-0595-414c-b4b3-a26e57b7b020": {
+          "type": "image",
+          "settings": {
+            "title": "COOLSCULPTING®",
+            "link": "#"
+          }
+        }
+      },
+      "block_order": [
+        "6b9fe745-1b01-4d94-9cb3-3e34e9510782",
+        "b9b54744-edec-40c6-b6c2-3915bc57f32e",
+        "51875478-b7b5-449a-ab5e-97a8dbc327ef",
+        "08c46d33-0595-414c-b4b3-a26e57b7b020"
+      ],
+      "settings": {
+        "heading": "new!",
+        "border_radius": 30,
+        "section_heading_size": "text-2xl lg:text-3xl",
+        "heading_size": "text-xl"
+      }
+    },
+    "16547258768d69cb87": {
+      "type": "video-with-text-overlay",
+      "settings": {
+        "video_url": "https:\/\/cdn.shopify.com\/videos\/c\/o\/v\/dcc4f3abaf404213bb6abb49fa4dcc36.mp4",
+        "video_style": "widescreen",
+        "video_style_desktop": "same",
+        "fallback_image": "shopify:\/\/shop_images\/AER-891-RGB-LowRes-1800x800_0f849144-4e48-470a-a086-0340a233c0bd.jpg",
+        "title": "Clean injections and High-tech facials Done in 30 minutes<br>",
+        "heading_size": "text-2xl lg:text-4xl",
+        "text": "",
+        "content_position": "justify-start items-end text-left",
+        "content_width_desktop": "lg:w-2\/3",
+        "text_color": "secondary",
+        "btn_inline": true,
+        "cta_link": "https:\/\/aerskinlab.janeapp.com\/",
+        "cta_text": "BOOK NOW",
+        "cta_style": "link"
+      }
+    },
+    "165054669201fc6c9c": {
+      "type": "image-columns-with-text",
+      "blocks": {
+        "d1d846a3-8d23-4fb9-878f-f4e98f9bf323": {
+          "type": "image-column",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/AER-121-RGB-LowRes-1200x800_544ce826-36cd-4096-b054-978888175c53.jpg",
+            "title": "MICRONEEDLING",
+            "heading_size": "text-2xl",
+            "content_position": "justify-start items-start text-left",
+            "text": "",
+            "text_color": "white",
+            "cta_link": "#",
+            "cta_text": "Learn More"
+          }
+        },
+        "e66a531a-40c8-4ff8-a64d-e0190125deff": {
+          "type": "image-column",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/AER-348-RGB-LowRes-1200x800_d10def4b-a504-4f71-aabb-48f6477ac0b9.jpg",
+            "title": "FILLERS",
+            "heading_size": "text-2xl",
+            "content_position": "justify-start items-start text-left",
+            "text": "",
+            "text_color": "white",
+            "cta_link": "#",
+            "cta_text": "Learn More"
+          }
+        }
+      },
+      "block_order": [
+        "d1d846a3-8d23-4fb9-878f-f4e98f9bf323",
+        "e66a531a-40c8-4ff8-a64d-e0190125deff"
+      ],
+      "settings": {
+        "heading": "popular",
+        "section_heading_size": "text-2xl lg:text-3xl"
+      }
+    },
+    "1650558016cd99bd0a": {
+      "type": "featured-links-with-image",
+      "blocks": {
+        "a513c9d7-8fd7-49c7-9a52-ba3607c2a234": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/AER-218-RGB-LowRes-800x800.jpg",
+            "title": "BOTOX®",
+            "link": "shopify:\/\/collections\/botox"
+          }
+        },
+        "4d8beafc-8996-4c7c-8cf4-a778bc726133": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/AER-431-RGB-LowRes-800x800.jpg",
+            "title": "EM SCULPT",
+            "link": "#"
+          }
+        },
+        "b6585824-37b8-4d0c-a35d-2ba1491970c8": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/AER-879-RGB-LowRes-800x1200.jpg",
+            "title": "Facials",
+            "link": "#"
+          }
+        },
+        "8a717cc1-eb31-4a47-b7e0-cc76ae4afb57": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/AER-431-RGB-LowRes-800x800.jpg",
+            "title": "COOLSCULPTING®",
+            "link": "shopify:\/\/products\/coolsculpting®"
+          }
+        }
+      },
+      "block_order": [
+        "a513c9d7-8fd7-49c7-9a52-ba3607c2a234",
+        "4d8beafc-8996-4c7c-8cf4-a778bc726133",
+        "b6585824-37b8-4d0c-a35d-2ba1491970c8",
+        "8a717cc1-eb31-4a47-b7e0-cc76ae4afb57"
+      ],
+      "settings": {
+        "heading": "Specials",
+        "border_radius": 30,
+        "section_heading_size": "text-2xl lg:text-3xl",
+        "heading_size": "text-xl"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "1650544946b4902402",
+    "16505463928ee34433",
+    "16547258768d69cb87",
+    "165054669201fc6c9c",
+    "1650558016cd99bd0a"
+  ]
+}

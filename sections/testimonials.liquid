@@ -1,0 +1,152 @@
+{%- liquid
+  assign section_color = section.settings.color_scheme
+  assign divisible_by_four =  section.blocks.size | modulo: 4
+  assign divisible_by_three =  section.blocks.size | modulo: 3
+  assign divisible_by_two =  section.blocks.size | modulo: 2
+
+  if divisible_by_four == 0
+    assign grid_class = 'lg:grid-cols-4'
+  elsif divisible_by_three == 0
+    assign grid_class = 'lg:grid-cols-3'
+  elsif divisible_by_two == 0
+    assign grid_class = 'lg:grid-cols-2'
+  else
+    assign grid_class = 'lg:grid-cols-3'
+  endif
+-%}
+
+<section class="border-t-grid border-grid-color bg-border">
+  {% if section.settings.heading != '' %}
+    {%- render 'section-title',
+      title: section.settings.heading,
+      section_color: section_color
+    -%}
+  {% endif %}
+
+  <div class="section-x-padding py-theme bg-{{ section_color }}-background text-{{ section_color }}-text  grid {{ grid_class }} gap-10">
+    {%-for block in section.blocks -%}
+    <blockquote class="flex-1 {{ section.settings.text_align }}">
+      <div class="font-{{ section.settings.text_style }} {{ section.settings.text_size }}">
+      {{ block.settings.quote }}
+      </div>
+      {% if block.settings.source != blank %}
+        <footer class="mt-2 font-secondary text-base">- {{ block.settings.source }}</footer>
+      {% endif %}
+    </blockquote>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Testimonials",
+    "settings": [
+      {
+        "id": "heading",
+        "type": "text",
+        "label": "Heading"
+      },
+      {
+        "type": "select",
+        "id": "text_style",
+        "label": "Text style",
+        "options": [
+          {
+            "value": "heading",
+            "label": "Heading"
+          },
+          {
+            "value": "body",
+            "label": "Body"
+          }
+        ],
+        "default": "heading"
+      },
+      {
+        "type": "select",
+        "id": "text_size",
+        "label": "Text size",
+        "options": [
+          { "value": "text-sm", "label": "S"},
+          { "value": "text-base", "label": "M"},
+          { "value": "text-lg", "label": "L"},
+          { "value": "text-xl", "label": "XL"},
+          { "value": "text-2xl", "label": "2XL"},
+          { "value": "text-2xl lg:text-3xl", "label": "2XL / desktop 3XL"},
+          { "value": "text-2xl lg:text-4xl", "label": "2XL / desktop 4XL"},
+          { "value": "text-2xl lg:text-5xl", "label": "2XL / desktop 5XL" },
+          { "value": "text-2xl lg:text-6xl", "label": "2XL / desktop 6XL" },
+          { "value": "text-2xl lg:text-7xl", "label": "2XL / desktop 7XL" }
+        ],
+        "default":   "text-xl"
+      },
+      {
+        "type": "select",
+        "id": "text_align",
+        "label": "Text align",
+        "default": "text-left",
+        "options": [
+          {
+            "value": "text-left",
+            "label": "Left"
+          },
+          {
+            "value": "text-center",
+            "label": "Center"
+          }
+        ]
+      },
+      {
+        "type":      "header",
+        "content":   "Color"
+      },
+      {
+        "type": "select",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "options": [
+            { "value": "primary", "label": "Primary"},
+            { "value": "secondary", "label": "Secondary"},
+            { "value": "tertiary", "label": "Tertiary"}
+        ],
+        "default":   "primary"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "testimonial",
+        "name": "Testimonial",
+        "settings": [
+          {
+            "type": "richtext",
+            "id": "quote",
+            "label": "Quote",
+            "default": "<p>A quote from a customer or staff member can help show of your products' unique selling points.</p>"
+          },
+          {
+            "type": "text",
+            "id": "source",
+            "label": "Source",
+            "default": "Source"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Testimonials",
+        "blocks": [
+          {
+            "type": "testimonial"
+          },
+          {
+            "type": "testimonial"
+          },
+          {
+            "type": "testimonial"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

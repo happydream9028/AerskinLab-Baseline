@@ -1,0 +1,46 @@
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="pswp__bg"></div>
+  <div class="pswp__scroll-wrap">
+
+    <!-- Don't modify these 3 pswp__item elements, data is added later on. -->
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+
+    <div class="pswp__ui pswp__ui--hidden">
+      <div class="pswp__top-bar">
+        <div class="pswp__counter line-height--7 font-size--xs text-primary-meta fixed top-0 left-0 mt-3 ml-3"></div>
+
+        <button class="pswp__button pswp__button--close text-primary-text fixed top-0 right-0 block w-6 h-6 mt-3 mr-3"
+                title="Close (Esc)">
+          <span class="visually-hidden">{{ 'general.accessibility.close_modal' | t }}</span>
+          {% render 'icon-close' %}
+        </button>
+
+        <div class="pswp__preloader absolute top-0 left-0 ml-1">
+          <div class="pswp__preloader__icn">
+            <div class="pswp__preloader__cut">
+              <div class="pswp__preloader__donut"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="pswp__button pswp__button--arrow--left w-8 ml-3 bg-transparent text-primary-text hover:text-primary-accent border-0 fixed left-0 lg:bottom-1/2 bottom-0">
+        <span class="visually-hidden">{{ 'sections.slideshow.previous_slide' | t }}</span>
+        <span class="block transform rotate-180">
+          {% render 'icon-next' %}
+        </span>
+      </button>
+
+      <button class="pswp__button pswp__button--arrow--right w-8 mr-3 bg-transparent text-primary-text hover:text-primary-accent border-0 fixed right-0 lg:bottom-1/2 bottom-0">
+        <span class="visually-hidden">{{ 'sections.slideshow.next_slide' | t }}</span>
+        <span class="block">
+          {% render 'icon-next' %}
+        </span>
+      </button>
+    </div>
+  </div>
+</div>

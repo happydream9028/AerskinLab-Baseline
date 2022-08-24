@@ -1,0 +1,25 @@
+<div class="collapsible-tab mt-8 {% if is_last %}-mb-theme-width{% endif %}" {{ block.shopify_attributes }}>
+  <div class="{% if tab_counter == 0 %}border-t-grid{% endif %} -mx-2 lg:-mx-4 section-x-padding py-2 border-theme-color border-b-grid" x-data="{ open: false }" x-cloak>
+    <h2 class="{% unless block.settings.heading_text_style == 'heading' %}text-base{% endunless %}" >
+      <button @click="open = !open" class="{% if block.settings.heading_text_style == 'heading' %}font-heading {{ settings.base_heading_size }}{% else %}font-body{% endif %} cursor-pointer flex justify-between items-center w-full text-left" :aria-expanded="open ? true : 'false'">
+        <span class="flex items-center justify-start">
+          {% if block.settings.icon != 'none' %}<span class="inline-block flex-shrink-0 w-5 h-5 mr-2">{% render 'product-icon', icon: block.settings.icon %}</span>{% endif %}
+          {{ block.settings.heading }}
+        </span>
+        <span class="inline-block w-5 h-5" x-show="!open">{%- render 'icon-plus' %}</span>
+        <span class="inline-block w-5 h-5" x-show="open">{%- render 'icon-minus' %}</span>
+      </button>
+    </h2>
+    <div class="py-4 rte text-sm" x-show="open" id="{{ block.id }}">
+      {{ block.settings.content }}
+      {{ block.settings.page.content }}
+    </div>
+  </div>
+  <noscript>
+    <div class="rte mt-8">
+      <h2 class="{{ settings.base_heading_size }}"></h2>
+      {{ block.settings.content }}
+      {{ block.settings.page.content }}
+    </div>
+  </noscript>
+</div>

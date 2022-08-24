@@ -1,0 +1,882 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Baseline",
+    "theme_version": "2.0.12",
+    "theme_author": "Switch Themes",
+    "theme_documentation_url": "http:\/\/support.switchthemes.co",
+    "theme_support_email": "support@switchthemes.co"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Grid"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Border color",
+        "default": "#000000"
+      },
+      {
+        "type": "header",
+        "content": "Primary color scheme"
+      },
+      {
+        "type": "paragraph",
+        "content": "Default color scheme. Available as an option for blocks, sections and page templates."
+      },
+      {
+        "type": "color",
+        "id": "color_primary_text",
+        "label": "Text",
+        "default": "#162317"
+      },
+      {
+        "type": "color",
+        "id": "color_primary_background",
+        "label": "Background",
+        "default": "#f4fbf2"
+      },
+      {
+        "type": "color",
+        "id": "color_primary_accent",
+        "label": "Accent",
+        "default": "#eb3131"
+      },
+      {
+        "type": "color",
+        "id": "color_primary_meta",
+        "label": "Secondary",
+        "default": "#9d9d9d"
+      },
+      {
+        "type": "header",
+        "content": "Secondary color scheme"
+      },
+      {
+        "type": "paragraph",
+        "content": "Available as an option for blocks, sections and page templates."
+      },
+      {
+        "type": "color",
+        "id": "color_secondary_text",
+        "label": "Text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary_background",
+        "label": "Background",
+        "default": "#162317"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary_accent",
+        "label": "Accent",
+        "default": "#eb3131"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary_meta",
+        "label": "Secondary",
+        "default": "#162317"
+      },
+      {
+        "type": "header",
+        "content": "Tertiary color scheme"
+      },
+      {
+        "type": "paragraph",
+        "content": "Available as an option for blocks, sections and page templates."
+      },
+      {
+        "type": "color",
+        "id": "color_tertiary_text",
+        "label": "Text",
+        "default": "#162317"
+      },
+      {
+        "type": "color",
+        "id": "color_tertiary_background",
+        "label": "Background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "color_tertiary_accent",
+        "label": "Accent",
+        "default": "#EB3131"
+      },
+      {
+        "type": "color",
+        "id": "color_tertiary_meta",
+        "label": "Secondary",
+        "default": "#333333"
+      },
+      {
+        "type": "header",
+        "content": "Buttons"
+      },
+      {
+        "type": "select",
+        "id": "button_color",
+        "label": "Color",
+        "options": [
+          {
+            "value": "text_background",
+            "label": "Text background"
+          },
+          {
+            "value": "accent_background",
+            "label": "Accent background"
+          },
+          {
+            "value": "accent_background_text_border",
+            "label": "Accent background with text border"
+          },
+          {
+            "value": "transparent_background_text_border",
+            "label": "Transparent background with text border"
+          }
+        ],
+        "default": "text_background",
+        "info": "If transparent background with text color border is selected, dynamic checkout buttons will have a text color background."
+      },
+      {
+        "type": "select",
+        "id": "button_style",
+        "label": "Style",
+        "options": [
+          {
+            "value": "square",
+            "label": "Square"
+          },
+          {
+            "value": "slightly_rounded",
+            "label": "Slightly rounded"
+          },
+          {
+            "value": "rounded",
+            "label": "Rounded"
+          }
+        ],
+        "default": "square"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "range",
+        "id": "base_font_size",
+        "min": 13,
+        "max": 22,
+        "step": 1,
+        "unit": "px",
+        "label": "Base font size",
+        "default": 18
+      },
+      {
+        "type": "header",
+        "content": "Headings"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_heading",
+        "default": "helvetica_n4",
+        "label": "Headings"
+      },
+      {
+        "type": "checkbox",
+        "id": "heading_uppercase",
+        "label": "Uppercase"
+      },
+      {
+        "type": "checkbox",
+        "id": "heading_underline",
+        "label": "Underline"
+      },
+      {
+        "type": "range",
+        "id": "heading_letterspacing",
+        "min": -50,
+        "max": 200,
+        "step": 25,
+        "label": "Letterspacing",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Heading sizes"
+      },
+      {
+        "type": "select",
+        "id": "base_heading_size",
+        "label": "Base size",
+        "options": [
+          {
+            "value": "text-sm",
+            "label": "S"
+          },
+          {
+            "value": "text-base",
+            "label": "M"
+          },
+          {
+            "value": "text-lg",
+            "label": "L"
+          },
+          {
+            "value": "text-xl",
+            "label": "XL"
+          },
+          {
+            "value": "text-2xl",
+            "label": "2XL"
+          },
+          {
+            "value": "text-2xl lg:text-3xl",
+            "label": "2XL \/ desktop 3XL"
+          },
+          {
+            "value": "text-2xl lg:text-4xl",
+            "label": "2XL \/ desktop 4XL"
+          },
+          {
+            "value": "text-2xl lg:text-5xl",
+            "label": "2XL \/ desktop 5XL"
+          }
+        ],
+        "default": "text-2xl",
+        "info": "Used for section titles and main section headings"
+      },
+      {
+        "type": "select",
+        "id": "template_heading_size",
+        "label": "Template size",
+        "options": [
+          {
+            "value": "text-sm",
+            "label": "S"
+          },
+          {
+            "value": "text-base",
+            "label": "M"
+          },
+          {
+            "value": "text-lg",
+            "label": "L"
+          },
+          {
+            "value": "text-xl",
+            "label": "XL"
+          },
+          {
+            "value": "text-2xl",
+            "label": "2XL"
+          },
+          {
+            "value": "text-2xl lg:text-3xl",
+            "label": "2XL \/ desktop 3XL"
+          },
+          {
+            "value": "text-2xl lg:text-4xl",
+            "label": "2XL \/ desktop 4XL"
+          },
+          {
+            "value": "text-2xl lg:text-5xl",
+            "label": "2XL \/ desktop 5XL"
+          },
+          {
+            "value": "text-2xl lg:text-6xl",
+            "label": "2XL \/ desktop 6XL"
+          },
+          {
+            "value": "text-2xl lg:text-7xl",
+            "label": "2XL \/ desktop 7XL"
+          }
+        ],
+        "default": "text-2xl lg:text-5xl",
+        "info": "Used for product, collection, article and page templates"
+      },
+      {
+        "type": "select",
+        "id": "secondary_heading_size",
+        "label": "Secondary size",
+        "options": [
+          {
+            "value": "text-sm",
+            "label": "S"
+          },
+          {
+            "value": "text-base",
+            "label": "M"
+          },
+          {
+            "value": "text-lg",
+            "label": "L"
+          },
+          {
+            "value": "text-xl",
+            "label": "XL"
+          },
+          {
+            "value": "text-2xl",
+            "label": "2XL"
+          }
+        ],
+        "default": "text-lg",
+        "info": "Used for blog post grid, text columns with images and other secondary headings"
+      },
+      {
+        "type": "header",
+        "content": "Body text"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "default": "helvetica_n4",
+        "label": "Body text"
+      },
+      {
+        "type": "range",
+        "id": "base_line_height",
+        "min": 1,
+        "max": 2,
+        "step": 0.1,
+        "label": "Line height",
+        "default": 1.2
+      },
+      {
+        "type": "checkbox",
+        "id": "body_copy_uppercase",
+        "label": "Uppercase"
+      },
+      {
+        "type": "header",
+        "content": "Section titles"
+      },
+      {
+        "type": "select",
+        "id": "section_title_font",
+        "label": "Font",
+        "options": [
+          {
+            "value": "heading",
+            "label": "Heading"
+          },
+          {
+            "value": "body",
+            "label": "Body"
+          }
+        ],
+        "default": "heading"
+      },
+      {
+        "type": "select",
+        "id": "section_title_align",
+        "label": "Text align",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          }
+        ],
+        "default": "left"
+      },
+      {
+        "type": "header",
+        "content": "Header"
+      },
+      {
+        "type": "checkbox",
+        "id": "header_uppercase",
+        "label": "Uppercase"
+      },
+      {
+        "type": "header",
+        "content": "Product grid"
+      },
+      {
+        "type": "checkbox",
+        "id": "product_grid_uppercase",
+        "label": "Uppercase"
+      },
+      {
+        "type": "header",
+        "content": "Buttons"
+      },
+      {
+        "type": "checkbox",
+        "id": "button_uppercase",
+        "label": "Uppercase"
+      },
+      {
+        "type": "checkbox",
+        "id": "buttons_show_arrow",
+        "label": "Show arrow",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Links"
+      },
+      {
+        "type": "checkbox",
+        "id": "links_uppercase",
+        "label": "Uppercase"
+      },
+      {
+        "type": "checkbox",
+        "id": "links_show_arrow",
+        "label": "Show arrow",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "links_show_underline",
+        "label": "Show underline"
+      }
+    ]
+  },
+  {
+    "name": "Grid",
+    "settings": [
+      {
+        "type": "select",
+        "id": "spacing",
+        "label": "Content spacing",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "medium",
+            "label": "Medium"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          }
+        ],
+        "default": "small"
+      },
+      {
+        "type": "checkbox",
+        "id": "fill_image_to_border_edge",
+        "label": "Fill images to border edge",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "border_width",
+        "min": 0,
+        "max": 5,
+        "step": 1,
+        "unit": "px",
+        "label": "Border width",
+        "default": 1
+      }
+    ]
+  },
+  {
+    "name": "Products",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Product grid tiles"
+      },
+      {
+        "type": "checkbox",
+        "id": "product_grid_show_vendor",
+        "label": "Show vendor"
+      },
+      {
+        "type": "checkbox",
+        "id": "product_grid_show_sale_badge",
+        "label": "Show on sale badge"
+      },
+      {
+        "type": "select",
+        "id": "product_grid_image_size",
+        "label": "Grid image size",
+        "default": "natural",
+        "options": [
+          {
+            "value": "natural",
+            "label": "Natural"
+          },
+          {
+            "value": "1",
+            "label": "Square (1:1)"
+          },
+          {
+            "value": "1.3",
+            "label": "Landscape (4:3)"
+          },
+          {
+            "value": "0.8",
+            "label": "Portrait (2:3)"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "title_price_display",
+        "label": "Product title and price display",
+        "options": [
+          {
+            "value": "under_image",
+            "label": "Under image"
+          },
+          {
+            "value": "over_image_bottom",
+            "label": "Over image, aligned bottom"
+          },
+          {
+            "value": "over_image_top",
+            "label": "Over image, aligned top"
+          },
+          {
+            "value": "on_hover",
+            "label": "Over image, on hover"
+          }
+        ],
+        "default": "under_image"
+      },
+      {
+        "type": "select",
+        "id": "under_image_display_format",
+        "label": "Title and price text alignment",
+        "options": [
+          {
+            "value": "title_left_price_right",
+            "label": "Title left, price right"
+          },
+          {
+            "value": "title_left_price_under",
+            "label": "Title left, price underneath"
+          },
+          {
+            "value": "title_center_price_under",
+            "label": "Title center, price underneath"
+          }
+        ],
+        "default": "title_left_price_right",
+        "info": "This does not apply when product title and price is set to display over image"
+      },
+      {
+        "type": "checkbox",
+        "id": "products_show_second_image_on_hover",
+        "label": "Show second image on hover",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Product Page"
+      },
+      {
+        "type": "header",
+        "content": "Color swatches"
+      },
+      {
+        "type": "paragraph",
+        "content": "Requires option style above to be set to buttons. [Learn how to set up swatches](https:\/\/support.switchthemes.co\/article\/232-color-swatches)"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_color_swatches",
+        "label": "Enable color swatches on product pages"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_color_swatches_collections",
+        "label": "Enable color swatches on collection pages",
+        "info": "This requires the product title and price display setting above to be set to 'Under image'"
+      }
+    ]
+  },
+  {
+    "name": "Breadcrumbs",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_breadcrumbs",
+        "label": "Enable breadcrumbs",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "breadcrumb_separator",
+        "label": "Link separator",
+        "options": [
+          {
+            "value": "slash",
+            "label": "Slash"
+          },
+          {
+            "value": "hyphen",
+            "label": "Hyphen"
+          },
+          {
+            "value": "emdash",
+            "label": "Emdash"
+          },
+          {
+            "value": "dot",
+            "label": "Dot"
+          },
+          {
+            "value": "bullet",
+            "label": "Bullet"
+          }
+        ],
+        "default": "slash"
+      },
+      {
+        "type": "select",
+        "id": "breadcrumb_text_alignment",
+        "label": "Text alignment",
+        "options": [
+          {
+            "value": "justify-start",
+            "label": "Left"
+          },
+          {
+            "value": "justify-center",
+            "label": "Center"
+          },
+          {
+            "value": "justify-end",
+            "label": "Right"
+          }
+        ],
+        "default": "justify-start"
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Sharing options"
+      },
+      {
+        "type": "select",
+        "id": "sharing_display",
+        "label": "Display",
+        "options": [
+          {
+            "value": "text",
+            "label": "Text"
+          },
+          {
+            "value": "icons",
+            "label": "Icons"
+          }
+        ],
+        "default": "text"
+      },
+      {
+        "type": "checkbox",
+        "id": "share_facebook",
+        "label": "Share on Facebook",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_twitter",
+        "label": "Tweet on Twitter",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_pinterest",
+        "label": "Pin on Pinterest",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Accounts"
+      },
+      {
+        "type": "select",
+        "id": "social_style",
+        "label": "Social media display style",
+        "options": [
+          {
+            "value": "text",
+            "label": "Text"
+          },
+          {
+            "value": "icons",
+            "label": "Icons"
+          }
+        ],
+        "default": "text"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram",
+        "info": "https:\/\/instagram.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook",
+        "info": "https:\/\/www.facebook.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "Twitter",
+        "info": "https:\/\/www.twitter.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest",
+        "info": "https:\/\/www.pinterest.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_snapchat_link",
+        "label": "Snapchat",
+        "info": "https:\/\/www.snapchat.com\/add\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok_link",
+        "label": "TikTok",
+        "info": "https:\/\/www.tiktok.com\/@shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_tumblr_link",
+        "label": "Tumblr",
+        "info": "https:\/\/shopify.tumblr.com"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "Youtube",
+        "info": "https:\/\/www.youtube.com\/user\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_vimeo_link",
+        "label": "Vimeo",
+        "info": "https:\/\/vimeo.com\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_linkedin_link",
+        "label": "LinkedIn",
+        "info": "https:\/\/www.linkedin.com\/in\/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_email_link",
+        "label": "Email address",
+        "info": "info@example.com"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "select",
+        "id": "ajax_cart_method",
+        "label": "Cart type",
+        "options": [
+          {
+            "value": "drawer",
+            "label": "Drawer"
+          },
+          {
+            "value": "page",
+            "label": "Page"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_additional_buttons",
+        "label": "Enable additional checkout buttons",
+        "default": true,
+        "info": "The buttons can appear on either your cart page or your checkout page, but not both."
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_notes_enable",
+        "label": "Enable cart notes",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_cart_on_add",
+        "label": "Open cart when product is added",
+        "default": true,
+        "info": "Only applies when cart method is set to drawer."
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_vendor_enable",
+        "label": "Show product vendor"
+      },
+      {
+        "type": "select",
+        "id": "cart_color_scheme",
+        "label": "Cart drawer color scheme",
+        "options": [
+          {
+            "value": "primary",
+            "label": "Primary"
+          },
+          {
+            "value": "secondary",
+            "label": "Secondary"
+          },
+          {
+            "value": "tertiary",
+            "label": "Tertiary"
+          }
+        ],
+        "default": "secondary"
+      }
+    ]
+  },
+  {
+    "name": "Favicon & Logo",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo",
+        "info": "Used in places other than header section"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon image",
+        "info": "Will be scaled down to 32 x 32px"
+      }
+    ]
+  }
+]

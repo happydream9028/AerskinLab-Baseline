@@ -1,0 +1,165 @@
+{%- liquid
+  assign section_color = section.settings.color_scheme 
+  assign products_per_row = section.settings.products_per_row_desktop | plus: 0 
+  assign products_per_row_mobile = section.settings.products_per_row_mobile | plus: 0 
+  assign counter = 0
+  assign grid_cols = 12
+  assign desktop_grid_class = 'lg:grid-cols-' | append: grid_cols
+
+  case products_per_row
+    when 2
+      assign desktop_col_span = 'lg:col-span-6'
+    when 3
+      assign desktop_col_span = 'lg:col-span-4'
+    when 4
+      assign desktop_col_span = 'lg:col-span-3'
+  endcase
+
+  case products_per_row_mobile
+    when 1
+      assign mobile_col_span = 'col-span-2'
+    when 2
+      assign mobile_col_span = 'col-span-1'
+  endcase
+-%}
+{%- if section.settings.show_product_recommendations -%}
+  {%- if recommendations.performed -%}
+    {% if recommendations.products_count > 0 %}
+      <div class="product-recommendations">
+        <div class="product-recommendations-container border-t-grid border-grid-color">
+          {% if section.settings.product_recommendations_heading != '' %}
+            {%- render 'section-title',
+              title: section.settings.product_recommendations_heading,
+              section_color: section_color
+            -%}
+          {% endif %}
+          <ul class="grid grid-cols-2 {{ desktop_grid_class }} gap-gutter bg-border z-10">
+            {%- for product in recommendations.products -%}
+              {%- assign counter = counter | plus: 1 -%}
+              <li class="{{ mobile_col_span }} {{ desktop_col_span }} bg-{{ section_color }}-background text-{{ section_color }}-text">
+                {%- render 'product-grid-item',
+                    product: product,
+                    section_color: section_color,
+                    products_per_row: products_per_row,
+                    products_per_row_mobile: products_per_row_mobile,
+                    responsive_image_counter: forloop.index
+                -%}
+              </li>
+            {%- endfor -%}
+            {%- liquid
+              assign items_on_last_row = counter | modulo: products_per_row
+              assign col_span = grid_cols | divided_by: products_per_row
+              assign placeholder_width = products_per_row | minus: items_on_last_row | times: col_span
+              assign items_on_last_row_mobile = counter | modulo: products_per_row_mobile
+              assign col_span_mobile = 2 | divided_by: products_per_row_mobile 
+              assign placeholder_width_mobile = products_per_row_mobile | minus: items_on_last_row_mobile | times: col_span_mobile
+            -%}
+            {%- if items_on_last_row != 0 -%}
+              <li class="none absolute lg:static lg:block lg:col-span-{{ placeholder_width }} bg-{{ section_color }}-background" aria-hidden="true" role="presentation"></li>
+            {%- endif -%}
+            {%- if items_on_last_row_mobile != 0 -%}
+              <li class="block lg:none lg:absolute col-span-{{ placeholder_width_mobile }} bg-{{ section_color }}-background" aria-hidden="true" role="presentation"></li>
+            {%- endif -%}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+  {%- else  -%}
+    <div
+      class="product-recommendations"
+      data-base-url="{{ routes.product_recommendations_url }}"
+      data-product-id="{{ product.id }}"
+      data-section-id="{{ section.id }}"
+      data-section-type="product-recommendations"
+      data-limit="{{ section.settings.limit }}">
+    </div>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product recommendations",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_product_recommendations",
+      "label": "Show dynamic recommendations",
+      "info": "Dynamic recommendations change and improve with time. [Learn more](https://help.shopify.com/en/themes/development/recommended-products)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "product_recommendations_heading",
+      "label": "Heading",
+      "default": "You may also like"
+    },
+    {
+      "type": "select",
+      "id": "limit",
+      "label": "Number of recommendations",
+      "default": "4",
+      "options": [
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "products_per_row_desktop",
+      "label": "Products per row - desktop",
+      "default": "4",
+      "options": [
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "products_per_row_mobile",
+      "label": "Products per row - mobile",
+      "default": "1",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+          { "value": "primary", "label": "Primary"},
+          { "value": "secondary", "label": "Secondary"},
+          { "value": "tertiary", "label": "Tertiary"}
+      ],
+      "default":   "primary"
+    }
+  ]
+}
+{% endschema %}

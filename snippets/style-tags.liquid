@@ -1,0 +1,15 @@
+
+{% comment %} Unminified theme stylesheet:
+<link href="{{ 'theme.css' | asset_url }}" rel="stylesheet">
+{% endcomment %}
+<script>
+function onLoadStylesheet() {
+          var url = "{{ 'theme.css' | asset_url }}";
+          var link = document.querySelector('link[href="' + url + '"]');
+          link.loaded = true;
+          link.dispatchEvent(new CustomEvent('stylesLoaded'));
+        }
+        window.theme_stylesheet = '{{ 'theme.css' | asset_url }}';
+</script>
+<link rel="stylesheet" href="{{ 'theme.css' | asset_url }}" media="print" onload="this.media='all';onLoadStylesheet();">
+<noscript><link rel="stylesheet" href="{{ 'theme.css' | asset_url }}"></noscript>

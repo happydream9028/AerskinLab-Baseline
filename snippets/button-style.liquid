@@ -1,0 +1,8 @@
+{%- liquid
+  case settings.button_style 
+    when 'slightly_rounded' 
+      echo 'rounded-md'
+    when 'rounded' 
+      echo 'rounded-full'
+  endcase 
+-%}

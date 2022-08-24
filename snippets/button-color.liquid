@@ -1,0 +1,17 @@
+{%- liquid
+  if button_color 
+    assign color = button_color 
+  else 
+    assign color = settings.button_color 
+  endif 
+-%}
+{%- case color -%}
+  {%- when 'text_background' -%}
+    bg-{{ section_color }}-text text-{{ section_color }}-text-overlay hover:bg-{{ section_color }}-accent hover:text-{{ section_color }}-accent-overlay border-{{ section_color }}-text hover:border-{{ section_color }}-accent border-text
+  {%- when 'accent_background' -%}
+    bg-{{ section_color }}-accent text-{{ section_color }}-accent-overlay hover:bg-{{ section_color }}-text hover:text-{{ section_color }}-text-overlay border-{{ section_color }}-accent hover:border-{{ section_color }}-text border-text
+  {%- when 'accent_background_text_border' -%}
+    bg-{{ section_color }}-accent text-{{ section_color }}-accent-overlay border-text border-{{ section_color }}-text hover:bg-{{ section_color }}-text hover:text-{{ section_color }}-text-overlay
+  {%- when 'transparent_background_text_border' -%}
+    bg-transparent text-{{ section_color }}-text border-text border-{{ section_color }}-text hover:bg-{{ section_color }}-text hover:border-{{ section_color }}-accent hover:text-{{ section_color }}-accent
+{%- endcase -%}

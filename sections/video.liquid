@@ -1,0 +1,113 @@
+{% comment %}theme-check-disable MissingTemplate{% endcomment %}
+{%- liquid
+  assign section_color = section.settings.color_scheme
+  assign ratio = section.settings.aspect_ratio | split: ':'
+  assign ratio = ratio[1] | plus: 0.0 | divided_by: ratio[0] | plus: 0.0 | times: 100.0
+-%}
+<section class="video bg-{{ section_color }}-background text-{{ section_color }}-text overflow-hidden border-t-grid border-grid-color">
+  {% if section.settings.title != '' %}
+    {%- render 'section-title',
+      title: section.settings.title,
+      section_color: section_color
+    -%}
+  {% endif %}
+
+
+  <div class="{% unless settings.fill_image_to_border_edge %}p-2 lg:p-4{% endunless %}">
+    <div  x-data='ThemeComponent_Video("featuredVideo-{{ section.id }}", "external_video", {{ section.settings.video_url.type | json }})' x-init="mounted()" class="feature-video__video {% unless section.settings.full_width %} wrapper{% endunless %}">
+      <div x-ref="video_container" class="relative overflow-hidden" style="padding-bottom: {{ ratio }}%;">
+        <template x-if="!enabled">
+          <button  @click="enableVideo()" class="absolute top-0 left-0 right-0 bottom-0 h-full w-full flex items-center justify-center group" type="button">
+            <div class="z-40 text-center">
+              <span
+                class="rounded-full w-14 h-14 bg-{{ section_color }}-background text-{{ section_color }}-background-overlay  inline-flex items-center justify-center hover:bg-{{ section_color }}-accent hover:text-{{ section_color }}-accent-overlay transition-opacity"
+              >
+                <span class="w-8 h-8 inline-block" >{% render 'icon-play' %}</span>
+              </span>
+            </div>
+            {%- if section.settings.cover_image != blank -%}
+              {% render 'image-object' with
+                image: section.settings.cover_image
+              %}
+            {%- else -%}
+              <div class="bg-placeholder-bg absolute top-0 left-0 right-0 bottom-0">
+                {{ 'collection-2' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
+              </div>
+            {%- endif -%}
+          </button>
+        </template>
+        <template  x-if="enabled">
+          {%- if section.settings.video_url.type == 'youtube' -%}
+            <iframe src="https://www.youtube.com/embed/{{ section.settings.video_url.id }}?enablejsapi=1&autoplay=1" class="js-youtube absolute top-0 left-0 right-0 bottom-0 w-full h-full" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.description | escape }}"></iframe>
+          {%- else -%}
+            <iframe src="https://player.vimeo.com/video/{{ section.settings.video_url.id }}?autoplay=1" class="js-vimeo  absolute top-0 left-0 right-0 bottom-0 w-full h-full" allow="autoplay; encrypted-media" allowfullscreen title="{{ section.settings.description | escape }}"></iframe>
+          {%- endif -%}
+        </template>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Video",
+    "settings": [
+      {
+        "id": "title",
+        "type": "text",
+        "label": "Heading"
+      },
+      {
+        "type": "image_picker",
+        "id": "cover_image",
+        "label": "Cover image"
+      },
+      {
+        "id": "video_url",
+        "type": "video_url",
+        "label": "Video URL",
+        "accept": ["youtube", "vimeo"],
+        "info": "Accepts URLs from YouTube or Vimeo",
+        "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+      },
+      {
+        "type": "select",
+        "id": "aspect_ratio",
+        "label": "Aspect ratio",
+        "default": "16:9",
+        "options": [
+          {
+            "value": "16:9",
+            "label": "Standard - 16:9"
+          },
+          {
+            "value": "4:3",
+            "label": "Standard - 4:3"
+          },
+          {
+            "value": "2.39:1",
+            "label": "Cinema"
+          }
+        ]
+      },
+      {
+        "type":      "header",
+        "content":   "Color"
+      },
+      {
+        "type": "select",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "options": [
+            { "value": "primary", "label": "Primary"},
+            { "value": "secondary", "label": "Secondary"},
+            { "value": "tertiary", "label": "Tertiary"}
+        ],
+        "default":   "primary"
+      }
+    ],
+    "presets": [{
+        "name": "Video"
+    }]
+  }
+{% endschema %}

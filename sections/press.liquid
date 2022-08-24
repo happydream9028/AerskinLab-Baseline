@@ -1,0 +1,52 @@
+<section class="quote-gallery">
+  
+  <div class="container-slider">
+  	<div class="quote-text fade-quote" style="display: none;">
+      {% for block in section.blocks %}
+        <h2>{{ block.settings.title }}</h2>
+      {% endfor %}
+    </div>
+  </div>
+  
+  <div class="navigation-logos">
+    {% for block in section.blocks %}
+  	<div class="quote-image dot" onclick="currentSlide({{ forloop.index }})">
+      {%- assign image = block.settings.image -%}
+      {% render 'image-crop' with
+        image: image,
+        ratio: 0
+      %}      
+    </div>
+  </div>
+
+</section>
+
+{% schema %}
+  {
+    "name": "Text columns",
+    "settings": [
+
+    ],
+    "block": [
+      {
+        "type": "press",
+        "name": "Press",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "image_picker",
+            "id": "logo",
+            "label": "logo"
+          }
+        ]
+      }
+    ],
+    "presets": [{
+      "name": "Text columns"
+    }]
+  }
+  {% endschema %}

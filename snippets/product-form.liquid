@@ -1,0 +1,382 @@
+{%- assign product_form_id = 'product-form-' | append: section.id -%}
+{%- assign tab_counter = 0 -%}
+{%- for block in section.blocks -%}
+  {%- case block.type -%}
+    {%- when '@app' -%}
+      <div class="mt-8">
+      {%- render block -%}
+      </div>
+    {%- when 'janeapp_book_now' -%}
+	  <div class="{% if feature_product_section == true %}mt-4 mb-4{% else %}add-to-cart-container mt-8 lg:w-3/4{% endif %}">
+        <a href="https://aerskinlab.janeapp.com/" target="_blank" class="inline-flex justify-center items-center text-base px-8 py-2 rounded-full {% render 'button-color', section_color: section_color %} ">
+          <span class="{% if settings.button_uppercase %}uppercase{% endif %}">Book Now{% if settings.buttons_show_arrow %}&nbsp;&rarr;{% endif %}</span>
+        </a>
+	  </div>
+	{%- when 'treatment_comfort' -%}
+      {% render 'product-block-discomfort',
+        block: block
+        section_color: section_color
+      %}
+    {%- when 'title' -%}
+      <h1 {{ block.shopify_attributes }} class="product-title-block mt-4 break-words font-heading {{ settings.template_heading_size }}">
+        {%- if feature_product_section -%}<a href="{{ product.url }}">{%- endif -%}
+        {{ product.title }}
+        {%- if feature_product_section -%}
+        </a>
+        {%- endif -%}
+      </h1>
+    {%- when 'vendor' -%}
+      {%- liquid
+        assign use_collection_vendor_link = false
+        for collection in product.collections
+        if collection.title == product.vendor
+          assign use_collection_vendor_link = true
+          assign vendor_collection = collection
+          break
+        endif
+        endfor
+      -%}
+      {%- if use_collection_vendor_link -%}
+      <p {{ block.shopify_attributes }} class="relative z-10 product-vendor-block"><a class="text-base mt-4 text-{{ section_color }}-meta" href="{{ vendor_collection.url }}">{{ vendor_collection.title }}</a></p>
+      {%- else -%}
+      <p {{ block.shopify_attributes }} class="relative z-10 product-vendor-block text-base mt-4 text-{{ section_color }}-meta">{{ product.vendor | link_to_vendor }}</p>
+      {%- endif -%}
+    {%- when 'price' -%}
+      {%- liquid
+        if settings.template_heading_size contains "lg:"
+          assign price_text_size = 'text-base lg:text-2xl'
+        else
+          assign price_text_size = 'text-base'
+        endif
+      -%}
+      <div {{ block.shopify_attributes }} data-price-wrapper class="product-price-block mt-8 {{ price_text_size }}" :class="{ 'invisible': !current_variant }">
+        <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+        <span data-product-price x-html="formatMoney(current_price)" :class="{ 'text-{{ section_color }}-accent': current_variant && product.compare_at_price_max && current_variant.compare_at_price > current_variant.price, 'invisible': !current_variant }">
+          {{ current_variant.price | money }}
+        </span>
+
+        {% if product.compare_at_price_max > product.price %}
+        <template x-if="current_variant && product.compare_at_price_max && current_variant.compare_at_price > current_variant.price">
+          <span>
+            <span class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
+            <s data-compare-price
+              x-html="formatMoney(current_variant.compare_at_price)">
+              {% if current_variant.compare_at_price > current_variant.price %}
+                {{ current_variant.compare_at_price | money }}
+              {% endif %}
+            </s>
+          </span>
+        </template>
+        {% endif %}
+
+        <template x-if="current_variant && current_variant.unit_price">
+          <div class="text-sm" data-unit-price-wrapper>
+            <span class="visually-hidden">
+              {{- 'products.product.unit_price_label' | t -}}
+            </span>
+            <span x-html="formatMoney(current_variant.unit_price)">
+              {{- current_variant.unit_price | money -}}
+            </span>
+            <span aria-hidden="true">
+              /
+            </span>
+            <span class="visually-hidden">
+              {{- 'general.accessibility.unit_price_separator' | t -}}
+            </span>
+            <span x-html="current_variant.unit_price_measurement.reference_value != 1? current_variant.unit_price_measurement.reference_value :''">
+              {%- if current_variant.unit_price_measurement.reference_value != 1 -%}
+                {{- current_variant.unit_price_measurement.reference_value -}}
+              {%- endif -%}
+            </span><!--
+            --><span x-html="current_variant.unit_price_measurement.reference_unit">
+              {{- current_variant.unit_price_measurement.reference_unit -}}
+            </span>
+          </div>
+        </template>
+      </div>
+    {%- when 'variant_picker' -%}
+      {%- assign option_style = block.settings.option_style -%}
+      {% unless product.has_only_default_variant %}
+        {% for option in product.options_with_values %}
+          {% liquid
+            if settings.enable_color_swatches
+              assign is_color = false
+              assign swatch_trigger = 'products.product.color_swatch_trigger' | t | downcase
+              assign option_downcase = option.name | downcase
+              if option_downcase contains swatch_trigger
+                assign is_color = true
+              elsif swatch_trigger == 'color' and option_downcase contains 'colour'
+                assign is_color = true
+              endif
+            endif
+          %}
+          {% assign option_array_index = forloop.index0 %}
+          {%- assign label_class = 'block' -%}
+          {%- if block.settings.hide_option_labels -%}
+            {%- assign label_class = 'visually-hidden' -%}
+          {%- endif -%}
+
+          <fieldset class="product-variant-picker-block js-enabled mt-8">
+            {%- if option_style == 'drop_down' -%}
+              <label class="{{ label_class }}" for="Option{{ option.position }}">
+                {{ option.name }}:
+              </label>
+            {%- else -%}
+              <legend class="{{ label_class }}">
+                {{ option.name }}: {% if is_color %}<span x-text="options[{{ forloop.index0 }}]"></span>{% endif %}
+              </legend>
+            {%- endif -%}
+            {%- case option_style -%}
+              {%- when 'radio' -%}
+                <div class="mt-2">
+                  {% for value in option.values %}
+                    {% assign variant_label_state = true %}
+                    {% if product.options.size == 1 %}
+                      {% unless product.variants[forloop.index0].available %}
+                        {% assign variant_label_state = false %}
+                      {% endunless %}
+                    {% endif %}
+                    <div class="block relative variant-input">
+                      <input class="custom-input cursor-pointer absolute top-0 left-0 w-full h-full opacity-0" @change="optionChange()" type="radio" id="Option{{ option.position }}-{{ value | escape }}" name="options[{{ option.name }}]" value="{{ value | escape }}" data-handle="{{ value | handleize }}" {% if option.selected_value == value %} checked{% endif %} data-single-option-selector>
+                      <label class="flex items-center py-1  {% unless variant_label_state %}text-{{ section_color }}-meta line-through{% else %}cursor-pointer{% endunless %}" for="Option{{ option.position }}-{{ value | escape }}">
+                        <template x-if="optionHandles[{{ option_array_index }}] === '{{ value | handleize }}'">
+                          <span class="w-2 h-2 mr-1 inline-block rounded-full bg-{{ section_color }}-text border-checkbox border-{{ section_color }}-text"></span>
+                        </template>
+                        <template x-if="optionHandles[{{ option_array_index }}] !== '{{ value | handleize }}'">
+                          <span class="w-2 h-2 mr-1 inline-block rounded-full bg-transparent border-checkbox border-{{ section_color }}-text"></span>
+                        </template>
+                        <span>{{ value }}</span>
+                      </label>
+                    </div>
+                  {% endfor %}
+                </div>
+              {%- when 'text_underline' -%}
+                <div class="mt-2 flex flex-wrap items-center justify-start -mx-1">
+                  {% for value in option.values %}
+                    {% assign variant_label_state = true %}
+                    {% if product.options.size == 1 %}
+                      {% unless product.variants[forloop.index0].available %}
+                        {% assign variant_label_state = false %}
+                      {% endunless %}
+                    {% endif %}
+                    <div class="relative variant-input">
+                      <input class="custom-input cursor-pointer absolute top-0 left-0 w-full h-full opacity-0" @change="optionChange()" type="radio" id="Option{{ option.position }}-{{ value | escape }}" name="options[{{ option.name }}]" value="{{ value | escape }}" data-handle="{{ value | handleize }}" {% if option.selected_value == value %} checked{% endif %} data-single-option-selector>
+                      <label class="block p-1 {% unless variant_label_state %}text-{{ section_color }}-meta line-through{% else %}cursor-pointer{% endunless %}" for="Option{{ option.position }}-{{ value | escape }}">
+                        <span :class="{ 'border-b-text border-{{ section_color }}-text': optionHandles[{{ option_array_index }}] === '{{ value | handleize }}' }">{{ value }}</span>
+                      </label>
+                    </div>
+                  {% endfor %}
+                </div>
+              {%- when 'buttons' -%}
+                <div class="mt-2 flex flex-wrap items-center justify-start -mx-1">
+                  {% for value in option.values %}
+                    {% assign variant_label_state = true %}
+                    {% if product.options.size == 1 %}
+                      {% unless product.variants[forloop.index0].available %}
+                        {% assign variant_label_state = false %}
+                      {% endunless %}
+                    {% endif %}
+                    {% liquid
+                      assign color_image = value | handle | append: '.' | append: 'png' | file_img_url: '50x' | prepend: 'https:'
+                      assign color_swatch_fallback = value | split: ' ' | last | handle
+                    %}
+                    <div class="relative variant-input px-1">
+                      <input class="custom-input cursor-pointer absolute top-0 left-0 w-full h-full opacity-0" @change="optionChange()" type="radio" id="Section-{{ section.id }}-Option{{ option.position }}-{{ value | escape }}" name="options[{{ option.name }}]" value="{{ value | escape }}" data-handle="{{ value | handleize }}" {% if option.selected_value == value %} checked{% endif %} data-single-option-selector>
+                      <label
+                        :class="{ 'border-{{ section_color }}-text': optionHandles[{{ option_array_index }}] === '{{ value | handleize }}', 'border-transparent': optionHandles[{{ option_array_index }}] !== '{{ value | handleize }}' }"
+                        class="relative block {% unless is_color %}p-2 min-w-4{% else %}p-0.5{% endunless %} {% render 'button-style', section_color: section_color %} border-text text-center cursor-pointer  {% unless variant_label_state %}line-through{% endunless %} {% if is_color %}cursor-pointer{% endif %}" for="Section-{{ section.id }}-Option{{ option.position }}-{{ value | escape }}"
+                        title="{{ option.value }}"
+                        >
+                        {%- if is_color %}
+                        {%- unless variant_label_state -%}
+                          <span class="absolute top-0 left-0 bottom-0 z-10 h-0.5 w-full bg-{{ section_color }}-text transform top-1/2 -translate-y-1/2 -rotate-45"></span>
+                        {%- endunless -%}
+                        <span class="block w-10 h-10 {% render 'button-style', section_color: section_color %}" style="background-image: url({{ color_image }}); background-color: {{ color_swatch_fallback }};"></span>
+                        {%- endif -%}
+                        <span {% if is_color %}class="visually-hidden"{% endif %}>{{ value }}</span>
+                      </label>
+                    </div>
+                  {% endfor %}
+                </div>
+              {%- when 'drop_down' -%}
+                <select
+                  id="Option{{ option.position }}"
+                  @change="optionChange()"
+                  name="options[{{ option.name | escape }}]"
+                  class="mt-2  appearance-none rounded-none bg-{{ section_color }}-background text-{{ section_color }}-text border-b-text py-1 border-{{ section_color }}-text text-{{ section_color }}-text pr-6"
+                  data-single-option-selector>
+                  {% for value in option.values %}
+                    <option
+                      class="text-initial"
+                      value="{{ value | escape }}"
+                      data-handle="{{ value | handleize }}"
+                      {% if option.selected_value == value %}selected="selected"{% endif %}>
+                        {{ value }}
+                    </option>
+                  {% endfor %}
+                </select>
+            {% endcase %}
+          </fieldset>
+        {% endfor %}
+      {% endunless %}
+    {%- when 'quantity_selector' -%}
+      <div {{ block.shopify_attributes }} class="product-quantity-block mt-8">
+        <label class="{{ label_class }}" for="Quantity">{{ 'products.product.quantity' | t }}:</label>
+        <div class="mt-2 flex items-center -mx-2">
+          <button type="button" class="fill-current p-2 w-7 h-7" @click="if(quantity>0){quantity--}"
+                aria-label="'{ 'general.accessibility.decrement_one' | t }}">{% render 'icon-minus' %}</button>
+          <input form="{{ product_form_id }}" class="appearance-none bg-transparent w-10 text-center border-b-text border-{{ section_color }}-text p-2" type="number" id="Quantity" name="quantity" value="1" min="1" x-model="quantity" >
+          <button type="button" class="fill-current p-2 w-7 h-7"  @click="quantity++"
+                aria-label="{{ 'general.accessibility.increment_one' | t }}">{% render 'icon-plus' %}</button>
+        </div>
+      </div>
+    {%- when 'buy_buttons' -%}
+      {% form 'product', product, id: product_form_id, data-product-form: '', data-product-handle: product.handle, data-enable-history-state: 'true', data-product-form: '', x-ref: 'productForm' %}
+        {{ form | payment_terms }}
+
+        <div class="no-js hidden">
+          <label class="block mt-theme" for="variant_{{ section.id }}">Variant</label>
+          <select x-ref="singleVariantSelector" name="id" id="variant_{{ section.id }}" class="mt-2 appearance-none rounded-none bg-{{ section_color }}-background text-{{ section_color }}-text border-b-grid py-1 border-{{ section_color }}-text text-{{ section_color }}-text pr-6">
+            {% for variant in product.variants %}
+              <option
+                {% if variant == current_variant %}selected="selected"{% endif %}
+                {% unless variant.available %}disabled="disabled"{% endunless %}
+                x-bind:selected="currentVariantId === {{ variant.id }}"
+                value="{{ variant.id }}">
+                  {{ variant.title }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        {%- if settings.ajax_cart_method == 'page' or settings.show_cart_on_add == false -%}
+          <div  class="mt-4 mb-8"
+                x-show="addedToCart"
+                x-cloak
+                x-transition:enter="transition ease duration-300"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease duration-300"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0">
+            <p>{{ 'cart.popup.added_to_cart' | t }}!</p>
+            <p class="accent-links-{{ section_color }}">{{ 'products.product.add_to_cart_confirm_html' | t: cart_url: routes.cart_url, link_url: routes.all_products_collection_url }}.</p>
+          </div>
+        {%- endif -%}
+
+
+        <div class="add-to-cart-container {% if title_inline == true %}lg:w-full{% else %}mt-8 lg:w-3/4{% endif %}">
+          {%- if block.settings.enable_payment_button -%}
+            {%- capture cta_button_class -%}{% render 'button-style' %} bg-transparent text-{{ section_color }}-text border-text border-{{ section_color }}-text hover:border-{{ section_color }}-accent hover:text-{{ section_color }}-accent{%- endcapture -%}
+          {%- else -%}
+            {%- capture cta_button_class -%}{% render 'button-style' %} {% render 'button-color', section_color: section_color %}{%- endcapture -%}
+          {%- endif -%}
+
+          {% unless title_inline == true %}
+          <button
+            id="addToCartButton"
+            @click="$store.drawer.cartOpener = $event.currentTarget"
+            class="add-to-cart px-8 py-2 rounded-full transparent {% if settings.button_uppercase %}uppercase{% endif %} {{ cta_button_class }}
+            {% unless current_variant.available %}opacity-50 cursor-not-allowed{% endunless %}"
+            type="submit"
+            :class="{ 'opacity-50 cursor-not-allowed': !currentVariantAvailable }"
+            :disabled="!currentVariantAvailable || loading"
+            {% unless current_variant.available %}disabled="disabled"{% endunless %}>
+              <span class="no-js">
+                {% if current_variant.available %}
+                  {{ 'products.product.add_to_cart' | t }}{% if settings.buttons_show_arrow %}&nbsp;&rarr;{% endif %}
+                {% else %}
+                  {{ 'products.product.sold_out' | t }}
+                {% endif %}
+              </span>
+              <template x-if="current_variant">
+                <div>
+                  <template x-if="currentVariantAvailable">
+                    <span>{{ 'products.product.add_to_cart' | t }}{% if settings.buttons_show_arrow %}&nbsp;&rarr;{% endif %}</span>
+                  </template>
+                  <template x-if="!currentVariantAvailable">
+                    <span>{{ 'products.product.sold_out' | t }}</span>
+                  </template>
+                </div>
+              </template>
+              <template x-if="!current_variant">
+                <span> {{ 'products.product.unavailable' | t }}</span>
+              </template>
+          </button>
+          {% endunless %}
+
+          {%- if block.settings.enable_payment_button -%}
+            {%- assign button_color = settings.button_color -%}
+            {%- if button_color == 'transparent_background_text_border' -%}
+              {%- assign button_color = 'accent_background_text_border' -%}
+            {%- endif -%}
+            <div class="{% unless title_inline == true %}mt-2 {% endunless %}payment-button-wrapper rounded-full color-{{ section_color }} style-{{ button_color }} transparent">{{ form | payment_button }}</div>
+          {%- endif -%}
+
+        </div>
+      {% endform %}
+      {% if block.settings.show_pickup_availability %}
+        <template x-if="$store.availability.current_variant.available && currentVariantAvailability">
+          <div class="mt-4 lg:w-3/4 flex items-start" :class="{'opacity-50': $store.availability.loading}" :aria-busy="$store.availability.loading">
+            <div class="w-3 mr-3 pt-1">
+              <template x-if="currentVariantAvailability.available">
+                {% render 'icon-in-stock' %}
+              </template>
+              <template x-if="!currentVariantAvailability.available">
+                {% render 'icon-out-of-stock' %}
+              </template>
+            </div>
+            <div class="flex-auto">
+              <h2 x-html="currentVariantAvailability.pickup_text"></h2>
+              <small class="block mt-2" x-html="currentVariantAvailability.pickup_time"></small>
+              <button type="button" @click="$store.drawer.availabilityOpener = $event.currentTarget; $store.drawer.availabilityDrawerOpen = !$store.drawer.availabilityDrawerOpen" aria-haspopup="dialog" class="mt-2 hover:text-{{ section_color }}-accent text-sm items-center justify-center {% if settings.links_show_underline %}border-b-text border-{{ section_color }}-text hover:border-{{ section_color }}-accent pb-1{% endif %}">
+                <span class="{% if settings.links_uppercase %}uppercase{% endif %}" x-text="currentVariantAvailability.modal_text"></span>
+                {% if settings.links_show_arrow %}&nbsp;&rarr;{% endif %}
+              </button>
+            </div>
+          </div>
+        </template>
+        <div class=""
+            data-product-title="{{ product.title | escape }}"
+            data-has-only-default-variant="{{ product.has_only_default_variant }}"
+            data-base-url="{{ shop.url }}{{ routes.root_url }}"
+            data-section-color="{{ section_color }}"
+            data-store-availability>
+        </div>
+      {% endif %}
+    {%- when 'description' -%}
+      {%- liquid
+        assign enable_collapsible_tabs = block.settings.enable_collapsible_tabs
+        assign truncate_description = block.settings.truncate_description
+      -%}
+      {% render 'product-block-description',
+        enable_collapsible_tabs: enable_collapsible_tabs
+        truncate_description: truncate_description,
+        section_color: section_color
+      %}
+    {%- when 'text' -%}
+      {% render 'product-block-text', block: block %}
+    {%- when 'richtext' -%}
+      {% render 'product-block-richtext', block: block %}
+    {%- when 'collapsible_tab' -%}
+      {% render 'product-block-collapsible-tab',
+        block: block,
+        tab_counter: tab_counter
+      %}
+      {%- assign tab_counter = tab_counter | plus: 1 -%}
+    {%- when 'icon_list' -%}
+      {% render 'product-block-icon-list',
+        block: block
+        section_color: section_color
+      %}
+    {%- when 'popup' -%}
+      {% render 'product-block-popup',
+        block: block
+        section_color: section_color
+      %}
+    {%- when 'share_buttons' -%}
+      <div class="mt-8" {{ block.shopify_attributes }}>
+      {% render 'social-sharing', tag: 'h2', share_title: product.title, share_permalink: product.url, share_image: product, section_color: section_color %}
+      </div>
+  {%- endcase -%}
+{%- endfor -%}

@@ -1,0 +1,129 @@
+{
+  "sections": {
+    "1639768687b8cc27fd": {
+      "type": "featured-product",
+      "blocks": {
+        "16397686877311e9a7-0": {
+          "type": "title",
+          "settings": {}
+        },
+        "16397686877311e9a7-3": {
+          "type": "buy_buttons",
+          "settings": {
+            "enable_payment_button": true,
+            "show_pickup_availability": false
+          }
+        }
+      },
+      "block_order": [
+        "16397686877311e9a7-0",
+        "16397686877311e9a7-3"
+      ],
+      "settings": {
+        "product": "{{ product }}",
+        "desktop_image_width": "hidden",
+        "desktop_image_position": "left",
+        "desktop_content_position": "items-center",
+        "color_scheme": "primary",
+        "enable_video_looping": false
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "91363b54-598d-4618-be32-11b2ae2c4132": {
+          "type": "text",
+          "settings": {
+            "text": "About This Product",
+            "font": "heading",
+            "text_size": "text-base",
+            "icon": "none"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "enable_collapsible_tabs": false,
+            "truncate_description": false
+          }
+        },
+        "66218e99-f922-4488-a24e-e2a59fda6094": {
+          "type": "richtext",
+          "settings": {
+            "text": "<p><strong>BENEFITS<\/strong><\/p><p>{{ product.metafields.my_fields.benefits | metafield_tag }}<\/p>"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "option_style": "text_underline",
+            "hide_option_labels": false
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "enable_payment_button": true,
+            "show_pickup_availability": true
+          }
+        },
+        "215a2641-fa91-455b-9e60-c2a6c13e0e12": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "How to use",
+            "heading_text_style": "heading",
+            "content": "<p>{{ product.metafields.my_fields.how_to_use | metafield_tag }}<\/p>",
+            "page": "",
+            "icon": "none"
+          }
+        },
+        "d7629532-9169-4b18-9db3-6e23c5c842ac": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Full Ingredients",
+            "heading_text_style": "heading",
+            "content": "<p>{{ product.metafields.my_fields.ingredients | metafield_tag }}<\/p>",
+            "page": "",
+            "icon": "none"
+          }
+        }
+      },
+      "block_order": [
+        "91363b54-598d-4618-be32-11b2ae2c4132",
+        "description",
+        "66218e99-f922-4488-a24e-e2a59fda6094",
+        "variant_picker",
+        "buy_buttons",
+        "215a2641-fa91-455b-9e60-c2a6c13e0e12",
+        "d7629532-9169-4b18-9db3-6e23c5c842ac"
+      ],
+      "settings": {
+        "desktop_image_width": "one-half",
+        "desktop_image_position": "left",
+        "two_images_per_row": false,
+        "first_image_full_width": false,
+        "variant_image_behaviour": "swap",
+        "enable_image_zoom": false,
+        "enable_video_looping": false,
+        "color_scheme": "primary",
+        "override_header_footer_color_scheme": false
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "show_product_recommendations": true,
+        "product_recommendations_heading": "You may also like",
+        "limit": "4",
+        "products_per_row_desktop": "4",
+        "products_per_row_mobile": "1",
+        "color_scheme": "primary"
+      }
+    }
+  },
+  "order": [
+    "1639768687b8cc27fd",
+    "main",
+    "product-recommendations"
+  ]
+}

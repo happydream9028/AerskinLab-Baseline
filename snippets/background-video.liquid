@@ -1,0 +1,67 @@
+{% comment %}
+  Renders a background video component for
+  use with the JS component
+
+  Expects a relatively-positioned parent
+
+  Accepts:
+  - video: {Object} Video (required)
+  - fallback_image: {Object} Fallback image
+  - component_id: {String} Component ID (required)
+  - extra_classes: {String} Extra classes for the container
+
+  Usage:
+  {% render 'background-video'
+     extra_classes: 'video-with-text-overlay__background-video',
+     video: section.settings.video_url,
+     fallback_image: section.settings.fallback_image,
+     component_id: component_id,
+  %}
+{% endcomment %}
+
+{% liquid
+  if video contains 'youtube.com/watch'
+    assign video_type = 'youtube'
+    assign video_id = video | split: 'v='
+    assign video_id = video_id[1] | split: '&' | first
+  endif 
+  if video contains 'youtu.be/'
+    assign video_type = 'youtube'
+    assign video_id = video | split: '.be/'
+    assign video_id = video_id[1] | split: '&' | first
+  endif
+  if video contains 'mp4'
+    assign video_type = 'mp4'
+  endif 
+
+%}
+<div class="background-video {{ extra_classes }} absolute top-0 left-0 right-0 w-full h-full"
+     data-component-id="{{ component_id }}"
+     data-video-type="{{ video_type }}"
+     data-video-id="{{ video_id }}"
+     data-background-video>
+
+  {%- if video_type == 'youtube' -%}
+    <div id="player-{{ component_id }}"></div>
+    {%- if fallback_image -%}
+    {%- render 'image-object' with
+        image: fallback_image
+    -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- if video_type == 'mp4' -%}
+  <video class="object-cover absolute top-0 right-0 bottom-0 left-0 w-full h-full" autoplay muted loop muted playsinline>
+    {% comment %}theme-check-disable RemoteAsset{% endcomment %}
+    <source src="{{ video }}" type="video/mp4">
+    {% comment %}theme-check-enable RemoteAsset{% endcomment %}
+      {%- if fallback_image -%}
+      {%- render 'image-object' with
+          image: fallback_image
+      -%}
+      {%- endif -%}
+      Sorry, your browser doesn't support embedded videos.
+  </video>
+  {%- endif -%}
+  
+</div>

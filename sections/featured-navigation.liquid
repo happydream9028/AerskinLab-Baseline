@@ -1,0 +1,210 @@
+{%- liquid
+  assign section_color = section.settings.color_scheme 
+  assign menu = section.settings.menu 
+  assign text_size_mobile = section.settings.text_size_mobile
+  assign text_size_desktop = section.settings.text_size_desktop 
+  assign display = section.settings.display 
+  assign paragraph_separator = section.settings.paragraph_separator 
+  assign text_align = section.settings.text_alignment 
+  assign show_image_on_hover = section.settings.show_image_on_hover 
+  assign superscript = section.settings.superscript
+
+  case display
+    when 'paragraph'
+      assign list_class = "inline"
+    when 'list_mobile_paragraph_desktop'
+      assign list_class = "lg:inline"
+  endcase
+-%}
+
+<section class="featured-navigation bg-{{ section_color }}-background text-{{ section_color }}-text  border-t-grid border-grid-color" x-data="{ current_link: '' }">
+  <div class="section-x-padding py-theme">
+
+      {% if section.settings.show_title %}
+        <div class="bg-{{ section_color }}-background text-{{ section_color }}-text section-x-padding py-theme lg:flex items-end justify-between">
+          <h2 class="font-heading {{ settings.base_heading_size }} {{ heading_width_class }} break-words">{{ menu.title }}</h2>
+        </div>
+      {% endif %}
+    
+    <nav role="navigation" class="{{ text_size_mobile }} {{ text_size_desktop }} {{ text_align }} w-full" aria-label="{{ linklists[menu].title }}">
+      <ul class="space-y-1">
+        {%- for link in linklists[menu].links -%}
+          {%- liquid
+          assign image = blank
+          assign menu_item_is_collection = false
+          if show_image_on_hover 
+            case link.type 
+              when 'catalog_link' 
+                assign image = collections['all'].image | default: collections['all'].products.first.featured_image 
+              when 'collection_link' 
+                if link.object.image != blank or link.object.products.first != blank 
+                  assign image = link.object.image | default: link.object.products.first.featured_image 
+                endif 
+              when 'product_link' 
+                if link.object.featured_image != blank 
+                  assign image = link.object.featured_image 
+                endif 
+              when 'article_link' 
+                if link.object.image != blank 
+                  assign image = link.object.image 
+                endif 
+            endcase 
+          endif 
+
+          if superscript == 'product_count' 
+            case link.type 
+              when 'collection_link'
+                assign menu_item_is_collection = true
+                assign products_count = link.object.products_count
+            endcase
+          endif 
+          -%}
+          {%- if superscript != 'none' %}
+          {%- capture superscript_content -%}
+          <sup class="{%- if superscript == 'index' %}pr-1{%- else -%}pl-1{%- endif-%}">{%- if superscript == 'index' %}{{ forloop.index }}{%- endif -%}{%- if superscript == 'product_count' and menu_item_is_collection %}{{ products_count }}{%- endif -%}</sup>
+          {%- endcapture -%}
+          {%- endif -%}
+          <li class="{{ list_class }}">
+            <a href="{{ link.url }}" class="relative pr-6 font-heading hover:text-{{ section_color }}-accent break-words" x-on:mouseenter="current_link = '{{ link.title | handleize }}'" x-on:mouseleave="current_link = ''">
+              {% if superscript == 'index' %}{{ superscript_content }}{% endif %}<span class="hover:underline ml-4">{{ link.title }}</span>{% if superscript == 'product_count' and menu_item_is_collection %}{{ superscript_content }}{% endif %}
+            </a>
+            {%- if paragraph_separator != 'none' and display != 'list' and forloop.last == false -%}
+              <span class="{%- if display == 'list_mobile_paragraph_desktop' -%}hidden lg:inline{%- endif -%}">
+                {%- if paragraph_separator == 'hyphen' -%}-{%- endif -%}
+                {%- if paragraph_separator == 'emdash' -%}&mdash;{%- endif -%}
+                {%- if paragraph_separator == 'dot' -%}&middot;{%- endif -%}
+                {%- if paragraph_separator == 'bullet' -%}&bull;{%- endif -%}
+              </span>
+            {%- endif -%}
+            {%- if image != blank -%}
+              <div x-cloak class="hidden lg:block js-enabled fixed left-1/2 top-1/2 w-third-screen transform -translate-y-1/2 -translate-x-1/2 pointer-events-none z-10" x-show.transition.opacity.duration.200ms="current_link == '{{ link.title | handleize }}'">
+                  {% render 'responsive-image' with image: image, no_background: true %}
+              </div>
+            {%- endif -%}
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Featured navigation",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "menu",
+        "label": "Menu",
+        "default": "main-menu",
+        "info": "This menu won't show dropdown items"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_title",
+        "label": "Show title",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "text_size_mobile",
+        "label": "Text size - mobile",
+        "options": [
+          { "value": "text-sm", "label": "S"},
+          { "value": "text-base", "label": "M"},
+          { "value": "text-lg", "label": "L"},
+          { "value": "text-xl", "label": "XL"},
+          { "value": "text-2xl", "label": "2XL"}
+        ],
+        "default":   "text-2xl"
+      },
+      {
+        "type": "select",
+        "id": "text_size_desktop",
+        "label": "Text size - desktop",
+        "options": [
+          { "value": "default", "label": "Same as mobile"},
+          { "value": "lg:text-2xl","label":  "2XL"},
+          { "value": "lg:text-3xl", "label": "3XL"},
+          { "value": "lg:text-4xl", "label": "4XL"},
+          { "value": "lg:text-5xl", "label": "5XL" },
+          { "value": "lg:text-6xl", "label": "6XL" },
+          { "value": "lg:text-7xl", "label": "7XL" }
+        ],
+        "default":   "lg:text-5xl"
+      },
+      {
+        "type": "select",
+        "id": "display",
+        "label": "Display",
+        "options": [
+            { "value": "list", "label": "List"},
+            { "value": "paragraph", "label": "Paragraph"},
+            { "value": "list_mobile_paragraph_desktop", "label": "List mobile, paragraph desktop"}
+        ],
+        "default":   "list"
+      },
+      {
+        "type": "select",
+        "id": "paragraph_separator",
+        "label": "Paragraph word separator",
+        "options": [
+            { "value": "none", "label": "None"},
+            { "value": "hyphen", "label": "Hyphen"},
+            { "value": "emdash", "label": "Emdash"},
+            { "value": "dot", "label": "Dot"},
+            { "value": "bullet", "label": "Bullet"}
+        ],
+        "default":   "none"
+      },
+      {
+        "type": "select",
+        "id": "superscript",
+        "label": "Superscript",
+        "options": [
+            { "value": "none", "label": "None"},
+            { "value": "index", "label": "Index"},
+            { "value": "product_count", "label": "Collection products count"}
+        ],
+        "default":   "none"
+      },
+      {
+        "type": "select",
+        "id": "text_alignment",
+        "label": "Text alignment",
+        "options": [
+          { "value": "text-left", "label": "Left"},
+          { "value": "text-center", "label": "Center"},
+          { "value": "text-right", "label": "Right"}
+        ],
+        "default":   "text-left"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_image_on_hover",
+        "label": "Show menu images on hover",
+        "default": true
+      },
+      {
+        "type":      "header",
+        "content":   "Color"
+      },
+      {
+        "type": "select",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "options": [
+            { "value": "primary", "label": "Primary"},
+            { "value": "secondary", "label": "Secondary"},
+            { "value": "tertiary", "label": "Tertiary"}
+        ],
+        "default":   "primary"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured navigation"
+      }
+    ]
+  }
+{% endschema %}

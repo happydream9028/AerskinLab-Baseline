@@ -1,0 +1,242 @@
+{%- assign section_color = settings.cart_color_scheme -%}
+
+<section class="relative z-70" x-data="ThemeSection_cartDrawer()" x-init="mounted()" data-section-id="{{ section.id }}" data-section-type="cart-drawer" data-show-on-add="{{ settings.show_cart_on_add }}" x-cloak>
+  <div id="CartContainer"
+      class="fixed top-0 right-0 bottom-0 w-11/12 max-w-md bg-{{ section_color }}-background text-{{ section_color }}-text border-l-grid border-grid-color transform transition-transform overflow-y-auto"
+      x-show="$store.drawer.cartDrawerOpen"
+      x-transition:enter="transition ease duration-300"
+      x-transition:enter-start="opacity-0 translate-x-full"
+      x-transition:enter-end="opacity-100"
+      x-transition:leave="transition ease duration-300"
+      x-transition:leave-end="opacity-100 translate-x-full"
+      @click.away.prevent="$store.drawer.cartDrawerOpen = false"
+      role="dialog"
+      aria-modal="true"
+      data-cart-drawer
+      aria-labelledby="CartTitle">
+    <div class="top-0 relative flex items-center justify-between py-4 section-x-padding bg-{{ section_color }}-background border-b-grid border-grid-color">
+      <h1 id="CartTitle" class="" tabindex="-1">
+        {{ 'cart.general.title' | t }} -
+        <span x-text="$store.cartCount.countWithText()"></span>
+      </h1>
+      <button @click.prevent="$store.drawer.cartDrawerOpen = false" class="block w-5 h-5 top-0">
+        <span class="visually-hidden">{{ 'general.accessibility.close_modal' | t }}</span>
+        {% render 'icon-close' %}
+      </button>
+    </div>
+    <div class="flex flex-col h-full">
+      <template x-if="state && !state.item_count">
+        <div class="section-x-padding py-4">
+          <p class="supports-cookies text-align--center" x-text="theme.strings.cartEmpty"></p>
+          <p class="supports-no-cookies cookie-message" x-text="theme.strings.cartCookies"></p>
+        </div>
+      </template>
+      <template x-if="state && state.item_count">
+        <form action="{{ routes.cart_url }}"
+              method="post"
+              class="relative overflow-y-auto flex-auto"
+              novalidate>
+          <div class="grid grid-cols-1 gap-gutter bg-border">
+            <template x-for="(item, index) in state.items"
+                      :key="item.key">
+              <div class="flex py-4 section-x-padding transition bg-{{ section_color }}-background"
+                :class="{ 'opacity-50 cursor-wait': item.updating }"
+                :data-cart-item-index="(index + 1)"
+                :data-cart-item-key="item.key"
+                data-cart-row>
+
+                <template x-if="!(item.featured_image.url === null)">
+                  <div  class="flex-shrink-0 w-10 md:w-20 mr-4">
+                    {% comment %}
+                      Item Image, remove redundant tab stop
+                    {% endcomment %}
+                    <a :href="item.url" class="block" aria-hidden="true" tabindex="-1">
+                      <img class="w-full text-transparent"
+                        :src="getSizedImageUrl(item.featured_image.url, '110x')"
+                        :srcset="getCartImgSrcset(item.featured_image.url)"
+                        :width="item.featured_image.width"
+                        :height="item.featured_image.height"
+                        :alt="item.product_title"
+                        sizes="(min-width: 48em) 5rem, 3.5rem">
+                      <pre x-text="item.featured_image.src"></pre>
+                    </a>
+                  </div>
+                </template>
+
+                <div class="flex-auto">
+                  {% comment %}
+                    Item Meta
+                  {% endcomment %}
+                  <a class="f--heading font-size--m md--up--font-size--l color--active-text"
+                    :href="item.url"
+                    x-text="item.product_title"></a>
+                  <template x-if="item.variant_title">
+                    <p class="text-sm" x-text="item.variant_title"></p>
+                  </template>
+                  {% if settings.cart_vendor_enable %}
+                    <p class="text-sm" x-text="item.vendor"></p>
+                  {% endif %}
+                  <template x-if="item.selling_plan_allocation">
+                    <p class="text-sm" x-text="item.selling_plan_allocation.selling_plan.name"></p>
+                  </template>
+                  <template x-for="property in flatProperties(item.properties)"
+                    :key="property.name">
+                    <p class="text-sm">
+                      <span x-text="property.name"></span>:
+                      <span x-text="property.value"></span>
+                    </p>
+                  </template>
+
+                  <template x-if="item.line_level_discount_allocations.length">
+                    <ul class="lg:hidden mt-1 text-sm text-{{ section_color }}-accent"
+                        aria-label="{{ 'customer.order.discount' | t }}">
+                      <template x-for="allocation in item.line_level_discount_allocations">
+                        <li class="">
+                          <span x-text="allocation.discount_application.title"></span>
+                          <span class="whitespace-nowrap">&minus;<span x-html="formatMoney(allocation.amount)"></span></span>
+                        </li>
+                      </template>
+                    </ul>
+                  </template>
+
+                  {% comment %}
+                    Quantity
+                  {% endcomment %}
+                  <div class="flex mt-1 lg:mt-2 items-center">
+                    <button class="w-6 p-1"
+                      data-qty-adjust="minus"
+                      @click.prevent="qtyAdjust($event, item)"
+                      :aria-label="'{{ 'general.accessibility.decrement_one' | t }} ' + item.title">
+                      {% render 'icon-minus' %}
+                    </button>
+                    <input type="text"
+                      name="updates[]"
+                      class="min-w-0 w-6 py-1 text-center text-sm border-b-text border-current bg-transparent"
+                      min="1"
+                      aria-label="{{ 'cart.label.quantity' | t }}"
+                      data-qty-input
+                      pattern="[0-9]*"
+                      data-qty-adjust="set"
+                      @keyup.debounce.1000ms="keyupOnInput($event)"
+                      @change="qtyAdjust($event, item)"
+                      x-model.number="item.quantity"
+                      autocomplete="off" />
+                    <button class="w-6 p-1"
+                      data-qty-adjust="plus"
+                      @click.prevent="qtyAdjust($event, item)"
+                      :aria-label="'{{ 'general.accessibility.increment_one' | t }} ' + item.title">
+                    {% render 'icon-plus' %}
+                    </button>
+                  </div>
+
+                  <button class="none lg:inline-block mt-1 lg:mt-2 text-sm"
+                    data-qty-adjust="remove"
+                    @click.prevent="qtyAdjust($event, item)">
+                    <small>{{ 'cart.general.remove' | t }} </small>
+                    <span class="visually-hidden" x-text="item.title"></span>
+                  </button>
+                </div>
+                <div class="ml-1 text-right">
+                  {% comment %}
+                    Price
+                  {% endcomment %}
+                  <template x-if="item.line_level_discount_allocations.length">
+                    <div>
+                      <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+                      <del class="line-through" x-html="formatMoney(item.original_price)"></del>
+                      <span class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
+                      <span class="" x-html="formatMoney(item.final_line_price)"></span>
+                    </div>
+                  </template>
+                  <template x-if="!item.line_level_discount_allocations.length">
+                    <span class="" x-html="formatMoney(item.final_line_price)"></span>
+                  </template>
+                  <template x-if="item.unit_price_measurement">
+                    <div class="text-xs">
+                      <span x-html="formatMoney(item.unit_price)"></span> /
+                      <span x-text="item.unit_price_measurement.reference_value"></span>
+                      <span x-text="item.unit_price_measurement.reference_unit"></span>
+                    </div>
+                  </template>
+                  <template x-if="item.line_level_discount_allocations.length">
+                    <ul class="hidden lg:block mt-1 text-sm text-{{ section_color }}-accent"
+                        aria-label="{{ 'customer.order.discount' | t }}">
+                      <template x-for="allocation in item.line_level_discount_allocations">
+                        <li class="">
+                          <span x-text="allocation.discount_application.title"></span>
+                          <span class="whitespace-nowrap">&minus;<span x-html="formatMoney(allocation.amount)"></span></span>
+                        </li>
+                      </template>
+                    </ul>
+                  </template>
+                </div>
+              </div>
+            </template>
+          </div>
+          {% if settings.cart_notes_enable %}
+            <div class="border-t-grid border-grid-color py-4 section-x-padding">
+              <label for="CartSpecialInstructions"
+                    class="text-sm">
+                {{ 'cart.general.note' | t }}
+              </label>
+              <textarea name="note"
+                        id="CartSpecialInstructions"
+                        class="block mt-1 p-2 w-full border-text border-current text-sm bg-transparent"
+                        :class="{ 'opacity-50 cursor-wait' : noteUpdating }"
+                        x-text="state.note"
+                        @keyup.debounce.1000ms="keyupOnInput($event)"
+                        @change="updateNote($event)">
+              </textarea>
+            </div>
+          {% endif %}
+          <div class="bottom-0 py-4 section-x-padding bg-{{ section_color }}-background border-t-grid border-grid-color">
+            <div :class="{ 'opacity-50  cursor-wait': updating }">
+              <template x-if="state.cart_level_discount_applications.length"
+                        x-for="application in state.cart_level_discount_applications">
+                <p class="flex justify-between text-{{ section_color }}-accent">
+                  <span class="visually-hidden">{{ 'customer.order.discount' | t }}</span>
+                  <span x-text="application.title"></span>
+                  <span class="ml-2" x-html="formatMoney(application.total_allocated_amount)"></span>
+                </p>
+              </template>
+              <p class="flex justify-between">
+                <span>{{ 'cart.general.subtotal' | t }}</span>
+                <span class="ml-2" x-html="formatMoney(state.total_price)"></span>
+              </p>
+
+              {%- capture taxes_shipping_checkout -%}
+                {%- if shop.taxes_included and shop.shipping_policy.body != blank -%}
+                  {{ 'cart.general.taxes_included_and_shipping_policy_html' | t: link: shop.shipping_policy.url }}
+                {%- elsif shop.taxes_included -%}
+                  {{ 'cart.general.taxes_included_but_shipping_at_checkout' | t }}
+                {%- elsif shop.shipping_policy.body != blank -%}
+                  {{ 'cart.general.taxes_and_shipping_policy_at_checkout_html' | t: link: shop.shipping_policy.url }}
+                {%- else -%}
+                  {{ 'cart.general.taxes_and_shipping_at_checkout' | t }}
+                {%- endif -%}
+              {%- endcapture -%}
+
+              <p class="my-2 md:my-4 text-sm accent-links-{{ section_color }} text-right">
+                {{ taxes_shipping_checkout }}
+              </p>
+              <div class="text-right">
+                <div>
+                  <input type="submit"
+                      name="checkout"
+                      class="cursor-pointer py-2 px-4 w-full {% render 'button-style', section_color: section_color %} {% render 'button-color', section_color: section_color %}"
+                      :disabled="updating"
+                      value="{{ 'cart.general.checkout' | t }}">
+                </div>
+                {% if additional_checkout_buttons and settings.cart_additional_buttons %}
+                  <div class="w-full md:mt-2 additional-checkout-buttons {% render 'button-style' %}">
+                    {{ content_for_additional_checkout_buttons }}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </form>
+      </template>
+    </div>
+  </div>
+</section>

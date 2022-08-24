@@ -1,0 +1,48 @@
+<!-- /snippets/social-sharing.liquid -->
+{%- liquid
+  unless tag 
+    assign tag = 'h2' 
+  endunless 
+-%}
+<div class="social-sharing text-base flex flex-wrap items-center  text-{{ section_color }}-meta {% if settings.sharing_display == 'icons' %}items-center{% else %}items-top{% endif %} {% if align == 'center' %}justify-center{% else %}justify-start{% endif %}">
+
+  <{{ tag }} class="w-full lg:w-auto lg:mr-2">{{ 'general.social.title' | t }}:</{{ tag }}>
+
+  <div class="flex items-center justify-start flex-wrap">
+    {% if settings.share_facebook %}
+      <a class="my-1 {% if settings.sharing_display == 'icons' %}p-2{% else %}mr-2{% endif %} {% if settings.sharing_display == 'text' %}{% if settings.links_show_underline %}border-b-text border-{{ section_color }}-meta hover:border-{{ section_color }}-accent hover:text-{{ section_color }}-accent py-1{% endif %}{% endif %}" target="_blank" href="//www.facebook.com/sharer.php?u={{ shop.url | append: share_permalink }}">
+        {%- if settings.sharing_display == 'icons' %}
+        <span class="inline-block w-4 h-4">{% render 'icon-facebook' %}</span>
+        {%- else -%}
+        <span class="{% if settings.links_uppercase %}uppercase{% endif %}">{{ 'general.social.facebook' | t }}</span>
+        {%- endif -%}
+        <span class="visually-hidden">{{ 'general.social.alt_text.share_on_facebook' | t }}</span>
+      </a>
+    {% endif %}
+
+    {% if settings.share_twitter %}
+      <a class="my-1 {% if settings.sharing_display == 'icons' %}p-2{% else %}mr-2{% endif %} {% if settings.sharing_display == 'text' %}{% if settings.links_show_underline %}border-b-text border-{{ section_color }}-meta hover:border-{{ section_color }}-accent hover:text-{{ section_color }}-accent py-1{% endif %}{% endif %}" target="_blank"
+        href="//twitter.com/share?text={{ share_title | url_param_escape }}&amp;url={{ shop.url | append: share_permalink }}">
+        {%- if settings.sharing_display == 'icons' %}
+        <span class="inline-block w-4 h-4">{% render 'icon-twitter' %}</span>
+        {%- else -%}
+        <span class="{% if settings.links_uppercase %}uppercase{% endif %}">{{ 'general.social.twitter' | t }}</span>
+        {%- endif -%}
+        <span class="visually-hidden">{{ 'general.social.alt_text.share_on_twitter' | t }}</span>
+      </a>
+    {% endif %}
+
+    {% if settings.share_pinterest and share_image != blank %}
+      <a class="my-1 {% if settings.sharing_display == 'icons' %}p-2{% else %}mr-2{% endif %} {% if settings.sharing_display == 'text' %}{% if settings.links_show_underline %}border-b-text border-{{ section_color }}-meta hover:border-{{ section_color }}-accent hover:text-{{ section_color }}-accent py-1{% endif %}{% endif %}" target="_blank"
+        href="//pinterest.com/pin/create/button/?url={{ shop.url | append: share_permalink }}&amp;media={{ share_image | img_url: '1024x1024' }}&amp;description={{ share_title | url_param_escape }}">
+        {%- if settings.sharing_display == 'icons' %}
+        <span class="inline-block w-4 h-4">{% render 'icon-pinterest' %}</span>
+        {%- else -%}
+        <span class="{% if settings.links_uppercase %}uppercase{% endif %}">{{ 'general.social.pinterest' | t }}</span>
+        {%- endif -%}
+        <span class="visually-hidden">{{ 'general.social.alt_text.share_on_pinterest' | t }}</span>
+      </a>
+    {% endif %}
+  </div>
+
+</div>

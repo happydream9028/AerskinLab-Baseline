@@ -1,0 +1,328 @@
+{%- liquid
+  assign section_color = 'primary' 
+  assign text_align = section.settings.text_alignment 
+  assign ratio = section.settings.crop | plus: 0
+  assign hide_borders = section.settings.hide_borders
+  assign text_size_mobile = section.settings.text_size_mobile
+-%}
+<style>
+  .data_more_less_inner{overflow:hidden;margin-bottom:20px;position:relative}.action_less{display:none}.less_active .action_less{display:inline-block}.less_active .action_more{display:none}.data_more_less:not(.less_active):not(.action_disabled) .data_more_less_inner:after{content:'';display:block;position:absolute;bottom:0;left:0;width:100%;background:-moz-linear-gradient(top,rgba(255,255,255,0) 0,#fff 100%);background:-webkit-linear-gradient(top,rgba(255,255,255,0) 0,#fff 100%);background:linear-gradient(to bottom,rgba(255,255,255,0) 0,#fff 100%);height:80px}.data_more_less.action_disabled .more_less_action{display:none}
+</style>
+<section class="p-8 lg:p-16 bg-{{ section_color }}-background {% unless hide_borders %}border-t-grid border-grid-color bg-border{% endunless %}">
+  <div class="lg:col-span-1">
+  {% if section.settings.title != '' %}
+    {%- render 'section-title',
+      title: section.settings.title,
+      section_color: section_color
+    -%}
+  {% endif %}
+  </div>
+  
+  <ul class="grid grid-cols-1 lg:grid-cols-12{% unless hide_borders %} gap-theme{% endunless %}">
+    {% for block in section.blocks %}
+      {%- assign block_color = block.settings.color_scheme -%}
+      <li class="lg:col-span-6 bg-{{ block_color }}-background text-{{ block_color }}-text text-base {{ text_align }} " {{ block.shopify_attributes }}>
+        <div class="grid grid-cols-1 lg:grid-cols-12{% if block.settings.reverse %} direction-rtl{% endif %}">
+          {%- if block.settings.show_image -%}
+            {%- if block.settings.image != blank -%}
+            <div class="lg:col-span-6 bg-{{ block_color }}-background {% unless settings.fill_image_to_border_edge %}pt-2 px-2 lg:pt-4 lg:px-4{% endunless %}">
+              <div class="relative">
+                {%- assign image = block.settings.image -%}
+                {% render 'image-crop' with
+                  image: image,
+                  ratio: ratio
+                %}
+              </div>
+            </div>
+            {%- else -%}
+            <div class="lg:col-span-6 bg-{{ block_color }}-background {% unless settings.fill_image_to_border_edge %}pt-2 px-2 lg:pt-4 lg:px-4{% endunless %}">
+              <div class="relative h-full w-full">
+                {%- if section.settings.crop == '0' -%}
+                  <div class="gallery-placeholder  bg-placeholder-bg ">
+                    {%- if settings.fill_image_to_border_edge -%}
+                      {% assign placeholder_svg_tag = 'placeholder-svg placeholder-svg--no-border' %}
+                    {%- else -%}
+                      {% assign placeholder_svg_tag = 'placeholder-svg' %}
+                    {%- endif -%}
+                    {{ 'image' | placeholder_svg_tag: placeholder_svg_tag }}
+                  </div>
+                {%- else -%}
+                  <div class="gallery-placeholder--cropped relative  bg-placeholder-bg "
+                    style="padding-top:{{ 1 | divided_by: ratio | times: 100 }}%;" >
+                    {%- if settings.fill_image_to_border_edge -%}
+                      {% assign placeholder_svg_tag = 'placeholder-svg fill-current gallery-placeholder--cropped__svg placeholder-svg--no-border' %}
+                    {%- else -%}
+                      {% assign placeholder_svg_tag = 'placeholder-svg fill-current  gallery-placeholder--cropped__svg' %}
+                    {%- endif -%}
+                    <span class="absolute top-0 left-0 right-0 bottom-0 text-text">{{ 'image' | placeholder_svg_tag: placeholder_svg_tag }}</span>
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+            {%- endif -%}
+          {%- endif -%}
+
+          <div class="lg:col-span-6 section-x-padding py-theme">
+            <div class="flex flex-col justify-start h-full px-4 lg:max-w-xs m-auto">
+              {% if block.settings.title != '' %}
+              <h2 class="font-heading {{ settings.heading_heading_size }}">{{ block.settings.title }}</h2>
+              {% endif %}
+              <div class="data_more_less rte {% if block.settings.title != '' %}mt-2{% endif %} {{ text_size_mobile }} {{ text_size_desktop }}">
+                <div class="data_more_less_inner" data-height="300" data-increase-by="800">
+                  <div class="data_more_less_body direction-ltr">
+                    {{ block.settings.text }}
+                  </div>
+                </div>
+                
+                <div class="product-page-popup-link  mt-8 " x-data="ThemeComponent_PopUp()" x-init="mounted()">
+                  <div class="js-enabled" {{ block.shopify_attributes }}>
+                    <button
+                      @click="open = true"
+                      x-ref="trigger"
+                      aria-haspopup="dialog"
+                      class="cursor-pointer  {{ color_class }} {% if block.settings.icon != 'none' %}inline-flex justify-start items-center{% endif %}">
+                      {% if block.settings.icon != 'none' %}<span class="inline-block w-5 h-5 mr-2">{% render 'product-icon', icon: block.settings.icon %}</span>{% endif %}
+                      <span class="{% if settings.links_show_underline %}border-b-text {{ border_class }}{% endif %} py-1 ">Read More</span>
+                    </button>
+                  </div>
+                  <div x-show="open" x-ref="modal" class="product-popup-modal fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center p-8 lg:p-24 z-100" x-cloak>
+                    <div @click.away.prevent="open = false" class="section-x-padding py-theme opacity-90 bg-{{ section_color }}-background text-{{ section_color }}-text w-full max-w-2xl relative max-h-full overflow-auto"
+                        role="dialog" aria-label="{{ block.settings.link_label }}" aria-modal="true" tabindex="-1">
+                      <button x-ref="close" @click="open = false" type="button"  class="block p-1 w-8 ml-auto absolute top-2 right-2" autofocus>
+                        <span class="visually-hidden">{{ 'general.accessibility.close_modal' | t }}</span>
+                        <span class="inline-block w-5 h-5">{% render 'icon-close' %}</span>
+                      </button>
+                      <div class="product-popup-modal__content-info">
+                        <h2 class="font-heading {{ settings.base_heading_size }}">{{ block.settings.title }}</h2>
+                        <div class="rte mt-8 direction-ltr">{{ block.settings.text }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div x-show="open" class="bg-{{ section_color }}-text fixed top-0 left-0 right-0 bottom-0 z-99 opacity-50" x-cloak></div>
+                  <noscript>
+                    <a href="{{ block.settings.page.url }}" class="{% if block.settings.icon != 'none' %}inline-flex justify-start items-center{% endif %}">
+                      {% if block.settings.icon != 'none' %}<span class="inline-block w-5 h-5 mr-2">{% render 'product-icon', icon: block.settings.icon %}</span>{% endif %}
+                      <span class="{% if settings.links_show_underline %}border-b-text {{ border_class }}{% endif %} py-1 ">{{ block.settings.text }}</span>
+                    </a>
+                  </noscript>
+                </div>
+
+              </div>
+
+              {% if block.settings.cta_link %}
+              <div class="mt-4 text-0">
+                {%- case section.settings.cta_style -%}
+                {%- when 'link' -%}
+                  {%- render 'link-underline',
+                    section_color: section_color,
+                    text: block.settings.cta_text,
+                    link: block.settings.cta_link,
+                  -%}
+                {%- when 'button' -%}
+                  <a href="{{ block.settings.cta_link }}" class="inline-flex justify-center items-center text-base px-8 py-2 rounded-full {% render 'button-color', section_color: section_color %} ">
+                    <span class="{% if settings.button_uppercase %}uppercase{% endif %}">{{ block.settings.cta_text }}{% if settings.buttons_show_arrow %}&nbsp;&rarr;{% endif %}</span>
+                  </a>
+                {%- endcase -%}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+  function actionMoreLess(){
+    var boxOuter = ".data_more_less",
+        boxInner = ".data_more_less_inner",
+        boxBody = ".data_more_less_body",
+        showMore = $(".action_more"),
+        showLess = $(".action_less");
+    $(boxInner).each(function(){
+      var $this = $(this),
+          bodyDataH = $this.find(boxBody).height();
+      $this.css("max-height", $this.data("height"));
+      var $thisH = $this.height();
+      if(bodyDataH > $thisH){
+        $this.closest(boxOuter).removeClass("action_disabled");
+      } else {
+        $this.closest(boxOuter).addClass("action_disabled");
+      }
+    })
+    showMore.click(function(e){
+      e.preventDefault();
+      var $this = $(this),
+          boxInnerH = $this.closest(boxOuter).find(boxInner).height(),
+          boxInnerUpdate = boxInnerH + $this.closest(boxOuter).find(boxInner).data("increase-by"),
+          boxBodyH = $this.closest(boxOuter).find(boxBody).height();
+      setTimeout(function(){
+        if(boxBodyH > boxInnerUpdate){
+          $this.closest(boxOuter).removeClass("less_active").find(boxInner).css("max-height", boxInnerUpdate);
+        } else {
+          $this.closest(boxOuter).addClass("less_active").find(boxInner).css("max-height", "none");
+        }
+      },10);
+    });
+    showLess.click(function(){
+      $(this).closest(boxOuter).removeClass("less_active").find(boxInner).css("max-height", $(this).closest(boxOuter).find(boxInner).data("height"));
+      return false;
+    });
+  } actionMoreLess();
+</script>
+
+{% schema %}
+  {
+    "name": "Our Team",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading"
+      },
+      {
+        "type": "select",
+        "id": "crop",
+        "label": "Crop images",
+        "options": [
+          {
+            "value": "0",
+            "label": "No crop"
+          },
+          {
+            "value": "1.3",
+            "label": "Landscape"
+          },
+          {
+            "value": "1",
+            "label": "Square"
+          },
+          {
+            "value": "0.8",
+            "label": "Portrait"
+          }
+        ],
+        "default": "1"
+      },
+      {
+        "type": "select",
+        "id": "text_alignment",
+        "label": "Text alignment",
+        "options": [
+          { "value": "text-left", "label": "Left"},
+          { "value": "text-center", "label": "Center"},
+          { "value": "text-right", "label": "Right"}
+        ],
+        "default":   "text-left"
+      },
+      {
+        "type": "checkbox",
+        "id": "hide_borders",
+        "label": "Hide borders",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "cta_style",
+        "label": "Style",
+        "options": [
+          { "value": "link", "label": "Link"},
+          { "value": "button", "label": "Button"}
+        ],
+        "default":   "link"
+      },
+      {
+        "type": "select",
+        "id": "text_size_mobile",
+        "label": "Text size",
+        "options": [
+          { "value": "text-sm", "label": "S"},
+          { "value": "text-base", "label": "M"},
+          { "value": "text-lg", "label": "L"}
+        ],
+        "default":   "text-sm"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "column",
+        "name": "Column",
+        "limit": 10,
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "show_image",
+            "label": "Show image",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "reverse",
+            "label": "Reverse Image and text",
+            "default": false
+          },
+          {
+            "id": "image",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Share blog posts, products, or promotions with your customers. Use this text to describe products, share details on availability and style, or as a space to display recent reviews or FAQs.</p>"
+          },
+          {
+            "type":      "header",
+            "content":   "Call to action"
+          },
+          {
+            "type": "url",
+            "id": "cta_link",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "cta_text",
+            "label": "Text"
+          },
+          {
+            "type":      "header",
+            "content":   "Color"
+          },
+          {
+            "type": "select",
+            "id": "color_scheme",
+            "label": "Color scheme",
+            "options": [
+                { "value": "primary", "label": "Primary"},
+                { "value": "secondary", "label": "Secondary"},
+                { "value": "tertiary", "label": "Tertiary"}
+            ],
+            "default":   "primary"
+          }
+        ]
+      }
+    ],
+    "presets": [{
+        "name": "Our Team",
+        "blocks": [
+          {
+            "type": "column"
+          },
+          {
+            "type": "column"
+          },
+          {
+            "type": "column"
+          }
+        ]
+    }]
+  }
+{% endschema %}

@@ -1,0 +1,81 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page-faqs",
+      "blocks": {
+        "85e81dd7-b20d-43a0-811a-2b8a14441374": {
+          "type": "info",
+          "settings": {
+            "heading": "What clothing should I wear to my appointment?",
+            "content": "<p>We suggest wearing something comfortable to your appointment with us. With Bodysculpting, you will want to wear something loose fitting and easy to put on as you may have sensitive areas depending on what we are treating. During your consultation, our treatment provider or doctor will advise you how to dress and what to expect.<\/p>"
+          }
+        },
+        "3a5ed24c-73f4-4434-a5ab-7f7686e177b8": {
+          "type": "info",
+          "settings": {
+            "heading": "How should I prepare for my appointment?  ",
+            "content": "<p>Before you come in for your treatment, pre and post care instructions will be sent out for you to read over; follow to ensure that you are well prepared. <\/p><p><br\/>We always recommend being hydrated and no recent excessive sun exposure if we are treating with lasers or Bodysculpting. This ensures that you receive the best results. It’s always good and recommended to have a light snack before your procedure to avoid getting light headed. If you do experience this, we will always provide you with water, juice, or something sweet to bring the blood sugar back up to ensure your comfort. <br\/><br\/><strong>Please refrain from alcohol the night before and 24 hours post treatment, as it may lead to more bruising and swelling. <\/strong><br\/><br\/>Depending on the treatment, we may recommend taking an aspirin 1 hour before, to ensure extra comfort. We do offer topical numbing cream before certain procedures as well. Pre care will always be explained thoroughly by our knowledgeable team so we make sure you are well prepared.<\/p>"
+          }
+        },
+        "96795882-00f5-4a1a-9fa7-fa825fdc68e3": {
+          "type": "info",
+          "settings": {
+            "heading": "Do you take walk-in appointments? ",
+            "content": "<p>Walk ins are welcome during our hours of operation; in fact we encourage you to come in and see our new space! <br\/><br\/>We do always require a consultation to be booked, before going forward with any treatment we offer. This way you can receive a thorough and proper assessment from our technician\/physician, and they can recommend an appropriate treatment plan from there. With first time consultations, we do require a deposit that will be used towards your treatment with us. <br\/><br\/>Depending on the treatment providers schedule, we may be able to get you booked in for a consultation on that day. If we do not have the space, we will make sure it happens at our earliest convenience. We are always here and available to help you out with any skincare recommendations and introduce you to our very own AE.R Skin line.<\/p>"
+          }
+        },
+        "c934ef0f-d01a-46e5-b6af-2670d31678ec": {
+          "type": "info",
+          "settings": {
+            "heading": "What's your cancellation policy?",
+            "content": "<p>We require a 48 hours notice for any cancellations or changes made to your appointment, reachable by phone-call or email.<br\/><br\/>Patients who provide less than 48 hours of notice or no show will be required to pay a cancellation fee.<\/p>"
+          }
+        },
+        "fe0251dd-4ba3-41d7-8374-e42bf22561a2": {
+          "type": "info",
+          "settings": {
+            "heading": "What's your return \/ refund policy?",
+            "content": "<p>Products are non-refundable unless an allergic reaction occurs or there is a defect product received. We can then issue an exchange for you.<\/p>"
+          }
+        },
+        "51a5a5d2-232a-4193-9d8b-ed5fb8651e99": {
+          "type": "info",
+          "disabled": true,
+          "settings": {
+            "heading": "Enter topic Here",
+            "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <\/p>"
+          }
+        },
+        "7090dcd5-1929-47ac-8c4d-d6832d62e3fb": {
+          "type": "info",
+          "disabled": true,
+          "settings": {
+            "heading": "Enter topic Here",
+            "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "85e81dd7-b20d-43a0-811a-2b8a14441374",
+        "3a5ed24c-73f4-4434-a5ab-7f7686e177b8",
+        "96795882-00f5-4a1a-9fa7-fa825fdc68e3",
+        "c934ef0f-d01a-46e5-b6af-2670d31678ec",
+        "fe0251dd-4ba3-41d7-8374-e42bf22561a2",
+        "51a5a5d2-232a-4193-9d8b-ed5fb8651e99",
+        "7090dcd5-1929-47ac-8c4d-d6832d62e3fb"
+      ],
+      "settings": {
+        "content": "<p>Frequently asked questions<\/p>",
+        "button_style": "solid",
+        "cta_text": "contact us",
+        "cta_link": "shopify:\/\/pages\/contact",
+        "gradient_1": "#000000",
+        "gradient_2": "#000000",
+        "gradient_3": "#000000"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

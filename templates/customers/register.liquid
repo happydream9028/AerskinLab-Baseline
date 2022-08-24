@@ -1,0 +1,70 @@
+<section class="text-tertiary-text bg-tertiary-background py-theme-double">
+  <div class="pt-2 pb-8 max-w-md mx-auto rounded-lg border border-primary-text bg-primary-background" x-data="BaselineLogin()" x-init="mounted()">
+    
+    <div class="border-primary-text border-b-grid mb-4">
+      <img src="{{ settings.logo | img_url: '400x' }}" style="width: 300px;margin: 20px auto;">
+    </div>
+    
+    <div class="px-8">
+    <h1 class="font-heading text-2xl mb-2">{{ 'customer.register.title' | t }}</h1>
+
+    {%- assign formId = 'RegisterForm' -%}
+    {% form 'create_customer', id: formId %}
+
+      {% render 'form-status', form: form, form_id: formId, section_color: 'primary' %}
+
+      <label for="FirstName" class="block mt-4">
+        {{ 'customer.register.first_name' | t }}
+      </label>
+      <input type="text"
+        class="w-full py-1 bg-transparent border-b-text border-current"
+        name="customer[first_name]"
+        id="FirstName"
+        {% unless form.errors %}autofocus{% endunless %}
+        {% if form.first_name %}value="{{ form.first_name }}"{% endif %}>
+
+      <label for="LastName" class="block mt-4">
+        {{ 'customer.register.last_name' | t }}
+      </label>
+      <input type="text"
+        class="w-full py-1 bg-transparent border-b-text border-current"
+        name="customer[last_name]"
+        id="LastName"
+        {% if form.last_name %}value="{{ form.last_name }}"{% endif %}>
+
+      <label for="Email" class="block mt-4">
+        {{ 'customer.register.email' | t }}
+      </label>
+      <input type="email"
+        name="customer[email]"
+        id="Email"
+        class="w-full py-1 bg-transparent border-b-text border-current {% if form.errors contains 'email' %}border-theme-color{% endif %}"
+        value="{% if form.email %}{{ form.email }}{% endif %}"
+        spellcheck="false"
+        autocomplete="off"
+        autocapitalize="off">
+
+      <label for="CreatePassword" class="block mt-4">
+        {{ 'customer.register.password' | t }}
+      </label>
+      <input type="password"
+        class="w-full py-1 bg-transparent border-b-text border-current {% if form.errors contains 'password' %}border-theme-color{% endif %}"
+        name="customer[password]"
+        id="CreatePassword">
+
+      <div class="mt-4">
+        <input type="submit" value="{{ 'customer.register.submit' | t }}" class="button">
+      </div>
+
+      <div class="mt-8 md:flex md:justify-between">
+        {%- assign text = 'customer.login.sign_in' | t -%}
+        {%- render 'link-underline',
+          section_color: 'primary',
+          text: text,
+          link: routes.account_login_url,
+        -%}
+      </div>
+    {% endform %}
+    </div>
+  </div>
+</section>

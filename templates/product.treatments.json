@@ -1,0 +1,139 @@
+{
+  "sections": {
+    "1639768687b8cc27fd": {
+      "type": "featured-product",
+      "blocks": {
+        "16397686877311e9a7-0": {
+          "type": "title",
+          "settings": {}
+        },
+        "f2f4e5f5-1b4f-45bb-af5f-5cce887e9122": {
+          "type": "janeapp_book_now",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "16397686877311e9a7-0",
+        "f2f4e5f5-1b4f-45bb-af5f-5cce887e9122"
+      ],
+      "settings": {
+        "product": "{{ product }}",
+        "desktop_image_width": "hidden",
+        "desktop_image_position": "left",
+        "desktop_content_position": "items-center",
+        "color_scheme": "primary",
+        "enable_video_looping": false
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "91363b54-598d-4618-be32-11b2ae2c4132": {
+          "type": "text",
+          "settings": {
+            "text": "ABOUT THIS TREATMENT",
+            "font": "heading",
+            "text_size": "text-base lg:text-xl",
+            "icon": "none"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "enable_collapsible_tabs": false,
+            "truncate_description": true
+          }
+        },
+        "66218e99-f922-4488-a24e-e2a59fda6094": {
+          "type": "richtext",
+          "settings": {
+            "title": "BENEFITS",
+            "text": "<p>{{ product.metafields.my_fields.benefits | metafield_tag }}<\/p>"
+          }
+        },
+        "ffac3e81-ba76-4e00-9edb-6a2d29e10780": {
+          "type": "icon_list",
+          "settings": {
+            "heading": "Time",
+            "text_color": "text",
+            "text_1": "Time to administer: {{ product.metafields.my_fields.time_to_administer.value }}",
+            "icon_1": "clock",
+            "text_2": "See Results:",
+            "icon_2": "clock",
+            "text_3": "",
+            "icon_3": "globe",
+            "text_4": "",
+            "icon_4": "washing",
+            "text_5": "",
+            "icon_5": "truck"
+          }
+        },
+        "073cedc0-2747-49b4-9fe4-05a734570774": {
+          "type": "treatment_comfort",
+          "settings": {
+            "heading": "Discomfort level",
+            "text_mild": "Mild",
+            "text_medium": "Medium",
+            "text_intense": "Moderate"
+          }
+        },
+        "6ba3cfd7-0f28-436c-888f-ccdab9067baa": {
+          "type": "richtext",
+          "settings": {
+            "title": "WHO CAN RECEIVE IT",
+            "text": "<p>{{ product.metafields.my_fields.who_can_receive_it.value }}<\/p>"
+          }
+        },
+        "cb6cf75d-f0a3-49be-9664-42213884c3dd": {
+          "type": "richtext",
+          "disabled": true,
+          "settings": {
+            "title": "Price",
+            "text": "<p>Starting at {{ product.metafields.custom.starting_at.value }}<\/p><p>At AE.R we tailor customized treatments specifically for you. Book a consultation with us to determine the best strategy to achieve your goals.<\/p>"
+          }
+        },
+        "ed81f35e-72f5-4153-bf4a-debb3d5f8904": {
+          "type": "janeapp_book_now",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "91363b54-598d-4618-be32-11b2ae2c4132",
+        "description",
+        "66218e99-f922-4488-a24e-e2a59fda6094",
+        "ffac3e81-ba76-4e00-9edb-6a2d29e10780",
+        "073cedc0-2747-49b4-9fe4-05a734570774",
+        "6ba3cfd7-0f28-436c-888f-ccdab9067baa",
+        "cb6cf75d-f0a3-49be-9664-42213884c3dd",
+        "ed81f35e-72f5-4153-bf4a-debb3d5f8904"
+      ],
+      "settings": {
+        "desktop_image_width": "one-half",
+        "desktop_image_position": "left",
+        "two_images_per_row": false,
+        "first_image_full_width": false,
+        "variant_image_behaviour": "swap",
+        "enable_image_zoom": false,
+        "enable_video_looping": true,
+        "color_scheme": "primary",
+        "override_header_footer_color_scheme": false
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "show_product_recommendations": true,
+        "product_recommendations_heading": "You may also like",
+        "limit": "4",
+        "products_per_row_desktop": "4",
+        "products_per_row_mobile": "1",
+        "color_scheme": "primary"
+      }
+    }
+  },
+  "order": [
+    "1639768687b8cc27fd",
+    "main",
+    "product-recommendations"
+  ]
+}

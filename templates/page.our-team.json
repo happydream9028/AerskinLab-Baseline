@@ -1,0 +1,155 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "content_width": "lg:w-full",
+        "content_position": "lg:justify-start",
+        "color_scheme": "primary",
+        "override_header_footer_color_scheme": false
+      }
+    },
+    "16412518202abd4676": {
+      "type": "our-team",
+      "blocks": {
+        "1641251820aef546f8-1": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": false,
+            "image": "shopify:\/\/shop_images\/DRScudamore_Crop.jpg",
+            "title": "Dr. Charles H. Scudamore",
+            "text": "<p>MD MSc FACS FRCSC FRCS<\/p><p><em>Medical Director<\/em><br\/><br\/>Dr. Charles Scudamore’s charismatic yet personable approach to aesthetic procedures demonstrates his love for artistry, his wealth of technical knowledge, and genuine desire to help people achieve their best physical appearance. His style is focused on a natural look, emphasizing an enhanced, yet realistic version of oneself with a specialty in Aptos® thread lifts.<\/p><p>natural | elegant | understated beauty  <\/p><p>The prestigious titles that follow Dr. Scudamore’s name are not immediately apparent given his understated nature, but are the keys to unlock his professional tapestry of experience. A delve beneath the surface of Dr. Scudamore’s history unearths a true depth of character that one would never imagine; a career full of groundbreaking firsts, awards, accolades and a CV that reads like an anthology of greatest hits which includes an <a href=\"https:\/\/orderofbc.gov.bc.ca\/2013-recipient-dr-charles-scudamore-vancouver\/\" target=\"_blank\" title=\"https:\/\/orderofbc.gov.bc.ca\/2013-recipient-dr-charles-scudamore-vancouver\/\">Order of B.C.<\/a> & <a href=\"https:\/\/news.gov.bc.ca\/releases\/2013HLTH0032-000327\" target=\"_blank\" title=\"https:\/\/news.gov.bc.ca\/releases\/2013HLTH0032-000327\">Queen Elizabeth II Diamond Jubilee Medal<\/a> on the set list.<\/p><p>Dr. Scudamore began his symphonic career at the University of British Columbia where he obtained his B.Sc., M.D. and M.Sc. in surgery. His passion for aesthetic medicine, cosmetic surgery combined with the eyes, mind and hands for precision had his life path destined for plastic surgery. Fortunately for the many people Dr. Scudamore has helped in the last 40 years, a change of fate had him hold that passion a fermata like a beautiful note before the next grand movement. The next grand movement for Dr. Scudamore’s was to utilize his talents for advanced surgery.<\/p><p>A successful career as the lead surgeon at Vancouver General Hospital, an Associate Professor at the University of British Columbia, fellowship with the Royal College of Physicians (FRCP), American College of Surgeons (FACS), Royal College of Surgeons of Canada (FRCSC), and numerous publications has earned Dr. Scudamore the freedom to return to his original love of aesthetic medicine for his finale. Returning with an experienced, yet fresh perspective, and the ability to transcend the superficial to deliver beautifully executed results.<\/p><p>Dr. Scudamore’s expansive medical knowledge, technical expertise, and mentality for excellence are a perfect fit for the role of Medical Director for AE.R Skinlab. Dr. Scudamore is versed in the advance application of injectibles and technologies that include BOTOX® Cosmetic, BOTOX® Therapeutic, Dysport®, XEOMIN®, JUVÉDERM®, Restylane® and Perlane®, Sculptra®, Teosyal®, Restylane®, Belkyra™. CoolSculpting®, truSculpt FLEX PLUS, truSculpt iD, Thermage®, Ultherapy®, WorldPRP™ and more.<\/p><p><em>Transcend the superficial<\/em><\/p><p><em>Precision + Artistry + Knowledge = re:form your skin<\/em><\/p>",
+            "cta_link": "",
+            "cta_text": "",
+            "color_scheme": "primary"
+          }
+        },
+        "1641251820aef546f8-2": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": false,
+            "image": "shopify:\/\/shop_images\/AER-852-RGB-LowRes-800x1200.jpg",
+            "title": "Sophia Lee",
+            "text": "<p><em>Director of Operations<\/em><br\/><br\/>A rare combination of skill in business development, management and artistic ability, Sophia Lee brings a strong and balanced skillset to AE.R Skinlab as Director of Operations.<\/p><p><\/p><p>Sophia brings a plethora of experience in the aesthetics world. With over 11 years experience in the industry, including Clinic Director at Project Skin MD® (Dermapure) as well as Clinic Director at Hush by Dr. Rose.<\/p><p><\/p><p>Equipped with knowledge in the latest treatments, products and technology, Sophia is an expert in<br\/>consulting our procedures and product lineup in English, Mandarin, Cantonese and Taiwanese.<\/p><p><br\/>Sophia’s personable yet efficient nature makes her an expert at managing client and staff relationships for a smooth and enjoyable experience.<br\/><\/p><p>Sophia’s background in visual art and graphic design brings another dimension to her abilities for AE.R<br\/>Skinlab. She is a graduate from the University of Victoria in Fine Arts: Visual Arts with 10 years of graphic design experience. This led to product development, manufacturing, branding and operations for Di Morelli Skincare. <\/p><p><\/p><p>Her level of experience in the industry is a key component for development of our proprietary Vancouver manufactured AE.R Skin product line.<\/p>",
+            "cta_link": "",
+            "cta_text": "",
+            "color_scheme": "primary"
+          }
+        },
+        "1641251820aef546f8-0": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": true,
+            "image": "shopify:\/\/shop_images\/AER-951-RGB-LowRes-800x1200.jpg",
+            "title": "Charissa Lau",
+            "text": "<p><em>Aesthetic Nurse Injector<\/em><br\/><br\/>After graduating with a Bachelor of Science in Nursing (BSN), Charissa has had no delay in obtaining real world experience at prestigious institutions. She carries a BCCNM registration as a current practising registered nurse.<\/p><p>Charissa has worked in a variety of nursing roles in collaboration with surgical teams at Fraser Health Authority and Vancouver Coastal Health. Her experience has placed her in all three nursing roles in the OR, helped patients recover from a countless range of small to large procedures as well as developing individual care plans.<\/p><p>Charissa’s career focus is to provide individualised care for patients in a medical aesthetic clinic. Her love of medical aesthetics has led her to Aesthetics Training Canada where she has completed “Neuromodular + Hyaluronic Acid Filler Training” via the filler & botox course. <\/p><p>When you meet Charissa, it will become apparent why she was hand-selected by Dr. Scudamore. Her work ethic, technical knowledge and experience make her the perfect candidate for the Medical Assistant Director role at AE.R Skinlab. Her charm and genuine rapport along with her ability to speak Mandarin and English fluently will make any procedure flow smoothly and effortlessly.<\/p>",
+            "cta_link": "",
+            "cta_text": "",
+            "color_scheme": "primary"
+          }
+        },
+        "6e6280c8-43d2-453a-a0b9-3dc752f8b2ff": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": true,
+            "image": "shopify:\/\/shop_images\/AER-042-RGB-LowRes-800x1200.jpg",
+            "title": "Holly Wu",
+            "text": "<p><em>Senior Laser Technician<\/em><br\/><br\/>Holly Wu brings a wealth of experience as senior laser technician at AE.R Skinlab.<\/p><p><\/p><p>In the beauty and aesthetics industry for over 15 years, Holly is a graduate of Beijing Cultural & Language University, BCIT, Dominelli’s International College of Esthetics and Laser, CosMedic Academy & the prestiguous CIDESCO. CIDESCO's Zurich, Switzerland based diploma is the \"World Standard for Beauty & Spa Therapy\" with stringent standards, considered the highest internationally recognized qualification in the beauty industry.<\/p><p> <\/p><p>Holly comes from a design background with an understanding of structure as well as engineering. She is an extremely detail oriented individual, bringing knowledge with a technical approach and an artistic eye.<\/p><p> <\/p><p>She is certified and licensed in Coolsculpting®, Ultherapy®, Thermage®, truSculpt® iD, truSculpt® Flex Plus, Fotona® SP Dynamis, DP4™ Micropen, BELA MD+, LUVO DARWIN, PicoWay®, Sciton Joule, EMSCULPT NEO, and more with thousands of hours of treatment time.<\/p><p> <\/p><p>Holly is a product and consultation expert fluent in Cantonese and Mandarin. She is able to tailor a specific and effective skin or body treatment routine. She is fully trained and well versed in SkinCeuticals and ZO® Skin Health product lines.<\/p><p> <\/p><p>A deep understanding of luxury, combined with efficiency and the ability to deliver results, Holly is truly a unique and diverse asset to the AE.R brand.<\/p>",
+            "cta_link": "",
+            "cta_text": "",
+            "color_scheme": "primary"
+          }
+        },
+        "63a8f9d6-4465-4441-92cb-1ea1fe4ef6a5": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": false,
+            "image": "shopify:\/\/shop_images\/BOBYOST_E.jpg",
+            "title": "ROBERT YOST",
+            "text": "<p><em>Patient Consultant | <\/em><\/p><p><em>Senior Laser Technician<\/em><br\/><br\/>Known by many as “Bob” by the fans and followers he has gained in his 10 years of experience in the medical aesthetics world. <\/p><p>Robert has been the Director of Operations for The Vanity Lab since conception, illustrating strength in business and social media development. <\/p><p>Robert’s name has been synonymous with exceptional product knowledge, delivering successful results while maintaining genuine rapport and a top level of client care.<\/p><p>At AE.R, we are proud to be able to expand our skincare journey with the addition of Robert’s voice and expertise.<\/p><p>With a background in science, Robert’s understanding and approach enhances his abilities as a certified laser technician and brings AE.R’s art x science concept to fruition. <\/p><p>Robert has always been passionate about beauty and skincare with an obsessive desire for knowledge and patient results. He is constantly improving and expanding his portfolio and has expert level experience with skin tightening, IPL, fractional, acne treatment lasers, chemical peels, microneedling and facials. He is certified on Fotona, LUVO Darwin, Secret™ RF, DP4™ Dermapen, Bela MD+, truSculpt® iD, truSculpt® Flex Plus and more. <\/p><p>Recognized by ZO® Skinhealth as one of the top representatives in Canada, Robert will always be able to tailor the best skincare regimen specifically for you.<\/p>",
+            "cta_link": "",
+            "cta_text": "",
+            "color_scheme": "primary"
+          }
+        },
+        "d7c350df-04d3-49ee-82f9-50c93e792a66": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": false,
+            "image": "shopify:\/\/shop_images\/SAM_Crop.jpg",
+            "title": "Samantha Wey",
+            "text": "<p><em>Administrative<\/em><br\/><br\/>Passion for the beauty and aesthetics field is evident when you meet Samantha Wey. Bright, cheerful, organized and motivated are words that come to mind when you think of her.<\/p><p><\/p><p>A graduate from the \"General Esthetics\" program from MC College in Kelowna, BC, Samantha has pursued her passion for the beauty industry.<\/p><p><\/p><p>Samantha has developed a broad knowledge of cosmetics, skincare, hair care and fragrances, accommodating client concerns and advising products with her experience in the beauty industry.<\/p><p><\/p><p>She is full-face makeup certified, and is certified and trained in the Cutera xeo® platform, truSculpt® FLEX PLUS, trusSculpt® iD, Vectus laser hair removal system and more.<\/p><p>Samantha is certified in SkinCeuticals and ZO® Skin Health product collections.<\/p><p><\/p><p>Samantha advanced her experience in an administrative role at Spa on the Rocks, West Vancouver and CÜR Laser, Vancouver before finding her calling at the AE.R Skinlab flagship location in Vancouver, BC.<\/p><p><\/p><p>Coordinating the front of house with the technicians, doctor and nurse seamlessly and flawlessly will be her priority.<\/p>",
+            "cta_link": "",
+            "cta_text": "",
+            "color_scheme": "primary"
+          }
+        },
+        "f14e606d-c95d-4fb0-a8d3-209a6b475a82": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": true,
+            "image": "shopify:\/\/shop_images\/AER-712-RGB-LowRes-800x1200.jpg",
+            "title": "Michelle Lai",
+            "text": "<p><\/p><p><em>Product Specialist<\/em><\/p><p><strong><br\/><\/strong>Michelle Lai lives and breathes the beauty industry and it is evident in her resumé. She has experience in the modelling industry including previous associations with Model Made Management & Charles Stuart International. In these roles, she handled a multitude of positions from booking, marketing, casting and more.<\/p><p><\/p><p>Michelle is a graduate of JCI Institute with a freelance and bridal makeup certification. She has performed makeup on various photo shoot sets including Vancouver Fashion Week.<\/p><p><\/p><p>Product knowledge and technique is her specialty as a beauty advisor for the past 3 years. She is an expert in product recommendation\/application and can help anyone find their perfect products and regimen.<\/p><p><\/p><p>Michelle is certified in SkinCeuticals and ZO® Skin Health product collections.<\/p><p><\/p>",
+            "cta_link": "",
+            "cta_text": "",
+            "color_scheme": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "1641251820aef546f8-1",
+        "1641251820aef546f8-2",
+        "1641251820aef546f8-0",
+        "6e6280c8-43d2-453a-a0b9-3dc752f8b2ff",
+        "63a8f9d6-4465-4441-92cb-1ea1fe4ef6a5",
+        "d7c350df-04d3-49ee-82f9-50c93e792a66",
+        "f14e606d-c95d-4fb0-a8d3-209a6b475a82"
+      ],
+      "settings": {
+        "title": "",
+        "crop": "0.8",
+        "text_alignment": "text-left",
+        "hide_borders": true,
+        "cta_style": "link",
+        "text_size_mobile": "text-base"
+      }
+    },
+    "1655739602e4767bfa": {
+      "type": "image-with-text",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/EDIT2.jpg",
+        "image_position": "right",
+        "image_size": "half",
+        "indent_image": true,
+        "fill_image": false,
+        "hide_borders": true,
+        "background_color": "primary",
+        "title": "",
+        "richtext": "<p><em>Frederik Salari & Michael Wong<\/em><\/p><p><em>Founders<\/em><\/p><p><strong><br\/><\/strong>AE.R or “Aesthetic Re:form” was envisioned by Frederik Salari and Michael Wong as both a culmination and reflection of their life experiences. <\/p><p>A journey to South Korea over 12 years ago would serve as a groundbreaking and formative experience in the cosmetic and medical field.<\/p><p>Mr. Salari’s background in pharmaceuticals was complemented by Mr. Wong’s background in design & art leading to the formation of the AE.R brand with emphasis on detail and natural beauty. <\/p>",
+        "text_size": "text-base",
+        "font": "body",
+        "text_alignment": "text-left",
+        "text_position": "items-center",
+        "color_scheme": "primary",
+        "cta_link": "",
+        "cta_text": "",
+        "cta_style": "link",
+        "cta_rounded": false,
+        "cta_gradient": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "16412518202abd4676",
+    "1655739602e4767bfa"
+  ]
+}

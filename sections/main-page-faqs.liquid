@@ -1,0 +1,151 @@
+{% comment %}theme-check-disable UndefinedObject{% endcomment %}
+{%- liquid
+  assign section_color = section.settings.color_scheme 
+  assign counter = 0
+-%}
+<div class="relative border-b-grid border-grid-color section-x-padding py-theme {%- if section.settings.content_position == 'lg:justify-center' -%}text-center{%- endif -%}">
+  <h1 class="font-heading {{ settings.template_heading_size }} break-words">{{ page.title }}</h1>
+</div>
+<section class="page-faq page lg:p-16 p-8">
+  <div class="flex lg:py-16 py-4 flex-wrap">
+    <div class="lg:w-2/5 w-full mb-12">
+      <div class="max-w-xs mb-12 font-bold uppercase text-xl">
+        {{ section.settings.content }}
+      </div>
+
+      {% if section.settings.cta_link %}
+        {% if section.settings.button_style == 'solid' %}
+          <a href="{{ section.settings.cta_link }}" class="px-5 w-50 inline-flex justify-between items-center text-base py-2 rounded-full {% render 'button-color', section_color: text_color %} ">
+        {% else %}
+          <a href="{{ section.settings.cta_link }}" class="px-5 w-50 inline-flex justify-between items-center text-base py-2 rounded-full border-primary-text {% render 'button-color', section_color: text_color %}"
+          style="background: linear-gradient(45deg, {{ section.settings.gradient_1 }} 0%, {{ section.settings.gradient_2 }} 50%, {{ section.settings.gradient_3 }} 100%);">
+        {% endif %}
+            <span class="{% if settings.button_uppercase %}uppercase{% endif %}">{{ section.settings.cta_text }}</span>
+            {% if settings.buttons_show_arrow %}<span class="arrow-right-long w-20px inline-flex color-black">{% render 'icon-arrow-right-long' %}</span>{% endif %}
+          </a>
+      {% endif %}
+    </div>
+    <div class="lg:w-3/5 w-full">
+      {% comment %} <div>
+      {% render 'icon-plus' %}
+      </div> {% endcomment %}
+
+      <ul>
+        {%- for block in section.blocks -%}
+          <div class="overflow-hidden mb-4 cursor-pointer">
+            <input class="absolute opacity-0 z--1" type="checkbox" id="chck{{ forloop.index }}">
+            
+            <label class="cursor-pointer font-bold text-xl flex" for="chck{{ forloop.index }}">
+              <span class="mr-4 w-8 h-8 p-1 inline-flex items-center border border-current rounded-full transition-transform">
+                <span class="inline-flex transform transition origin-center" :class="{'rotate-180': accordionOpen.accordion{{ counter }}}">
+                  {% render 'icon-plus' %}
+                </span>
+              </span>
+              {{ block.settings.heading }}</label>
+            <div class="tab-content py-10 text-sm">
+              {{ block.settings.content }}
+            </div>
+          </div>
+
+          {% comment %} <li class="no-js-focus-wrapper section-x-padding">
+            {%- if block.settings.heading != blank -%}
+              {%- capture child_link_class -%}inline-block py-1{%- endcapture -%}
+              <button data-faq-accordion
+                      class="font-bold uppercase flex items-center w-full text-left pr-10 transition ease"
+                      x-bind:aria-expanded="accordionOpen.accordion{{ counter }}? true: 'false'"
+                      @click="accordionOpen.accordion{{ counter }} = !accordionOpen.accordion{{ counter }}"
+                      aria-controls="accordion{{ counter }}">
+                <span class="w-8 p-1 inline-flex items-center mr-4 border border-current rounded-full">
+                  <span class="inline-flex transform transition origin-center" :class="{'rotate-180': accordionOpen.accordion{{ counter }}}">
+                    {% render 'icon-plus' %}
+                  </span>
+                </span>
+                {{ block.settings.heading }}
+              </button>
+              <ul id="faq-accordion{{ counter }}"
+                  class="py-10 no-js-focus-container"
+                  x-show="accordionOpen.accordion{{ counter }}">
+                {%- assign counter = counter | plus: 1 -%}
+                <li class="no-js-focus-wrapper">
+                  <div>
+                    {{ block.settings.content }}
+                  </div>
+                </li>
+              </ul>
+            {% endif %}
+          </li> {% endcomment %}
+        {%- endfor -%}
+      </ul>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Pages - faq",
+  "settings": [
+    {
+      "type":      "header",
+      "content":   "CTA"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button Style",
+      "options": [
+         { "value": "solid", "label": "Solid"},
+         { "value": "gradient", "label": "Gradient"}
+      ]
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Text"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Link"
+    },
+    {
+      "type": "color",
+      "id": "gradient_1",
+      "label": "Gradient color1"
+    },
+    {
+      "type": "color",
+      "id": "gradient_2",
+      "label": "Gradient color2"
+    },
+    {
+      "type": "color",
+      "id": "gradient_3",
+      "label": "Gradient color3"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "info",
+      "name": "Info",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

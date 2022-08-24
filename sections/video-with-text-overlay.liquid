@@ -1,0 +1,271 @@
+{%- liquid
+  assign size_classes = 'background-video-wrapper--' | append: section.settings.video_style
+
+  if section.settings.video_style_desktop == 'same'
+    assign video_style_desktop = section.settings.video_style
+  else
+    assign video_style_desktop = section.settings.video_style_desktop
+    assign size_classes = size_classes | append: ' lg:background-video-wrapper--' | append: video_style_desktop
+  endif
+
+  assign heading_size_class = section.settings.heading_size 
+  assign content_position = section.settings.content_position
+  assign text_align = section.settings.text_alignment 
+  assign content_width_desktop = section.settings.content_width_desktop 
+  assign text_color = section.settings.text_color 
+
+-%}
+
+<section class="video-with-text-overlay  border-t-grid border-grid-color relative"
+         data-section-type="video-with-text-overlay"
+         data-section-id="{{ section.id }}"
+         data-has-background-video>
+  <div class="{% unless settings.fill_image_to_border_edge %}p-2 lg:p-4{% endunless %}">
+    <div class="background-video-wrapper h-auto bg-black p-0  relative overflow-hidden {{ size_classes }} {% unless settings.fill_image_to_border_edge %}not_full_bleed{% endunless %}">
+      {% assign component_id = 'background-video-' | append: section.id %}
+      {% render 'background-video'
+        extra_classes: 'video-with-text-overlay__background-video',
+        video: section.settings.video_url,
+        fallback_image: section.settings.fallback_image,
+        component_id: component_id,
+    %}
+    </div>
+    <div class="{{ content_width_desktop }} text-{{ text_color }}-text">
+      <div class="absolute top-0 left-0 right-0 bottom-0 z-10 section-x-padding py-theme">
+        <div class="flex {{ content_position }} {{ text_align }} {% unless settings.fill_image_to_border_edge %}p-2 lg:p-4{% endunless %} h-full w-full">
+          <div class="{{ content_width_desktop }} text-{{ text_color }}-text overflow-hidden">
+            {% if section.settings.title != blank %}
+            <h2 class="font-heading {{ heading_size_class }} break-words">{{ section.settings.title }}
+              {% if section.settings.btn_inline == true %}
+                <a href="{{ section.settings.cta_link }}">{{ section.settings.cta_text }}{% if settings.links_show_arrow %}&nbsp;&rarr;{% endif %}</a>
+              {% endif %}
+            </h2>
+            {% endif %}
+
+            {% if section.settings.text != blank %}
+            <div class="rte text-base {% if section.settings.title != '' %}mt-theme-half{% endif %}">
+              {{ section.settings.text }}
+            </div>
+            {% endif %}
+
+            {% unless section.settings.btn_inline == true %}
+              {% if section.settings.cta_link != blank and section.settings.cta_text != '' %}
+              <div class="mt-4 text-0">
+                {%- case section.settings.cta_style -%}
+                {%- when 'link' -%}
+                  {%- render 'link-underline',
+                    section_color: text_color,
+                    text: section.settings.cta_text,
+                    link: section.settings.cta_link,
+                    arrow_position: 'right'
+                  -%}
+                {%- when 'button' -%}
+                  <a href="{{ section.settings.cta_link }}" class="inline-flex justify-center items-center text-base px-8 py-2 {% render 'button-style', section_color: text_color %}  {% render 'button-color', section_color: text_color %} ">
+                    <span class="{% if settings.button_uppercase %}uppercase{% endif %}">{{ section.settings.cta_text }}{% if settings.buttons_show_arrow %}&nbsp;&rarr;{% endif %}</span>
+                  </a>
+                {%- endcase -%}
+              </div>
+              {% endif %}
+            {% endunless %}
+          </div>  
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{% schema %}
+{
+  "name": "Video with text overlay",
+  "class": "has-full-screen-setting",
+  "settings": [
+    {
+      "id": "video_url",
+      "type": "text",
+      "label": "Video URL",
+      "info": "Accepts YouTube or .mp4 links",
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+    },
+    {
+      "type": "select",
+      "id": "video_style",
+      "label": "Aspect ratio – mobile:",
+      "options": [
+        {
+          "value": "four-three",
+          "label": "Standard"
+        },
+        {
+          "value": "widescreen",
+          "label": "Widescreen"
+        },
+        {
+          "value": "cinematic",
+          "label": "Extra wide"
+        },
+        {
+          "value": "full-screen",
+          "label": "Full screen"
+        }
+      ],
+      "default": "widescreen"
+    },
+    {
+      "type": "select",
+      "id": "video_style_desktop",
+      "label": "Aspect ratio – desktop:",
+      "options": [
+        {
+          "value": "same",
+          "label": "Same as mobile"
+        },
+        {
+          "value": "four-three",
+          "label": "Standard"
+        },
+        {
+          "value": "widescreen",
+          "label": "Widescreen"
+        },
+        {
+          "value": "cinematic",
+          "label": "Extra wide"
+        },
+        {
+          "value": "full-screen",
+          "label": "Full screen"
+        }
+      ],
+      "default": "same"
+    },
+    {
+      "id": "fallback_image",
+      "type": "image_picker",
+      "label": "Fallback image",
+      "info": "Shown if video fails to load or play"
+    },
+    {
+      "type":      "header",
+      "content":   "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Video with text overlay"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "text-sm", "label": "S"},
+        { "value": "text-base", "label": "M"},
+        { "value": "text-lg", "label": "L"},
+        { "value": "text-xl", "label": "XL"},
+        { "value": "text-2xl", "label": "2XL"},
+        { "value": "text-2xl lg:text-3xl", "label": "2XL / desktop 3XL"},
+        { "value": "text-2xl lg:text-4xl", "label": "2XL / desktop 4XL"},
+        { "value": "text-2xl lg:text-5xl", "label": "2XL / desktop 5XL" },
+        { "value": "text-2xl lg:text-6xl", "label": "2XL / desktop 6XL" },
+        { "value": "text-2xl lg:text-7xl", "label": "2XL / desktop 7XL" }
+      ],
+      "default":   "text-2xl lg:text-5xl"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content position",
+      "options": [
+          { "value": "justify-start items-start text-left", "label": "Top left"},
+          { "value": "justify-center items-start text-center", "label": "Top center"},
+          { "value": "justify-end items-start text-right", "label": "Top right"},
+          { "value": "justify-start items-center text-left", "label": "Left"},
+          { "value": "justify-center items-center text-center", "label": "Center"},
+          { "value": "justify-end items-center text-right", "label": "Right"},
+          { "value": "justify-start items-end text-left", "label": "Bottom left"},
+          { "value": "justify-center items-end text-center", "label": "Bottom center"},
+          { "value": "justify-end items-end text-right", "label": "Bottom right"}
+      ],
+      "default":   "justify-center items-center text-center"
+    },
+    {
+      "type": "select",
+      "id": "content_width_desktop",
+      "label": "Content width on desktop",
+      "default": "lg:w-2/3",
+      "options": [
+        {
+          "value": "lg:w-1/3",
+          "label": "One third"
+        },
+        {
+          "value": "lg:w-1/2",
+          "label": "One half"
+        },
+        {
+          "value": "lg:w-2/3",
+          "label": "Two thirds"
+        },
+        {
+          "value": "lg:w-full",
+          "label": "Full width"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text color",
+      "options": [
+          { "value": "primary", "label": "Primary"},
+          { "value": "secondary", "label": "Secondary"},
+          { "value": "tertiary", "label": "Tertiary"},
+          { "value": "white", "label": "White"},
+          { "value": "black", "label": "Black"}
+      ],
+      "default":   "primary"
+    },
+    {
+      "type":      "header",
+      "content":   "Call to action"
+    },
+    {
+      "type": "checkbox",
+      "id": "btn_inline",
+      "label": "Inline with title"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Text"
+    },
+    {
+      "type": "select",
+      "id": "cta_style",
+      "label": "Style",
+      "options": [
+        { "value": "link", "label": "Link"},
+        { "value": "button", "label": "Button"}
+      ],
+      "default":   "link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video with text overlay"
+    }
+  ]
+}
+{% endschema %}

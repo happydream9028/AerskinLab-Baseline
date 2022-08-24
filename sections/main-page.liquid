@@ -1,0 +1,73 @@
+{%- assign section_color = section.settings.color_scheme -%}
+<section class="page text-{{ section_color }}-text bg-{{ section_color }}-background border-t-grid border-b-grid border-grid-color">
+  <div class="section-x-padding py-theme lg:flex border-b-grid border-grid-color">
+  <div class=" {%- if section.settings.content_position == 'lg:justify-center' -%}text-center{%- endif -%}">
+    <h1 class="font-heading {{ settings.template_heading_size }} break-words">{{ page.title }}</h1>
+  </div>
+  </div>
+  <div class="section-x-padding py-theme lg:flex {{ section.settings.content_position }}">
+    <div class="{{ section.settings.content_width }}">
+      {% if page.content != blank %}
+      <div class="rte mt-4">
+        {{ page.content }}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{%- if section.settings.override_header_footer_color_scheme -%}
+  {%- render 'header-footer-color-scheme-override', section_color: section_color -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Pages",
+  "settings": [
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "Desktop content width",
+      "options": [
+        { "value": "lg:w-1/2", "label": "One half"},
+        { "value": "lg:w-2/3", "label": "Two thirds"},
+        { "value": "lg:w-full", "label": "Full"}
+      ],
+      "default":   "lg:w-full"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Desktop content position",
+      "options": [
+        { "value": "lg:justify-start", "label": "Left" },
+        { "value": "lg:justify-center", "label": "Center" },
+        { "value": "lg:justify-end", "label": "Right" }
+      ],
+      "default": "lg:justify-start",
+      "info": "Does not apply when desktop content width is set to full."
+    },
+    {
+      "type":      "header",
+      "content":   "Color"
+    },
+    {
+       "type": "select",
+       "id": "color_scheme",
+       "label": "Color scheme",
+       "options": [
+          { "value": "primary", "label": "Primary"},
+          { "value": "secondary", "label": "Secondary"},
+          { "value": "tertiary", "label": "Tertiary"}
+       ]
+    },
+    {
+      "type": "checkbox",
+      "id": "override_header_footer_color_scheme",
+      "label": "Use this color scheme for header and footer",
+      "info": "This will only apply to the page template",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

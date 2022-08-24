@@ -1,0 +1,762 @@
+{%- comment -%}
+  This is a required section for the Shopify Theme Store.
+  It is available in the "Header" section in the theme editor.
+
+  Theme Store required settings
+  - Show announcement
+  - Text: message to announce
+  - Link: link of the announcement bar
+
+  Theme Store optional settings
+  - Home page only: only shows on the home page
+{%- endcomment -%}
+{%- liquid
+  assign layout = section.settings.layout
+  assign section_color = 'header'
+  assign overlay_text_color = section.settings.overlay_text_color
+  assign show_icons = section.settings.show_icons
+  assign link_all = section.settings.show_all_navigation_links
+
+  if section.settings.overlay_homepage and template.name == 'index'
+    assign overlay_header = true
+    if section.settings.sticky_header
+      assign overlay_header_with_sticky = true
+    else
+      assign overlay_header_without_sticky = true
+    endif
+  endif
+
+  assign drop_down_cols_position = 'justify-center'
+  if section.settings.layout contains 'menu_left'
+    assign drop_down_cols_position = 'justify-start'
+  endif
+-%}
+
+<style>
+:root {
+  --color-header-accent: var(--color-{{ section.settings.color_scheme }}-accent);
+  --color-header-text: var(--color-{{ section.settings.color_scheme }}-text);
+  --color-header-background: var(--color-{{ section.settings.color_scheme }}-background);
+  --color-header-background-hex: var(--color-{{ section.settings.color_scheme }}-background-hex);
+  --color-header-background-0: var(--color-{{ section.settings.color_scheme }}-background-0);
+  --color-header-meta: var(--color-{{ section.settings.color_scheme }}-meta);
+  --color-header-text--overlay: var(--color-{{ section.settings.color_scheme }}-text--overlay);
+  --color-header-accent--overlay: var(--color-{{ section.settings.color_scheme }}-accent--overlay);
+  --color-header-accent-placeholder: var(--color-{{ section.settings.color_scheme }}-text-placeholder);
+}
+</style>
+
+{% comment %}
+  Logo
+{% endcomment %}
+{%- capture header_logo %}
+  {% if template.name == 'index' %}
+    <h1 class="">
+  {% else %}
+    <div class="h1">
+  {% endif %}
+      <a href="{{ routes.root_url }}" class="inline-block py-2 logo-image break-all">
+        {% if section.settings.logo != blank %}
+          {%- assign logo = section.settings.logo -%}
+          {% capture image_size %}{{ section.settings.logo_max_width }}x{% endcapture %}
+          {%- unless overlay_header_without_sticky and section.settings.overlay_logo != blank -%}
+          <img src="{{ logo | img_url: image_size }}"
+              srcset="{{ logo | img_url: image_size }} 1x, {{ logo | img_url: image_size, scale: 2 }} 2x, {{ logo | img_url: image_size, scale: 3 }} 3x"
+              alt="{{ logo.alt | default: shop.name }}"
+              {% if overlay_header_with_sticky and section.settings.overlay_logo != blank %}x-show="headerIsStuck"{% endif %}>
+          {%- endunless -%}
+
+          {%- if overlay_header and section.settings.overlay_logo != blank -%}
+          {%- assign logo = section.settings.overlay_logo -%}
+          <img src="{{ logo | img_url: image_size }}"
+            srcset="{{ logo | img_url: image_size }} 1x, {{ logo | img_url: image_size, scale: 2 }} 2x, {{ logo | img_url: image_size, scale: 3 }} 3x"
+            alt="{{ logo.alt | default: shop.name }}"
+            {% if overlay_header_with_sticky %}x-show="!headerIsStuck"{% endif %}>
+          {%- endif -%}
+        {% else %}
+          {{ shop.name }}
+        {% endif %}
+      </a>
+  {% if template.name == 'index' %}
+    </h1>
+  {% else %}
+    </div>
+  {% endif %}
+{%- endcapture -%}
+
+
+{% comment %}
+  Regular Nav
+{% endcomment %}
+{% comment %}theme-check-disable LiquidTag{% endcomment %}
+{%- capture header_menu %}
+  {%- liquid
+    assign menu_style = layout | split: 'menu_' | last
+    assign counter = 0
+    if menu_style == 'center' or menu_style == 'below'
+      assign list_classes = 'justify-center -ml-4'
+      assign item_classes = 'ml-4 mr-4'
+    elsif menu_style == 'left'
+      assign list_classes = 'justify-start'
+      assign item_classes = 'mr-4 ml-4'
+    elsif menu_style == 'right'
+      assign list_classes = 'justify-end'
+      assign item_classes = 'ml-4 ml-4'
+    endif
+  -%}
+  {%- unless layout contains 'spread' -%}
+    <ul class="flex flex-wrap self-stretch items-stretch {{ list_classes }}">
+  {%- endunless -%}
+    {%- for link in linklists[section.settings.menu].links -%}
+      {%- assign child_menu = '' -%}
+      {%- assign grandchild_menu = '' -%}
+      {%- if link.links != blank -%}
+        {%- if link_all -%}
+          {% capture link_dropdown %}
+            <div class="ml-16">
+              <a {% if link.active %}aria-current="page"{% endif %} class="inline-block font-heading py-1" href="{{ link.url }}">
+                {{ link.title }}
+              </a>
+            </div>
+          {% endcapture %}
+        {%- endif -%}
+        {%- for child_link in link.links -%}
+          {%- if link.levels == 2 -%}
+            {% if child_link.links != blank %}
+              {%- capture grandchild_menu %}
+                {{- grandchild_menu -}}
+                <div class="ml-16 sl-dropdown">
+                  <h2 class="font-heading mb-2 cursor-pointer relative">
+                    {% if link_all %}<a {% if child_link.active %}aria-current="page"{% endif %} class="inline-block py-1" href="{{ child_link.url }}" {% if child_link.active %}aria-current="page"{% endif %}>{% endif %}
+                    {{ child_link.title }}
+                    {% if link_all %}</a>{% endif %}
+                  </h2>
+                  <div class="absolute bg-header-background p-8 invisible overflow-hidden z--1 w-full left-0">
+                    <ul class="opacity-0 transition-opacity transition-transform disclosure-list">
+                      <li class="flex gap-10">
+                        {%- for grandchild_link in child_link.links -%}
+                          {% assign length = forloop.length %}
+                        {%- endfor -%}
+                        {% comment %} {% if length < 4 %}
+                          <ul>
+                          {%- for grandchild_link in child_link.links -%}
+                            <li>
+                              <a  {% if grandchild_link.active %}aria-current="page"{% endif %} class="inline-block py-1" href="{{ grandchild_link.url }}">{{ grandchild_link.title }}</a>
+                            </li>
+                          {%- endfor -%}
+                          </ul>
+                        {% else %}
+                        <ul>
+                          {%- for grandchild_link in child_link.links -%}
+                            {% assign val = forloop.index | modulo: 3 %}
+                            {%- if val == 1 %}
+                            <li>
+                              <a  {% if grandchild_link.active %}aria-current="page"{% endif %} class="inline-block py-1" href="{{ grandchild_link.url }}">{{ grandchild_link.title }}</a>
+                            </li>
+                            {%- endif -%}
+                          {%- endfor -%}
+                        </ul>
+                        <ul>
+                          {%- for grandchild_link in child_link.links -%}
+                            {% assign val = forloop.index | modulo: 3 %}
+                            {%- if val == 2 %}
+                            <li>
+                              <a  {% if grandchild_link.active %}aria-current="page"{% endif %} class="inline-block py-1" href="{{ grandchild_link.url }}">{{ grandchild_link.title }}</a>
+                            </li>
+                            {%- endif -%}
+                          {%- endfor -%}
+                        </ul>
+                        <ul>
+                          {%- for grandchild_link in child_link.links -%}
+                            {% assign val = forloop.index | modulo: 3 %}
+                            {%- if val == 0 %}
+                            <li>
+                              <a  {% if grandchild_link.active %}aria-current="page"{% endif %} class="inline-block py-1" href="{{ grandchild_link.url }}">{{ grandchild_link.title }}</a>
+                            </li>
+                            {%- endif -%}
+                          {%- endfor -%}
+                        </ul>
+                        {% endif %} {% endcomment %}
+                        {%- if length < 4 -%}
+                          <ul>
+                          {%- for grandchild_link in child_link.links -%}
+                            <li>
+                              <a  {% if grandchild_link.active %}aria-current="page"{% endif %} class="inline-block py-1" href="{{ grandchild_link.url }}">{{ grandchild_link.title }}</a>
+                            </li>
+                          {%- endfor -%}
+                          </ul>
+                        {%- else -%}
+                        <ul class="flex flex-wrap">
+                          {%- for grandchild_link in child_link.links -%}
+                          <li class="w-1/3 p-2">
+                            <a  {% if grandchild_link.active %}aria-current="page"{% endif %} class="inline-block py-1" href="{{ grandchild_link.url }}">{{ grandchild_link.title }}</a>
+                          </li>
+                          {%- endfor -%}
+                        </ul>
+                        {%- endif -%}
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              {%- endcapture -%}
+            {%- else -%}
+              {%- capture child_menu %}
+                {{- child_menu -}}
+                <li class="">
+                  <a {% if child_link.active %}aria-current="page"{% endif %} class="inline-block py-1" href="{{ child_link.url }}">{{ child_link.title }}</a>
+                </li>
+              {%- endcapture -%}
+            {%- endif -%}
+          {%- else -%}
+            {% comment %}Only second level template {% endcomment %}
+            {%- capture child_menu %}
+              {{- child_menu -}}
+              <li class="inline-block ml-4">
+                <a {% if child_link.active %}aria-current="page"{% endif %} class="inline-block py-2" href="{{ child_link.url }}">{{ child_link.title }}</a>
+              </li>
+            {%- endcapture -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- unless layout contains 'spread' -%}
+          <li class="self-stretch relative {{ item_classes }}">
+        {%- endunless -%}
+          <div class="self-stretch flex no-js-focus-wrapper">
+            <button class="inline-block py-2 mt-1 flex items-center {% if settings.header_uppercase %}uppercase{% endif %}"
+              @click="openMenu({{ counter }})"
+              x-bind:aria-expanded="menuOpen.menu{{ counter }}? true: 'false'"
+              aria-controls="menu{{ counter }}">
+              <span class="inline-block pr-1">{{ link.title }}</span>
+              <span class="inline-flex align-middle svg-scale mr-1 mb-1 transform origin-center rotate transition" :class="{'rotate-135': menuOpen.menu{{ counter }}}">{% render 'icon-plus' %}</span>
+            </button>
+            <div class="min-w-800px dropdown no-js-focus-container absolute left-0 bottom-0 w-full transform translate-y-full z-20 text-{{ section_color }}-text"
+                  id="menu{{ counter }}"
+                  x-cloak
+                  x-show="menuOpen.menu{{ counter }}"
+                  x-transition:enter="transition ease duration-200"
+                  x-transition:enter-start="opacity-0"
+                  x-transition:enter-end="opacity-100"
+                  x-transition:leave="transition ease duration-00"
+                  x-transition:leave-start="opacity-100"
+                  x-transition:leave-end="opacity-0"
+                  data-header-dropdown
+                  @focusout="focusOut($event, 'menu{{ counter }}')"
+                  @click.away.prevent="menuOpen.menu{{ counter }} = false">
+              <div class="text-{{ section.settings.dropdown_text_align }}">
+                {%- if child_menu != blank and grandchild_menu == blank -%}
+                  <ul class="-ml-4 py-8 flex flex-col">
+                    {{ child_menu }}
+                  </ul>
+                {%- elsif child_menu != blank -%}
+                  <div class="flex py-8 {{ drop_down_cols_position }} -ml-16">
+                    {{ link_dropdown }}
+                    <ul class="ml-16">
+                      {{ child_menu }}
+                    </ul>
+                    {{ grandchild_menu }}
+                  </div>
+                {% else -%}
+                  <div class="flex py-8 -ml-16 {{ drop_down_cols_position }} -ml-16">
+                    {{ link_dropdown }}
+                    {{ grandchild_menu }}
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        {%- unless layout contains 'spread' -%}
+          </li>
+        {%- endunless -%}
+        {% assign counter = counter | plus: 1 %}
+      {%- else -%}
+        {%- unless layout contains 'spread' -%}
+          <li class="inline-flex flex items-stretch {{ item_classes }}">
+        {%- endunless -%}
+          <a {% if link.active %}aria-current="page"{% endif %} class="flex py-2 relative {% if layout contains 'spread' %}self-stretch flex flex-col inline-block{% endif %}" href="{{ link.url }}">
+            <span class="inline-block m-auto">{{ link.title }}</span>
+            {%- if link.active -%}
+              <span class="block w-theme-width h-2 bg-border absolute -bottom-2 left-1/2 -translate-x-1/2"></span>
+            {%- endif -%}
+          </a>
+        {%- unless layout contains 'spread' -%}
+          </li>
+        {%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+  {% comment %}theme-check-enable LiquidTag{% endcomment %}
+{%- endcapture -%}
+
+{%- capture header_menu_toggle -%}
+  <button class="js-enabled inline-block py-2 {% if settings.header_uppercase %}uppercase{% endif %}"
+          x-bind:aria-expanded="$store.drawer.menuDrawerOpen"
+          @click="$store.drawer.menuDrawerOpen = !$store.drawer.menuDrawerOpen"
+          data-menu-drawer-toggle>
+  {%- if show_icons -%}
+    <span class="visually-hidden">{{ 'layout.navigation.menu' | t }}</span>
+    <span class="inline-block w-5 h-5 align-middle">{%- render 'icon-menu' -%}</span>
+  {%- else -%}
+    {{ 'layout.navigation.menu' | t }}
+  {%- endif -%}
+  </button>
+{%- endcapture -%}
+
+{% comment %}
+  Custom link
+{% endcomment %}
+{% if section.settings.custom_link != blank %}
+  {%- capture custom_link %}
+    <a class="inline-block py-2 flex {% if layout contains 'spread'%}h-full{% endif %}" href="{{ section.settings.custom_link }}">
+      <span class="my-auto">{{ section.settings.custom_link_text }}</span>
+    </a>
+  {%- endcapture -%}
+{% endif %}
+
+{% comment %}
+  Accounts
+{% endcomment %}
+{% if shop.customer_accounts_enabled %}
+{%- capture customer_accounts %}
+  {% if customer %}
+    <a class="inline-block py-2 flex {% if layout contains 'spread'%}h-full{% endif %}" href="{{ routes.account_url }}">
+      {%- if show_icons -%}
+        <span class="visually-hidden">{{ 'layout.customer.account' | t }}</span>
+        <span class="my-auto inline-block w-5 h-5 align-middle">{%- render 'icon-account' -%}</span>
+      {%- else -%}
+        <span class="my-auto">{{ 'layout.customer.account' | t }}</span>
+      {%- endif -%}
+    </a>
+  {% else %}
+    <a class="inline-block py-2 flex {% if layout contains 'spread'%}h-full{% endif %}" href="/pages/account-sign-in">
+      {%- if show_icons -%}
+        <span class="visually-hidden">{{ 'layout.customer.log_in' | t }}</span>
+        <span class="my-auto inline-block w-5 h-5 align-middle">{%- render 'icon-account' -%}</span>
+      {%- else -%}
+       <span class="my-auto">{{ 'layout.customer.log_in' | t }}</span>
+      {%- endif -%}
+      </a>
+  {% endif %}
+{%- endcapture -%}
+{% endif %}
+
+{% comment %}
+  Search
+{% endcomment %}
+{% if section.settings.show_search %}
+  {%- capture search %}
+    <a x-ref="search" @click.prevent="openSearch()" @keydown.space="openSearch()" class="inline-block py-2 flex {% if layout contains 'spread'%}h-full{% endif %}" href="{{ routes.search_url }}">
+      {%- if show_icons -%}
+      <span class="visually-hidden">{{ 'layout.navigation.search' | t }}</span>
+      <span class="my-auto inline-block w-5 h-5 align-middle">{%- render 'icon-search' -%}</span>
+      {%- else -%}
+      <span class="my-auto">{{ 'layout.navigation.search' | t }}</span>
+      {%- endif -%}
+    </a>
+    <div class="absolute left-0 bottom-0 w-full transform {% if layout contains 'menu_below' %}translate-y-1{% else %}translate-y-full{% endif %} z-20 bg-{{ section_color }}-background text-{{ section_color }}-text border-b-grid border-t-grid border-grid-color py-2 section-x-padding"
+      x-cloak
+      x-show="searchOpen"
+      x-transition:enter="transition ease duration-200"
+      x-transition:enter-start="opacity-0"
+      x-transition:enter-end="opacity-100"
+      x-transition:leave="transition ease duration-00"
+      x-transition:leave-start="opacity-100"
+      x-transition:leave-end="opacity-0"
+      @click.away.prevent="searchOpen = false"
+      data-header-search
+      @focusout="searchFocusOut($event)"
+    >
+      <form action="{{ routes.search_url }}" method="get" class="input-group search" role="search">
+        <label for="search" class="hidden">{{ 'general.search.submit' | t }}</label>
+
+        <div class="flex items-center justify-between">
+          <button class="py-2 mr-4"
+            aria-label="{{ 'general.search.submit' | t }}"
+            type="submit">
+            <span class="inline-block w-5 h-5 align-middle">{%- render 'icon-search' -%}</span>
+            <span class="visually-hidden">{{ 'general.search.submit' | t }}</span>
+          </button>
+          <input x-ref="searchInput" id="search" type="text" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" class="placeholder-current font-body w-full block bg-transparent" aria-label="{{ 'general.search.placeholder' | t }}" data-search-input>
+          <button class="py-2 ml-4"
+            @click="searchOpen = false"
+            type="button">
+            <span class="visually-hidden">{{ 'general.accessibility.close_modal' | t }}</span>
+            <span class="inline-block w-5 h-5 align-middle">{%- render 'icon-close' -%}</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  {%- endcapture -%}
+{% endif %}
+
+{% comment %}
+  Cart
+{% endcomment %}
+{%- capture header_cart %}
+  <a  href="{{ routes.cart_url }}"
+      class="inline-block py-2 flex {% if settings.header_uppercase %}uppercase{% endif %}{% if layout contains 'spread'%} h-full{% endif %}"
+      {% if settings.ajax_cart_method == 'drawer' %}
+        data-cart-drawer-toggle
+        x-bind:aria-expanded="$store.drawer.cartDrawerOpen"
+        @click.prevent="$store.drawer.cartOpener = $event.currentTarget; $store.drawer.cartDrawerOpen = !$store.drawer.cartDrawerOpen"
+        @keydown.space="$store.drawer.cartOpener = $event.currentTarget; $store.drawer.cartDrawerOpen = !$store.drawer.cartDrawerOpen"
+      {% endif %}
+    >
+    <div class="relative align-middle">
+      <span id="CartCount" x-show="$store.cartCount.count > 0" class="absolute top-1 right-0 w-2 h-2 rounded-full bg-{{ section_color }}-accent"></span>
+      <span class="inline-flex w-5 h-5 fill-current align-top">{%- render 'icon-cart' -%}</span>
+      <span class="visually-hidden" x-text="$store.cartCount.countWithText()"></span>
+    </div>
+  </a>
+{%- endcapture -%}
+
+<section x-data="ThemeSection_{{ section.id }}()" x-init="mounted()" data-section-id="{{ section.id }}" data-section-type="header" data-dropdown-count="{{ counter }}" class="{% if overlay_header %}absolute top-0 left-0 right-0 z-50{% endif %}" {% if section.settings.sticky_header %}data-sticky="true"{% endif %}>
+  <header
+    {% if overlay_header_with_sticky -%}:class="{ 'bg-{{ section_color }}-background text-{{ section_color }}-text border-{{ section_color }}-text' : headerIsStuck, 'bg-transparent text-{{ overlay_text_color }}-text border-{{ overlay_text_color }}-text' : !headerIsStuck }" {% endif -%}
+    class="{% if overlay_header_without_sticky %}text-{{ overlay_text_color }}-text{% endif %} {% unless overlay_header_without_sticky %}bg-{{ section_color }}-background text-{{ section_color }}-text{% endunless %} border-b-grid relative z-10 {% if overlay_header_without_sticky %}border-{{ overlay_text_color }}-text{% endif %} {% unless overlay_header %}border-theme-color{% endunless %}">
+    <nav class="relative hidden {% if settings.header_uppercase %}uppercase{% endif %} {% unless layout contains 'menu_drawer' %}lg:block{% endunless %} py-2" aria-label="Primary">
+      <div class="section-x-padding flex items-stretch justify-between {% if layout contains 'spread' %}flex-wrap{% endif %}">
+        <div class="flex items-center {% if layout contains 'center' %}flex-grow w-1/3{% endif %}">
+          {% if layout contains 'logo_left' %}
+            <div class="{% unless layout contains 'spread' %}mr-6{% endunless %}">
+              {{ header_logo }}
+            </div>
+          {% endif %}
+          {% if layout contains 'menu_left' %}
+            {{ header_menu }}
+          {% endif %}
+        </div>
+
+        {% if layout contains 'menu_spread' %}
+          {{ header_menu }}
+        {% elsif layout contains 'center' %}
+          <div class="{% unless layout contains 'logo_center' %}flex-grow w-1/3 lg:w-3/4{% endunless %} flex items-stretch justify-center text-center">
+            {% if layout contains 'logo_center' %}
+              {{ header_logo }}
+            {% endif %}
+            {% if layout contains 'menu_center' %}
+              {{ header_menu }}
+            {% endif %}
+          </div>
+        {% endif %}
+        
+        {%- if section.settings.custom_link != blank and layout == 'logo_left_menu_spread' -%}
+        <div class="mt-1 {% unless layout contains 'spread' %}ml-4 mr-4 flex items-stretch{% endunless %} whitespace-nowrap">
+          {{ custom_link }}
+        </div>
+        {%- endif -%}
+
+        {%- if shop.customer_accounts_enabled and layout == 'logo_left_menu_spread' and show_icons == false -%}
+        <div class="mt-1 {% unless layout contains 'spread' %}ml-4 mr-4 flex items-stretch{% endunless %} whitespace-nowrap">
+          {{ customer_accounts }}
+        </div>
+        {%- endif -%}
+
+        {% if section.settings.show_search and layout == 'logo_left_menu_spread' and show_icons == false %}
+        <div class="mt-1 {% unless layout contains 'spread' %}ml-4 mr-4 flex items-stretch{% endunless %} whitespace-nowrap">
+          {{ search }}
+        </div>
+        {%- endif -%}
+
+        <div class="flex items-stretch justify-end text-right {% if layout contains 'center' %}flex-grow w-1/3{% endif %}">
+          {%- liquid
+            if layout contains 'menu_right'
+              echo header_menu
+            endif
+            assign show_extras = false
+            if layout != 'logo_left_menu_spread'
+              assign show_extras = true
+            endif
+            if layout == 'logo_left_menu_spread' and show_icons
+              assign show_extras = true
+            endif
+          -%}
+          
+          {% if section.settings.custom_link and show_extras %}
+          <div class="mt-1 ml-4 mr-4 whitespace-nowrap flex items-stretch">
+            {{ custom_link }}
+          </div>
+          {% endif %}
+          
+          {% if section.settings.show_search and show_extras %}
+          <div class="mt-1 ml-4 mr-4 whitespace-nowrap flex items-stretch">
+            {{ search }}
+          </div>
+          {% endif %}
+
+          {%- if shop.customer_accounts_enabled and show_extras -%}
+          <div class="mt-1 ml-4 mr-4 whitespace-nowrap flex items-stretch">
+            {{ customer_accounts }}
+          </div>
+          {%- endif -%}
+
+          <div class="{% if show_extras %}ml-4{% endif %} flex items-stretch whitespace-nowrap">
+            {{ header_cart }}
+          </div>
+        </div>
+      </div>
+
+      {% if layout contains 'menu_below' %}
+        <div class="section-x-padding flex items-center justify-center py-2 border-t-grid border-grid-color">
+          {{ header_menu }}
+        </div>
+      {% endif %}
+    </nav>
+    {% comment %}
+      Mobile Nav
+    {% endcomment %}
+    <div class="{% unless layout contains 'menu_drawer' %}lg:hidden{% endunless %}">
+      <div class="lg:relative section-x-padding flex items-center justify-between py-2">
+        
+        <div class="flex items-center {% if layout contains 'logo_center' %}flex-grow w-1/3{% endif %}">
+          {% if layout contains 'logo_left' %}
+            <div class="mr-4">
+              {{ header_logo }}
+            </div>
+          {% endif %}
+          {% if layout contains 'logo_center' %}
+            {{ header_menu_toggle }}
+          {% endif %}
+        </div>
+
+        {% if layout contains 'logo_center' %}
+          <div class="justify-center text-center shrink-0">
+            {{ header_logo }}
+          </div>
+        {% endif %}
+
+        <div class="flex justify-end text-right {% if layout contains 'logo_center' %}flex-grow w-1/3{% endif %}">
+          {% if layout contains 'logo_left' %}
+            {{ header_menu_toggle }}
+          {% endif %}
+
+          {% if layout contains 'menu_drawer' %}
+            {%- if shop.customer_accounts_enabled -%}
+            <div class="hidden lg:block whitespace-nowrap ml-4">
+              {{ customer_accounts }}
+            </div>
+            {%- endif -%}
+          {% endif %}
+          
+          <div class="ml-2 lg:ml-4 whitespace-nowrap">
+            {{ header_cart }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+</section>
+
+{% if settings.enable_breadcrumbs %}
+{% render 'breadcrumbs', section_color: 'header' %}
+{% endif %}
+
+<noscript>
+  <style>
+    .no-js-focus-wrapper:focus-within .no-js-focus-container {
+      display: block !important;
+    }
+    {% if layout == 'logo_center_menu_drawer' %}
+    .section-sidebar {
+      display: block !important;
+    }
+    {%- endif -%}
+  </style>
+</noscript>
+
+<style>
+  {% if section.settings.sticky_header %}
+    #shopify-section-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+    :root {
+      --sticky-header-height: 66px;
+    }
+  {% else %}
+    :root {
+      --sticky-header-height: 0;
+    }
+  {% endif %}
+</style>
+
+{% if section.settings.logo != blank %}
+  <style>
+    .logo-image {
+      display: block;
+      max-width: {{ section.settings.logo_max_width }}px;
+    }
+  </style>
+{% endif %}
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "{{ shop.name }}",
+  {% if section.settings.logo %}
+{% assign image_size = section.settings.logo.width | append: 'x' %}
+    "logo": "https:{{ section.settings.logo | img_url: image_size }}",
+  {% endif %}
+  "sameAs": [
+    "{{ settings.social_twitter_link }}",
+    "{{ settings.social_facebook_link }}",
+    "{{ settings.social_pinterest_link }}",
+    "{{ settings.social_instagram_link }}",
+    "{{ settings.social_tumblr_link }}",
+    "{{ settings.social_snapchat_link }}",
+    "{{ settings.social_youtube_link }}",
+    "{{ settings.social_vimeo_link }}"
+  ],
+  "url": "{{ shop.url }}{{ page.url }}"
+}
+</script>
+
+{% if template.name == 'index' %}
+  {% assign potential_action_target = shop.url | append: routes.search_url | append: "?q={search_term_string}" %}
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {{ potential_action_target | json }},
+        "query-input": "required name=search_term_string"
+      },
+      "url": {{ shop.url | append: page.url | json }}
+    }
+  </script>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Header",
+    "class": "section-header relative z-20",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Header"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image"
+      },
+      {
+        "type": "range",
+        "id": "logo_max_width",
+        "min": 20,
+        "max": 450,
+        "step": 10,
+        "unit": "px",
+        "label": "Custom logo width",
+        "default": 250
+      },
+      {
+        "type": "link_list",
+        "id": "menu",
+        "label": "Menu",
+        "default": "main-menu",
+        "info": "This menu is only displayed on desktop. To change navigation for mobile/drawer menu, go to sidebar settings."
+      },
+      {
+         "type": "select",
+         "id": "layout",
+         "options": [
+            { "value": "logo_left_menu_left", "label": "Logo left / menu left"},
+            { "value": "logo_left_menu_right", "label": "Logo left / menu right"},
+            { "value": "logo_left_menu_center", "label": "Logo left / menu center"},
+            { "value": "logo_left_menu_spread", "label": "Logo left / menu spread"},
+            { "value": "logo_left_menu_below", "label": "Logo left / menu below"},
+            { "value": "logo_center_menu_left", "label": "Logo center / menu left"},
+            { "value": "logo_center_menu_drawer", "label": "Logo center / menu drawer"}
+         ],
+         "label": "Desktop layout"
+      },
+      {
+         "type": "select",
+         "id": "dropdown_text_align",
+         "options": [
+            { "value": "left", "label": "Left"},
+            { "value": "center", "label": "Center"},
+            { "value": "right", "label": "Right"}
+         ],
+         "label": "Dropdown text align"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_all_navigation_links",
+        "label": "Enable links to drop-down link headings"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_search",
+        "label": "Show search"
+      },
+      {
+        "type": "checkbox",
+        "id": "sticky_header",
+        "label": "Sticky header"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_icons",
+        "label": "Show icons",
+        "info": "Show icons for menu, search and cart"
+      },
+      {
+        "type": "header",
+        "content": "Custom link"
+      },
+      {
+        "type": "text",
+        "id": "custom_link_text",
+        "label": "Text"
+      },
+      {
+        "type": "url",
+        "id": "custom_link",
+        "label": "Link"
+      },
+      {
+        "type": "select",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "options": [
+            { "value": "primary", "label": "Primary"},
+            { "value": "secondary", "label": "Secondary"},
+            { "value": "tertiary", "label": "Tertiary"}
+        ],
+        "default":   "primary"
+      },
+      {
+        "type": "header",
+        "content": "Overlay Settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "overlay_homepage",
+        "label": "Overlay header over home page"
+      },
+      {
+        "type": "select",
+        "id": "overlay_text_color",
+        "label": "Overlay text color",
+        "options": [
+            { "value": "primary", "label": "Primary text"},
+            { "value": "secondary", "label": "Secondary text"},
+            { "value": "tertiary", "label": "Tertiary text"},
+            { "value": "white", "label": "White"},
+            { "value": "black", "label": "Black"}
+        ],
+        "default":   "white"
+      },
+      {
+        "type": "image_picker",
+        "id": "overlay_logo",
+        "label": "Overlay logo image"
+      }
+    ]
+  }
+{% endschema %}

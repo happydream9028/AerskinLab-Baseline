@@ -1,0 +1,109 @@
+{%- comment -%}
+  This is a required section for the Shopify Theme Store.
+  It is available when you add "Rich text" section on the Theme Editor.
+
+  Theme Store required settings
+  - Heading: title of the rich text section
+  - Text: description of the rich text section
+{%- endcomment -%}
+{%- assign section_color = section.settings.color_scheme -%}
+
+{% capture plus_sign %}
+  <span class="border border-grid-color rounded-full inline-block w-4 h-4 text-center">+</span>
+{% endcapture %}
+
+{% capture checkmark %}
+  <span class="border border-grid-color rounded-full inline-block w-4 h-4 text-center">✓</span>
+{% endcapture %}
+
+{% capture heading_open %}
+  <h4 class="font-heading text-xl pb-4">
+{% endcapture %}
+{% capture heading_close %}
+  </h4>
+{% endcapture %}
+
+<section class="bg-{{ section_color }}-background text-{{ section_color }}-text overflow-hidden border-t-grid border-grid-color">
+  <div class="lg:w-2/3 px-2 lg:pl-8 py-theme-double m-auto">
+    <div class="multi-column col-gap-lg {{ section.settings.desktop_columns }} space-y-2 {{ section.settings.text_alignment }} text-base {{ section.settings.desktop_text_size }}">
+      {% if section.settings.title != '' %}
+      <h2 class="font-heading {{ settings.base_heading_size }}">{{ section.settings.title }}</h2>
+      {% endif %}
+      <div class="rte">
+        {{ section.settings.text | replace: '[plus]', plus_sign | replace: '[check]', checkmark | replace: '[heading]', heading_open | replace: '[/heading]', heading_close }}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Text columns",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p><p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p><p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+      },
+      {
+        "type": "select",
+        "id": "desktop_columns",
+        "label": "Columns on desktop",
+        "options": [
+          { "value": "lg:col-count-2", "label": "2"},
+          { "value": "lg:col-count-3", "label": "3"},
+          { "value": "lg:col-count-4", "label": "4"}
+        ],
+        "default":   "lg:col-count-3"
+      },
+      {
+        "type": "select",
+        "id": "text_alignment",
+        "label": "Text alignment",
+        "options": [
+          { "value": "text-left", "label": "Left"},
+          { "value": "text-center", "label": "Center"},
+          { "value": "text-right", "label": "Right"}
+        ],
+        "default":   "text-left"
+      },
+      {
+        "type": "select",
+        "id": "desktop_text_size",
+        "label": "Desktop text size",
+        "options": [
+            { "value": "lg:text-sm", "label": "S"},
+            { "value": "lg:text-base", "label": "M"},
+            { "value": "lg:text-lg", "label": "L"},
+            { "value": "lg:text-xl", "label": "XL"},
+            { "value": "lg:text-2xl", "label": "2XL"}
+        ],
+        "default":   "lg:text-base"
+      },
+      {
+        "type":      "header",
+        "content":   "Color"
+      },
+      {
+        "type": "select",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "options": [
+            { "value": "primary", "label": "Primary"},
+            { "value": "secondary", "label": "Secondary"},
+            { "value": "tertiary", "label": "Tertiary"}
+        ],
+        "default":   "primary"
+      }
+    ],
+    "presets": [{
+        "name": "Text columns"
+    }]
+  }
+{% endschema %}

@@ -1,0 +1,5 @@
+<a class="inline-block hover:text-{{ section_color }}-accent text-lg font-bold items-center justify-center {% if settings.links_show_underline %}border-b-text border-{{ section_color }}-text hover:border-{{ section_color }}-accent pb-1{% endif %}" href="{{ link }}">
+  <span{% if settings.links_uppercase %} class="uppercase"{% endif %}>
+    {% if settings.links_show_arrow and arrow_position == 'left' %}<span class="arrow-right-long w-20px inline-flex">{% render 'icon-arrow-right-long' %}</span>{% endif %}{{- text -}}{% if settings.links_show_arrow and arrow_position == 'right' %}<span class="arrow-right-long w-20px inline-flex">{% render 'icon-arrow-right-long' %}</span>{% endif %}
+  </span>
+</a>

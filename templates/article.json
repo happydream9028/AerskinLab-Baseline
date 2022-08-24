@@ -1,0 +1,22 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "settings": {
+        "crop": "2.39",
+        "image_width_desktop": "full",
+        "indent_image": false,
+        "show_author": true,
+        "show_date": true,
+        "show_share_buttons": true,
+        "show_tags": true,
+        "show_next_previous_links": true,
+        "color_scheme": "primary",
+        "override_header_footer_color_scheme": false
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

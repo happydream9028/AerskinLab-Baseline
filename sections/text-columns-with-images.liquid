@@ -1,0 +1,319 @@
+{%- liquid
+  assign section_color = 'primary' 
+  assign text_align = section.settings.text_alignment 
+  assign block_heading_level = 'h2' 
+  assign ratio = section.settings.crop | plus: 0
+  assign divisible_by_four =  section.blocks.size | modulo: 4
+  assign divisible_by_three =  section.blocks.size | modulo: 3
+  if divisible_by_four == 0
+    assign col_span = 'lg:col-span-3'
+  elsif divisible_by_three == 0
+    assign col_span = 'lg:col-span-4'
+  else
+    assign col_span = 'lg:col-span-6'
+  endif
+  
+  assign stacked = false
+  if section.settings.stacked
+    assign stacked = true
+    assign col_span = 'lg:col-span-8'
+  endif
+  assign text_size_mobile = section.settings.text_size_mobile
+  assign text_size_desktop = section.settings.text_size_desktop
+  
+  assign small_col_1 = section.settings.small_first_column
+  
+  assign content_cols_span = 'lg:col-span-12'
+  if small_col_1
+    assign content_cols_span = 'lg:col-span-16' 
+  endif 
+-%}
+<section class="{% if stacked %}grid lg:grid-cols-18{% else %} border-grid-color bg-border border-t-grid{% endif %}{% if section.settings.border_top %} border-grid-color bg-border border-t-grid{% endif %}{% if section.settings.border_bottom %}  border-grid-color bg-border border-b-grid{% endif %}">
+  <div class="{% if small_col_1 %}lg:col-span-2 border-r-grid border-grid-color{% else %}lg:col-span-6{% endif %}">
+  {% if section.settings.title != '' %}
+    {%- assign block_heading_level = 'h3' -%}
+    {%- render 'section-title',
+      title: section.settings.title,
+      section_color: section_color,
+  	  stacked: stacked
+    -%}
+  {% endif %}
+  </div>
+  
+  <ul class="{% if stacked %}{{ content_cols_span }} {% else %}grid grid-cols-1 lg:grid-cols-12{% endif %} gap-theme">
+    {% for block in section.blocks %}
+      {%- assign block_color = block.settings.color_scheme -%}
+      <li class="{% if stacked %}grid lg:grid-cols-2{% else %}{{ col_span }}{% endif %} bg-{{ block_color }}-background text-{{ block_color }}-text text-base {{ text_align }}{% if block.settings.reverse %} direction-rtl{% endif %}" {{ block.shopify_attributes }}>
+        {%- if block.settings.show_image -%}
+          {%- if block.settings.image != blank -%}
+          <div class="{% if stacked %}lg:col-span-1 {% endif %}bg-{{ block_color }}-background {% unless settings.fill_image_to_border_edge %}pt-2 px-2 lg:pt-4 lg:px-4{% else %} {% unless forloop.last %}border-b-grid border-grid-color{% endunless %}{% endunless %}">
+            <div class="relative">
+              {%- assign image = block.settings.image -%}
+              {% render 'image-crop' with
+                image: image,
+                ratio: ratio
+              %}
+            </div>
+          </div>
+          {%- else -%}
+          <div class="{% if stacked %}lg:col-span-1 {% endif %}bg-{{ block_color }}-background {% unless settings.fill_image_to_border_edge %}pt-2 px-2 lg:pt-4 lg:px-4{% else %} border-b-grid border-grid-color{% endunless %}">
+            <div class="relative h-full w-full">
+              {%- if section.settings.crop == '0' -%}
+                <div class="gallery-placeholder  bg-placeholder-bg ">
+                  {%- if settings.fill_image_to_border_edge -%}
+                    {% assign placeholder_svg_tag = 'placeholder-svg placeholder-svg--no-border' %}
+                  {%- else -%}
+                    {% assign placeholder_svg_tag = 'placeholder-svg' %}
+                  {%- endif -%}
+                  {{ 'image' | placeholder_svg_tag: placeholder_svg_tag }}
+                </div>
+              {%- else -%}
+                <div class="gallery-placeholder--cropped relative  bg-placeholder-bg "
+                  style="padding-top:{{ 1 | divided_by: ratio | times: 100 }}%;" >
+                  {%- if settings.fill_image_to_border_edge -%}
+                    {% assign placeholder_svg_tag = 'placeholder-svg fill-current gallery-placeholder--cropped__svg placeholder-svg--no-border' %}
+                  {%- else -%}
+                    {% assign placeholder_svg_tag = 'placeholder-svg fill-current  gallery-placeholder--cropped__svg' %}
+                  {%- endif -%}
+                  <span class="absolute top-0 left-0 right-0 bottom-0 text-text">{{ 'image' | placeholder_svg_tag: placeholder_svg_tag }}</span>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+          {%- endif -%}
+        {%- endif -%}
+
+        {% assign has_icon = false %}
+        {% if block.settings.image_icon != blank %}
+          {% assign has_icon = true %}
+        {% endif %}
+        
+        <div class="direction-ltr {% if has_icon %}flex items-center justify-center {% endif %}{% if stacked %}lg:col-span-1 {% endif %}section-x-padding py-theme{% unless forloop.last %} border-b-grid border-grid-color{% endunless %}">
+          {%- if has_icon -%}
+          <div class="min-w-20">
+            <div class="relative">
+              {%- assign image_icon = block.settings.image_icon -%}
+              {% render 'image-crop' with
+                image: image_icon,
+                ratio: 0
+              %}
+            </div>
+          </div>
+          {% endif %}
+          <div class="flex flex-col justify-center h-full px-4 lg:max-w-xs{%- unless has_icon -%} m-auto{%- endunless -%}">
+            {% if block.settings.subtitle != '' %}
+            <h4 class="font-heading text-lg mb-2">{{ block.settings.subtitle }}</h4>
+            {% endif %}
+            {% if block.settings.title != '' %}
+            <h3 class="font-heading {{ text_size_mobile }} {{ text_size_desktop }} mb-2">{{ block.settings.title }}</h3>
+            {% endif %}
+            <div class="rte {% if block.settings.title != '' %}mt-2{% endif %}">{{ block.settings.text }}</div>
+            {% if block.settings.cta_link %}
+            <div class="mt-4">
+              {%- render 'link-underline',
+                section_color: section_color,
+                text: block.settings.cta_text,
+                link: block.settings.cta_link
+              -%}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+
+{% schema %}
+  {
+    "name": "Text columns with images",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading"
+      },
+      {
+        "type": "select",
+        "id": "crop",
+        "label": "Crop images",
+        "options": [
+          {
+            "value": "0",
+            "label": "No crop"
+          },
+          {
+            "value": "1.3",
+            "label": "Landscape"
+          },
+          {
+            "value": "1",
+            "label": "Square"
+          },
+          {
+            "value": "0.8",
+            "label": "Portrait"
+          }
+        ],
+        "default": "1"
+      },
+      {
+        "type": "select",
+        "id": "text_size_mobile",
+        "label": "Text size - mobile",
+        "options": [
+          { "value": "text-sm", "label": "S"},
+          { "value": "text-base", "label": "M"},
+          { "value": "text-lg", "label": "L"},
+          { "value": "text-xl", "label": "XL"},
+          { "value": "text-2xl", "label": "2XL"}
+        ],
+        "default":   "text-2xl"
+      },
+      {
+        "type": "select",
+        "id": "text_size_desktop",
+        "label": "Text size - desktop",
+        "options": [
+          { "value": "default", "label": "Same as mobile"},
+          { "value": "lg:text-2xl","label":  "2XL"},
+          { "value": "lg:text-3xl", "label": "3XL"},
+          { "value": "lg:text-4xl", "label": "4XL"},
+          { "value": "lg:text-5xl", "label": "5XL" },
+          { "value": "lg:text-6xl", "label": "6XL" },
+          { "value": "lg:text-7xl", "label": "7XL" }
+        ],
+        "default":   "lg:text-5xl"
+      },
+      {
+        "type": "select",
+        "id": "text_alignment",
+        "label": "Text alignment",
+        "options": [
+          { "value": "text-left", "label": "Left"},
+          { "value": "text-center", "label": "Center"},
+          { "value": "text-right", "label": "Right"}
+        ],
+        "default":   "text-left"
+      },
+      {
+        "type": "checkbox",
+        "id": "stacked",
+        "label": "Stack columns",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "small_first_column",
+        "label": "Super tiny first column",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "border_top",
+        "label": "Top Border",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "border_bottom",
+        "label": "Bottom border",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "column",
+        "name": "Column",
+        "limit": 4,
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "show_image",
+            "label": "Show image",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "reverse",
+            "label": "Reverse image and text",
+            "default": false
+          },
+          {
+            "id": "image",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Sub Heading"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Share blog posts, products, or promotions with your customers. Use this text to describe products, share details on availability and style, or as a space to display recent reviews or FAQs.</p>"
+          },
+          {
+            "type":      "header",
+            "content":   "Optional icon"
+          },
+          {
+            "id": "image_icon",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "type":      "header",
+            "content":   "Call to action"
+          },
+          {
+            "type": "url",
+            "id": "cta_link",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "cta_text",
+            "label": "Text"
+          },
+          {
+            "type":      "header",
+            "content":   "Color"
+          },
+          {
+            "type": "select",
+            "id": "color_scheme",
+            "label": "Color scheme",
+            "options": [
+                { "value": "primary", "label": "Primary"},
+                { "value": "secondary", "label": "Secondary"},
+                { "value": "tertiary", "label": "Tertiary"}
+            ],
+            "default":   "primary"
+          }
+        ]
+      }
+    ],
+    "presets": [{
+        "name": "Text columns with images",
+        "blocks": [
+          {
+            "type": "column"
+          },
+          {
+            "type": "column"
+          },
+          {
+            "type": "column"
+          }
+        ]
+    }]
+  }
+{% endschema %}

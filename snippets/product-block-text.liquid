@@ -1,0 +1,7 @@
+{% liquid
+  assign font = block.settings.font
+%}
+<div class="mt-8 font-{{ font }} {{ block.settings.text_size }}  {% if block.settings.icon != 'none' %}flex items-center justify-start{% endif %}" {{ block.shopify_attributes }}>
+  {% if block.settings.icon != 'none' %}<span class="inline-block w-5 h-5 mr-2">{% render 'product-icon', icon: block.settings.icon %}</span>{% endif %}
+  {{ block.settings.text }}
+</div>

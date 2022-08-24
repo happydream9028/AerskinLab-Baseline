@@ -1,0 +1,392 @@
+<style>
+
+  {%- liquid
+    assign heading_font = settings.font_heading 
+    assign body_font = settings.font_body 
+    assign heading_font_weight = heading_font.weight 
+    assign heading_font_style = heading_font.style 
+    assign body_font_weight = body_font.weight 
+    assign body_font_bold = settings.font_body | font_modify: 'weight', 'bolder' 
+    assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic' 
+  
+    comment
+    Primary text overlay
+    endcomment 
+    assign background = settings.color_primary_background | color_brightness 
+    assign background = background | plus: 0 
+    assign text = settings.color_primary_text | color_brightness 
+    assign text = text | plus: 0 
+    assign primary_overlay_color = '' 
+    if text > 127 
+      if background > 127 
+        assign primary_overlay_color = '#000000' 
+      else 
+        assign primary_overlay_color = settings.color_primary_background 
+      endif 
+    else 
+      if background > 127 
+        assign primary_overlay_color = settings.color_primary_background 
+      else 
+        assign primary_overlay_color = '#ffffff' 
+      endif 
+    endif 
+  
+    comment
+    Primary text accent overlay
+    endcomment 
+    assign background = settings.color_primary_background | color_brightness 
+    assign background = background | plus: 0 
+    assign text = settings.color_primary_accent | color_brightness 
+    assign text = text | plus: 0 
+    assign primary_accent_overlay_color = '' 
+    if text > 127 
+      if background > 127 
+        assign primary_accent_overlay_color = '#000000' 
+      else 
+        assign primary_accent_overlay_color = settings.color_primary_background 
+      endif 
+    else 
+      if background > 127 
+        assign primary_accent_overlay_color = settings.color_primary_background 
+      else 
+        assign primary_accent_overlay_color = '#ffffff' 
+      endif 
+    endif 
+  
+    comment
+    Secondary text overlay
+    endcomment
+    assign background = settings.color_secondary_background | color_brightness 
+    assign background = background | plus: 0 
+    assign text = settings.color_secondary_text | color_brightness 
+    assign text = text | plus: 0 
+    assign secondary_overlay_color = '' 
+    if text > 127 
+      if background > 127 
+        assign secondary_overlay_color = '#000000' 
+      else 
+        assign secondary_overlay_color = settings.color_secondary_background 
+      endif 
+    else 
+      if background > 127 
+        assign secondary_overlay_color = settings.color_secondary_background 
+      else 
+        assign secondary_overlay_color = '#ffffff' 
+      endif 
+    endif 
+  
+    comment
+    Secondary text accent overlay
+    endcomment
+    assign background = settings.color_secondary_background | color_brightness 
+    assign background = background | plus: 0 
+    assign text = settings.color_secondary_accent | color_brightness 
+    assign text = text | plus: 0 
+    assign secondary_accent_overlay = '' 
+    if text > 127 
+      if background > 127 
+        assign secondary_accent_overlay = '#000000' 
+      else 
+        assign secondary_accent_overlay = settings.color_secondary_background 
+      endif 
+    else 
+      if background > 127 
+        assign secondary_accent_overlay = settings.color_secondary_background 
+      else 
+        assign secondary_accent_overlay = '#ffffff' 
+      endif 
+    endif 
+  
+    comment
+    Tertiary text overlay
+    endcomment
+    assign background = settings.color_tertiary_background | color_brightness 
+    assign background = background | plus: 0 
+    assign text = settings.color_tertiary_text | color_brightness 
+    assign text = text | plus: 0 
+    assign tertiary_overlay_color = '' 
+    if text > 127 
+      if background > 127 
+        assign tertiary_overlay_color = '#000000' 
+      else 
+        assign tertiary_overlay_color = settings.color_tertiary_background 
+      endif 
+    else 
+      if background > 127 
+        assign tertiary_overlay_color = settings.color_tertiary_background 
+      else 
+        assign tertiary_overlay_color = '#ffffff' 
+      endif 
+    endif 
+  
+    comment
+    Tertiary text accent overlay
+    endcomment
+    assign background = settings.color_tertiary_background | color_brightness 
+    assign background = background | plus: 0 
+    assign text = settings.color_tertiary_accent | color_brightness 
+    assign text = text | plus: 0 
+    assign tertiary_accent_overlay = '' 
+    if text > 127 
+      if background > 127 
+        assign tertiary_accent_overlay = '#000000' 
+      else 
+        assign tertiary_accent_overlay = settings.color_tertiary_background 
+      endif 
+    else 
+      if background > 127 
+        assign tertiary_accent_overlay = settings.color_tertiary_background 
+      else 
+        assign tertiary_accent_overlay = '#ffffff' 
+      endif 
+    endif 
+  
+    comment
+    White text overlay
+    endcomment
+    assign background = '#ffffff' | color_brightness 
+    assign background = background | plus: 0 
+    assign text = settings.color_primary_text | color_brightness 
+    assign text = text | plus: 0 
+    assign white_text_overlay_color = '' 
+    if text > 127 
+      assign white_text_overlay_color = settings.color_primary_background 
+    else 
+      assign white_text_overlay_color = settings.color_primary_text 
+    endif 
+  
+    comment
+    Black text overlay
+    endcomment
+    assign background = '#000000' | color_brightness 
+    assign background = background | plus: 0 
+    assign text = settings.color_primary_text | color_brightness 
+    assign text = text | plus: 0 
+    assign black_text_overlay_color = '' 
+    if text > 127 
+      assign black_text_overlay_color = settings.color_primary_text 
+    else 
+      assign black_text_overlay_color = settings.color_primary_background 
+    endif 
+  
+    assign percent_font_size = settings.base_font_size | times: 6.25 
+  
+    case settings.spacing 
+      when 'none' 
+      assign spacing = '0.5rem' 
+      assign spacing_double = '1rem' 
+      assign spacing_half = '0.25rem' 
+      when 'small' 
+      assign spacing = '1rem' 
+      assign spacing_double = '2rem' 
+      assign spacing_half = '0.5rem' 
+      when 'medium' 
+      assign spacing = '2rem' 
+      assign spacing_double = '4rem' 
+      assign spacing_half = '1rem' 
+      when 'large' 
+      assign spacing = '3rem' 
+      assign spacing_double = '6rem' 
+      assign spacing_half = '1.5rem' 
+    endcase 
+  
+    
+    assign button_border_radius = '0' 
+    case settings.button_style 
+      when 'slightly_rounded' 
+        assign button_border_radius = '0.125rem' 
+      when 'rounded' 
+        assign button_border_radius = '9999px' 
+    endcase 
+  
+    case settings.button_color 
+      when 'text_background' 
+        assign button_border_color = 'var(--color-primary-text)' 
+        assign button_background_color = 'var(--color-primary-text)' 
+        assign button_text_color = 'var(--color-primary-text--overlay)' 
+        assign button_border_color_hover = 'var(--color-primary-accent)' 
+        assign button_background_color_hover = 'var(--color-primary-accent)' 
+        assign button_text_color_hover = 'var(--color-primary-accent--overlay)' 
+      when 'accent_background' 
+        assign button_border_color = 'var(--color-primary-accent)' 
+        assign button_background_color = 'var(--color-primary-accent)' 
+        assign button_text_color = 'var(--color-primary-accent--overlay)' 
+        assign button_border_color_hover = 'var(--color-primary-text)' 
+        assign button_background_color_hover = 'var(--color-primary-text)' 
+        assign button_text_color_hover = 'var(--color-primary-text--overlay)' 
+      when 'accent_background_text_border' 
+        assign button_border_color = 'var(--color-primary-text)' 
+        assign button_background_color = 'var(--color-primary-accent)' 
+        assign button_text_color = 'var(--color-primary-accent--overlay)' 
+        assign button_border_color_hover = 'var(--color-primary-text)' 
+        assign button_background_color_hover = 'var(--color-primary-text)' 
+        assign button_text_color_hover = 'var(--color-primary-text--overlay)' 
+      when 'transparent_background_text_border' 
+        assign button_border_color = 'var(--color-primary-text)' 
+        assign button_background_color = 'transparent' 
+        assign button_text_color = 'var(--color-primary-text)' 
+        assign button_border_color_hover = 'var(--color-primary-accent)' 
+        assign button_background_color_hover = 'transparent' 
+        assign button_text_color_hover = 'var(--color-primary-accent)' 
+    endcase 
+
+    assign text_width = settings.border_width 
+    assign checkbox_width = 1 
+    if settings.border_width == 0 
+      assign text_width = 1 
+    endif 
+    if settings.border_width > 2 
+      assign checkbox_width = 2 
+    endif 
+  -%}
+      
+  {%- capture body_font_stack -%}"Apercu Mono Pro", {{ body_font.family }}, {{ body_font.fallback_families }}{%- endcapture -%}
+  {%- capture heading_font_stack -%}"Tenso", {{ heading_font.family }}, {{ heading_font.fallback_families }}{%- endcapture -%}
+
+  {% if settings.heading_uppercase -%}
+    {%- capture heading_capitalize -%}uppercase{%- endcapture -%}
+  {% else -%}
+    {%- capture heading_capitalize -%}none{%- endcapture -%}
+  {% endif -%}
+  {%- capture heading_letterspacing -%}{{ settings.heading_letterspacing | divided_by: 1000.0 }}{% unless settings.heading_letterspacing == 0 -%}em{% endunless -%}{%- endcapture -%}
+
+  {% if settings.heading_underline -%}
+    {%- capture heading_decoration -%}underline{%- endcapture -%}
+  {% else -%}
+    {%- capture heading_decoration -%}none{%- endcapture -%}
+  {% endif -%}
+
+  {% if settings.body_copy_uppercase -%}
+    {%- capture body_copy_transform -%}uppercase{%- endcapture -%}
+  {% else -%}
+    {%- capture body_copy_transform -%}none{%- endcapture -%}
+  {% endif -%}
+
+  {%- if settings.button_uppercase -%}
+    {%- capture button_transform -%}uppercase{% endcapture -%}
+  {%- else -%}
+    {%- capture button_transform -%}none{% endcapture -%}
+  {%- endif -%}
+
+  {%- capture icon_select_svg -%}url({{ "ico-select.svg" | asset_url }}){%- endcapture -%}
+  {%- capture icon_select_svg_primary -%}url({{ "ico-select__primary.svg" | asset_url }}){%- endcapture -%}
+  {%- capture icon_select_svg_secondary -%}url({{ "ico-select__secondary.svg" | asset_url }}){%- endcapture -%}
+  {%- capture icon_select_svg_tertiary -%}url({{ "ico-select__tertiary.svg" | asset_url }}){%- endcapture -%}
+  
+
+  :root {
+    --base-font-size: {{ percent_font_size }}%;
+    --base-line-height: {{ settings.base_line_height }};
+
+    --heading-font-stack: {{ heading_font_stack }};
+    --heading-font-weight: normal;
+    --heading-font-style: {{ heading_font_style }};
+    --heading-line-height: {{ settings.heading_line_height }};
+
+
+    --body-font-stack: {{ body_font_stack }};
+    --body-font-weight: 300;
+    --body-font-bold: normal;
+    --body-font-bold-italic: {{ body_font_bold_italic }};
+
+    /*
+    Primary color scheme
+    */
+    --color-primary-accent: {{ settings.color_primary_accent | color_to_rgb }};
+    --color-primary-text: {{ settings.color_primary_text | color_to_rgb }};
+    --color-primary-text-rgb: {{ settings.color_primary_text | color_extract: 'red' }}, {{ settings.color_primary_text | color_extract: 'green' }}, {{ settings.color_primary_text | color_extract: 'blue' }};
+    --color-primary-background: {{ settings.color_primary_background | color_to_rgb }};
+    --color-primary-background-hex: {{ settings.color_primary_background }};
+    --color-primary-meta: {{ settings.color_primary_meta | color_to_rgb }};
+    --color-primary-text--overlay: {{ primary_overlay_color | color_to_rgb }};
+    --color-primary-accent--overlay: {{ primary_accent_overlay_color | color_to_rgb }};
+    --color-primary-text-placeholder: {{ settings.color_primary_text | color_to_rgb | color_modify: 'alpha', 0.1 }};
+    --color-primary-background-0: {{ settings.color_primary_background | color_to_rgb | color_modify: 'alpha', 0 }};
+
+
+    /*
+    Secondary color scheme
+    */
+    --color-secondary-accent: {{ settings.color_secondary_accent | color_to_rgb }};
+    --color-secondary-text: {{ settings.color_secondary_text | color_to_rgb }};
+    --color-secondary-background: {{ settings.color_secondary_background | color_to_rgb }};
+    --color-secondary-background-hex: {{ settings.color_secondary_background }};
+    --color-secondary-meta: {{ settings.color_secondary_meta | color_to_rgb }};
+    --color-secondary-text--overlay: {{ secondary_overlay_color | color_to_rgb }};
+    --color-secondary-accent--overlay: {{ secondary_accent_overlay | color_to_rgb }};
+    --color-secondary-text-placeholder: {{ settings.color_secondary_text | color_to_rgb | color_modify: 'alpha', 0.1 }};
+    --color-secondary-background-0: {{ settings.color_secondary_background | color_to_rgb | color_modify: 'alpha', 0 }};
+
+    /*
+    Tertiary color scheme
+    */
+    --color-tertiary-accent: {{ settings.color_tertiary_accent | color_to_rgb }};
+    --color-tertiary-text: {{ settings.color_tertiary_text | color_to_rgb }};
+    --color-tertiary-background: {{ settings.color_tertiary_background | color_to_rgb }};
+    --color-tertiary-background-hex: {{ settings.color_tertiary_background }};
+    --color-tertiary-meta: {{ settings.color_tertiary_meta | color_to_rgb }};
+    --color-tertiary-text--overlay: {{ tertiary_overlay_color | color_to_rgb }};
+    --color-tertiary-accent--overlay: {{ tertiary_accent_overlay | color_to_rgb }};
+    --color-tertiary-text-placeholder: {{ settings.color_tertiary_text | color_to_rgb | color_modify: 'alpha', 0.1 }};
+    --color-tertiary-background-0: {{ settings.color_tertiary_background | color_to_rgb | color_modify: 'alpha', 0 }};
+
+    --white-text--overlay: {{ white_text_overlay_color | color_to_rgb }};
+    --black-text--overlay: {{ black_text_overlay_color | color_to_rgb }};
+
+    --color-border: {{ settings.color_border | color_to_rgb }};
+    --border-width: {{ settings.border_width }}px;
+
+
+    --text-width: {{ text_width }}px;
+    --checkbox-width: {{ checkbox_width }}px;
+
+
+    --font-heading: "Apercu Mono Pro", {{ settings.font_heading.family }}, {{ settings.font_heading.fallback_families }};
+    --font-body: "Tenso", {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
+    --font-body-weight: {{ settings.font_body.weight }};
+    --font-body-style: {{ settings.font_body.style }};
+    --font-body-bold-weight: {{ font_body_bold.weight | default: 'bold' }};
+
+    --heading-letterspacing: {{ heading_letterspacing }};
+    --heading-capitalize: {{ heading_capitalize }};
+    --heading-decoration: {{ heading_decoration }};
+
+    --bopy-copy-transform: {{ body_copy_transform }};
+
+    --wrapperWidth: 100vw;
+    --gutter: {{ settings.border_width }}px;
+    --rowHeight: calc((var(--wrapperWidth) - (11 * var(--gutter))) / 12);
+
+    --ratioA: 1;
+    --ratioB: 1;
+
+    --header-height: 66px;
+    --add-to-cart-height: 44px;
+
+    --spacing: {{ spacing }};
+    --spacing-double: {{ spacing_double }};
+    --spacing-half: {{ spacing_half }};
+
+    /*
+    Buttons 
+    */
+    --button-text-transform: {{ button_transform }};
+    --button-border-radius: {{ button_border_radius }};
+    --button-border-color: {{ button_border_color }};
+    --button-background-color: {{ button_background_color }};
+    --button-text-color: {{ button_text_color }};
+    --button-border-color-hover: {{ button_border_color_hover }};
+    --button-background-color-hover: {{ button_background_color_hover }};
+    --button-text-color-hover: {{ button_text_color_hover }};
+
+
+    /*
+    SVG ico select
+    */
+    --icon-svg-select: {{ icon_select_svg }};
+    --icon-svg-select-primary: {{ icon_select_svg_primary }};
+    --icon-svg-select-secondary: {{ icon_select_svg_secondary }};
+    --icon-svg-select-tertiary: {{ icon_select_svg_tertiary }};
+
+  }
+</style>

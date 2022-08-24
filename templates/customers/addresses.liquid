@@ -1,0 +1,412 @@
+{% paginate customer.addresses by 5 %}
+
+  <div class="section-x-padding py-theme max-w-xl mx-auto">
+    <div class="mb-8 text-center">
+      <h1 class="font-heading text-2xl lg:text-4xl mb-2">{{ 'customer.account.title' | t }}</h1>
+      {%- assign return_url = 'customer.account.return' | t -%}
+      {%- render 'link-underline',
+        section_color: 'primary',
+        text: return_url,
+        link: routes.account_url,
+      -%}
+    </div>
+
+    <div data-address>
+      <button class="btn mb-4" type="button" id="AddressNewButton" data-address-new aria-expanded="false">{{ 'customer.addresses.add_new' | t }}</button>
+
+      <div data-address-form class="{% unless form.errors %}hidden{% endunless %} pb-8" id="AddressNewForm">
+        {% form 'customer_address', customer.new_address %}
+          <h2 class="font-heading text-lg mb-2">{{ 'customer.addresses.add_new' | t }}</h2>
+
+          <div class="text-primary-accent">
+          {% if form.errors %}
+              {{ form.errors | default_errors }}
+          {% endif %}
+          </div>
+
+          <div data-address-fields class="address-form mt-4">
+            <div>
+              <label class="mt-4 block" for="AddressFirstNameNew">
+                {{ 'customer.addresses.first_name' | t }}
+              </label>
+              <input class="w-full py-1 bg-transparent border-b-text border-current" type="text"
+              name="address[first_name]"
+              id="AddressFirstNameNew"
+              value="{{ form.first_name }}"
+              autocomplete="given-name"
+              autocapitalize="words">
+            </div>
+            <div>
+              <label class="mt-4 block" for="AddressLastNameNew">
+                {{ 'customer.addresses.last_name' | t }}
+              </label>
+              <input class="w-full py-1 bg-transparent border-b-text border-current" type="text"
+                    name="address[last_name]"
+                    id="AddressLastNameNew"
+                    value="{{ form.last_name }}"
+                    autocapitalize="words"
+                    autocomplete="family-name">
+            </div>
+            <div>
+              <label class="mt-4 block" for="AddressCompanyNew">
+                {{ 'customer.addresses.company' | t }}
+              </label>
+              <input class="w-full py-1 bg-transparent border-b-text border-current" type="text"
+                    name="address[company]"
+                    id="AddressCompanyNew"
+                    value="{{ form.company }}"
+                    autocomplete="organization"
+                    autocapitalize="words">
+            </div>
+            <div>
+              <label class="mt-4 block" for="AddressAddress1New">
+                {{ 'customer.addresses.address1' | t }}
+              </label>
+              <input class="w-full py-1 bg-transparent border-b-text border-current" type="text"
+                    name="address[address1]"
+                    id="AddressAddress1New"
+                    value="{{ form.address1 }}"
+                    autocomplete="street-address address-line1"
+                    autocapitalize="words">
+            </div>
+            <div>
+              <label class="mt-4 block" for="AddressAddress2New">
+                {{ 'customer.addresses.address2' | t }}
+              </label>
+              <input class="w-full py-1 bg-transparent border-b-text border-current" type="text"
+                    name="address[address2]"
+                    id="AddressAddress2New"
+                    value="{{ form.address2 }}"
+                    autocomplete="street-address address-line2"
+                    autocapitalize="words">
+            </div>
+            <div>
+              <label class="mt-4 block" for="AddressCityNew">
+                {{ 'customer.addresses.city' | t }}
+              </label>
+              <input class="w-full py-1 bg-transparent border-b-text border-current" type="text"
+                    name="address[city]"
+                    id="AddressCityNew"
+                    value="{{ form.city }}"
+                    autocomplete="address-level2"
+                    autocapitalize="words">
+            </div>
+            <div>
+              <label class="mt-4 block" for="AddressCountryNew">
+                {{ 'customer.addresses.country' | t }}
+              </label>
+              <select class="appearance-none w-full py-1 bg-transparent border-b-text border-current text-primary-text"
+                name="address[country]"
+                id="AddressCountryNew"
+                autocomplete="country"
+                data-provinces="Test"
+                data-default="{{ form.country }}">
+                {{ all_country_option_tags }}
+              </select>
+            </div>
+            <div id="AddressProvinceContainerNew">
+              <label class="mt-4 block" for="AddressProvinceNew">
+                {{ 'customer.addresses.province' | t }}
+              </label>
+              <select class="appearance-none w-full py-1 bg-transparent border-b-text border-current text-primary-text"
+                name="address[province]"
+                id="AddressProvinceNew"
+                autocomplete="address-level1"
+                data-default="{{ form.province }}">
+              </select>
+            </div>
+            <div>
+              <label class="mt-4 block" for="AddressZipNew">
+                {{ 'customer.addresses.zip' | t }}
+              </label>
+              <input class="w-full py-1 bg-transparent border-b-text border-current" type="text"
+                    name="address[zip]"
+                    id="AddressZipNew"
+                    value="{{ form.zip }}"
+                    autocomplete="postal-code"
+                    autocapitalize="characters">
+            </div>
+            <div>
+              <label class="mt-4 block" for="AddressPhoneNew">
+                {{ 'customer.addresses.phone' | t }}
+              </label>
+              <input class="w-full py-1 bg-transparent border-b-text border-current" type="tel"
+                    name="address[phone]"
+                    id="AddressPhoneNew"
+                    value="{{ form.phone }}"
+                    autocomplete="phone"
+                    pattern="[0-9\-]*">
+            </div>
+          </div>
+          <div class="mt-4">
+            {{ form.set_as_default_checkbox }}
+            <label for="address_default_address_new">
+              {{ 'customer.addresses.set_default' | t }}
+            </label>
+          </div>
+
+          <div class="mt-4">
+            <button class="btn" type="submit">{{ 'customer.addresses.add' | t }}</button>
+            <button type="button" data-address-new>
+              {{ 'customer.addresses.cancel' | t }}
+            </button>
+          </div>
+        {% endform %}
+      </div>
+    </div>
+
+    <h2 class="font-heading text-lg mb-2">{{ 'customer.addresses.title' | t }}</h2>
+
+    {% for address in customer.addresses %}
+
+      <div data-address class="border-t-grid border-grid-color pt-4 mt-4">
+        {% if address == customer.default_address %}
+          <p><strong>{{ 'customer.addresses.default' | t }}</strong></p>
+        {% endif %}
+        
+        {{ address | format_address }}
+
+        <div class="mt-4">
+          <button class="btn" type="button" id="EditFormButton_{{ address.id }}" data-address-edit="{{ address.id }}" aria-expanded="false">
+            {{ 'customer.addresses.edit' | t }}
+          </button>
+          <form class="inline-block" data-address-delete-form method="post" action="/account/addresses/{{ address.id }}" data-confirm-message="{{ 'customer.addresses.delete_confirm' | t }}">
+            <input class="w-full py-1 bg-transparent border-b-text border-current" type="hidden" name="_method" value="delete"/>
+            <button type="submit" data-target="{{ address.url }}"a>
+              {{ 'customer.addresses.delete' | t }}
+            </button>
+          </form>
+        </div>
+
+        <div id="EditAddress_{{ address.id }}" data-address-form="{{ address.id }}" class="hidden py-8">
+          {% form 'customer_address', address %}
+
+          <h3 class="font-heading text-lg">{{ 'customer.addresses.edit_address' | t }}</h3>
+          <div data-address-fields class="address-form">
+            <div>
+              <label class="mt-4 block" for="AddressFirstName_{{ form.id }}">
+                {{ 'customer.addresses.first_name' | t }}
+              </label>
+              <input class="w-full py-1 bg-transparent border-b-text border-current" type="text"
+                    name="address[first_name]"
+                    id="AddressFirstName_{{ form.id }}"
+                    value="{{ form.first_name }}"
+                    autocomplete="given-name"
+                    autocapitalize="words">
+
+            </div>
+            <div>
+              <label class="mt-4 block" for="AddressLastName_{{ form.id }}">
+                {{ 'customer.addresses.last_name' | t }}
+              </label>
+              <input class="w-full py-1 bg-transparent border-b-text border-current" type="text"
+                    name="address[last_name]"
+                    id="AddressLastName_{{ form.id }}"
+                    value="{{ form.last_name }}"
+                    autocapitalize="words"
+                    autocomplete="family-name">
+
+            </div>
+            <div>
+              <label class="mt-4 block" for="AddressCompany_{{ form.id }}">
+                {{ 'customer.addresses.company' | t }}
+              </label>
+              <input class="w-full py-1 bg-transparent border-b-text border-current" type="text"
+                    name="address[company]"
+                    id="AddressCompany_{{ form.id }}"
+                    value="{{ form.company }}"
+                    autocomplete="organization"
+                    autocapitalize="words">
+
+            </div>
+            <div>
+              <label class="mt-4 block" for="AddressAddress1_{{ form.id }}">
+                {{ 'customer.addresses.address1' | t }}
+              </label>
+              <input class="w-full py-1 bg-transparent border-b-text border-current" type="text"
+                    name="address[address1]"
+                    id="AddressAddress1_{{ form.id }}"
+                    value="{{ form.address1 }}"
+                    autocomplete="street-address address-line1"
+                    autocapitalize="words">
+
+            </div>
+            <div>
+              <label class="mt-4 block" for="AddressAddress2_{{ form.id }}">
+                {{ 'customer.addresses.address2' | t }}
+              </label>
+              <input class="w-full py-1 bg-transparent border-b-text border-current" type="text"
+                    name="address[address2]"
+                    id="AddressAddress2_{{ form.id }}"
+                    value="{{ form.address2 }}"
+                    autocomplete="street-address address-line2"
+                    autocapitalize="words">
+
+            </div>
+            <div>
+              <label class="mt-4 block" for="AddressCity_{{ form.id }}">
+                {{ 'customer.addresses.city' | t }}
+              </label>
+              <input class="w-full py-1 bg-transparent border-b-text border-current" type="text"
+                    name="address[city]"
+                    id="AddressCity_{{ form.id }}"
+                    value="{{ form.city }}"
+                    autocomplete="address-level2"
+                    autocapitalize="words">
+
+            </div>
+            <div>
+              <label class="mt-4 block" for="AddressCountry_{{ form.id }}">
+                {{ 'customer.addresses.country' | t }}
+              </label>
+              <select class="appearance-none w-full py-1 bg-transparent border-b-text border-current text-primary-text address-country-option"
+                name="address[country]"
+                id="AddressCountry_{{ form.id }}"
+                data-form-id="{{ form.id }}"
+                autocomplete="country"
+                data-default="{{ form.country }}">
+                {{ all_country_option_tags }}
+              </select>
+
+              <div id="AddressProvinceContainer_{{ form.id }}">
+                <label class="mt-4 block" for="AddressProvince_{{ form.id }}">
+                  {{ 'customer.addresses.province' | t }}
+                </label>
+                <select class="appearance-none w-full py-1 bg-transparent border-b-text border-current text-primary-text"
+                  name="address[province]"
+                  id="AddressProvince_{{ form.id }}"
+                  autocomplete="address-level1"
+                  data-default="{{ form.province }}">
+                </select>
+              </div>
+            </div>
+            <div>
+              <label class="mt-4 block" for="AddressZip_{{ form.id }}">
+                {{ 'customer.addresses.zip' | t }}
+              </label>
+              <input class="w-full py-1 bg-transparent border-b-text border-current" type="text"
+                    name="address[zip]"
+                    id="AddressZip_{{ form.id }}"
+                    value="{{ form.zip }}"
+                    autocomplete="postal-code"
+                    autocapitalize="characters">
+            </div>
+            <div>
+              <label class="mt-4 block" for="AddressPhone_{{ form.id }}">
+                {{ 'customer.addresses.phone' | t }}
+              </label>
+              <input class="w-full py-1 bg-transparent border-b-text border-current" type="tel"
+                    name="address[phone]"
+                    id="AddressPhone_{{ form.id }}"
+                    value="{{ form.phone }}"
+                    autocomplete="phone"
+                    pattern="[0-9\-]*">
+            </div>
+          </div>
+          <div class="mt-4">
+            {{ form.set_as_default_checkbox }}
+            <label for="address_default_address_{{ form.id }}">
+              {{ 'customer.addresses.set_default' | t }}
+            </label>
+          </div>
+
+          <div class="mt-4">
+            <button class="btn" type="submit">{{ 'customer.addresses.update' | t }}</button>
+            <button type="button" data-address-edit="{{ address.id }}">
+              {{ 'customer.addresses.cancel' | t }}
+            </button>
+          </div>
+
+          {% endform %}
+
+        </div>
+      </div>
+    {% endfor %}
+
+    {% if paginate.pages > 1 %}
+      {% render 'pagination' with paginate: paginate, section_color: 'primary' %}
+    {% endif %}
+  </div>
+{% endpaginate %}
+
+<script>
+  function customerAddressForm() {
+    var newAddressForm = document.getElementById('AddressNewForm');
+    var newAddressFormButton = document.getElementById('AddressNewButton');
+
+    if (!newAddressForm) {
+      return;
+    }
+
+    // Initialize observers on address selectors, defined in shopify_common.js
+    if (Shopify) {
+      // eslint-disable-next-line no-new
+      new Shopify.CountryProvinceSelector(
+        'AddressCountryNew',
+        'AddressProvinceNew',
+        {
+          hideElement: 'AddressProvinceContainerNew'
+        }
+      );
+    }
+
+    // Initialize each edit form's country/province selector
+    document
+      .querySelectorAll('.address-country-option')
+      .forEach(function(option) {
+        var formId = option.dataset.formId;
+        var countrySelector = 'AddressCountry_' + formId;
+        var provinceSelector = 'AddressProvince_' + formId;
+        var containerSelector = 'AddressProvinceContainer_' + formId;
+        // eslint-disable-next-line no-new
+        new Shopify.CountryProvinceSelector(countrySelector, provinceSelector, {
+          hideElement: containerSelector
+        });
+      });
+
+    // Toggle new/edit address forms
+    document.querySelectorAll('[data-address-new]').forEach(function(button) {
+      button.addEventListener('click', function() {
+        var isExpanded =
+          newAddressFormButton.getAttribute('aria-expanded') === 'true';
+
+        newAddressForm.classList.toggle('hidden');
+        newAddressFormButton.setAttribute('aria-expanded', !isExpanded);
+        newAddressFormButton.focus();
+      });
+    });
+
+    document.querySelectorAll('[data-address-edit]').forEach(function(button) {
+      button.addEventListener('click', function(evt) {
+        var formId = evt.target.dataset.addressEdit;
+        var editButton = document.getElementById('EditFormButton_' + formId);
+        var editAddress = document.getElementById('EditAddress_' + formId);
+        var isExpanded = editButton.getAttribute('aria-expanded') === 'true';
+
+        editAddress.classList.toggle('hidden');
+        editButton.setAttribute('aria-expanded', !isExpanded);
+        editButton.focus();
+      });
+    });
+
+    document.querySelectorAll('[data-address-delete-form]').forEach(function(button) {
+      button.addEventListener('click', function(evt) {
+        evt.preventDefault();
+        var target = evt.target.dataset.target;
+        var confirmMessage = evt.target.dataset.confirmMessage;
+
+        // eslint-disable-next-line no-alert
+        if (
+          confirm(
+            confirmMessage || 'Are you sure you wish to delete this address?'
+          )
+        ) {
+          Shopify.postLink(target, {
+            parameters: { _method: 'delete' }
+          });
+        }
+      });
+    });
+  }
+  customerAddressForm();
+</script>

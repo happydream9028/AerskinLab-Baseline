@@ -1,0 +1,51 @@
+{%- assign social_accounts = 'Facebook, Twitter, Pinterest, Instagram, Snapchat, TikTok, Tumblr, YouTube, Vimeo, LinkedIn, Email' | split: ', ' -%}
+<ul class="{% if social_style == 'icons' %}-ml-2{% endif %}">
+  {% for social in social_accounts %}
+    {%- assign social_handle = social | handleize -%}
+    {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
+    {% capture social_icon %}icon-{{ social_handle }}{% endcapture %}
+
+    {% if settings[social_link] != blank %}
+      {% if social_style == 'icons' %}
+        <li class="ml-2 mb-2 inline-block">
+          <a class="fill-current hover:text-{{ section_color }}-accent" href="{% if social_handle == 'email' %}mailto:{% endif %}{{ settings[social_link] }}" target="_blank">
+            <span class="inline-block w-5 h-5" aria-hidden="true">
+            {%- case social_handle -%}
+              {%- when 'facebook' -%}
+                {%- render 'icon-facebook' -%}
+              {%- when 'twitter' -%}
+                {%- render 'icon-twitter' -%}
+              {%- when 'pinterest' -%}
+                {%- render 'icon-pinterest' -%}
+              {%- when 'instagram' -%}
+                {%- render 'icon-instagram' -%}
+              {%- when 'snapchat' -%}
+                {%- render 'icon-snapchat' -%}
+              {%- when 'email' -%}
+                {%- render 'icon-email' -%}
+              {%- when 'tumblr' -%}
+                {%- render 'icon-tumblr' -%}
+              {%- when 'youtube' -%}
+                {%- render 'icon-youtube' -%}
+              {%- when 'vimeo' -%}
+                {%- render 'icon-vimeo' -%}
+              {%- when 'linkedin' -%}
+                {%- render 'icon-linkedin' -%}
+              {%- when 'tiktok' -%}
+                {%- render 'icon-tiktok' -%}
+              {%- endcase -%}
+            </span>
+            <span class="visually-hidden">{{ social }}</span>
+          </a>
+        </li>
+      {% else %}
+        <li>
+          <a class="inline-block {{ link_class }} hover:text-{{ section_color }}-accent" href="{% if social_handle == 'email' %}mailto:{% endif %}{{ settings[social_link] }}">
+            {{ social }}
+          </a>
+        </li>
+      {% endif %}
+    {% endif %}
+
+  {% endfor %}
+</ul>

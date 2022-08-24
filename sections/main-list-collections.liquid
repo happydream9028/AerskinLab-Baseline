@@ -1,0 +1,356 @@
+{% comment %}
+  This page represents the /collections and /products pages.
+{% endcomment %}
+{%- liquid
+  assign section_color = section.settings.color_scheme
+  assign show_title = section.settings.show_title
+  assign ratio = section.settings.crop | plus: 0
+  assign content_position = section.settings.content_position
+  assign text_color = section.settings.overlay_text_color
+  assign text_size_class = block.settings.text_size
+  assign collection_per_row = section.settings.collection_per_row
+  assign collection_limit = collection_per_row | times: section.settings.rows
+
+  assign items = collections
+  assign using_blocks = false
+  assign total = items.size
+  if section.blocks.size > 0
+    assign using_blocks = true
+    assign items = section.blocks
+    assign total = section.blocks.size
+  endif
+
+  case collection_per_row
+    when 2
+      assign desktop_col_span = 'lg:col-span-6'
+    when 3
+      assign desktop_col_span = 'lg:col-span-4'
+    when 4
+      assign desktop_col_span = 'lg:col-span-3'
+  endcase
+
+-%}
+
+<section class="bg-{{ section_color }}-background text-{{ section_color }}-text blog border-t-grid border-grid-color">
+  {%- if show_title -%}
+  <div class="bg-{{ section_color }}-background text-{{ section_color }}-text section-x-padding pt-theme-double pb-theme  border-b-grid border-grid-color">
+    <h1 class="font-heading {{ settings.template_heading_size }} {% if settings.section_title_align == 'center' %}text-center{% endif %}">
+      {{ page_title }}
+    </h1>
+  </div>
+  {%- endif -%}
+
+  {%- if using_blocks -%}
+    <ul class="grid grid-cols-1 lg:grid-cols-12 gap-gutter bg-border">
+      {%- for item in items -%}
+        {%- liquid
+          assign collection = item
+          if using_blocks
+            assign collection = collections[item.settings.collection]
+            assign text_color = section.settings.overlay_text_color
+            if item.settings.overlay_text_color != 'default'
+              assign text_color = item.settings.overlay_text_color
+            endif
+            assign content_position = section.settings.content_position
+            if item.settings.content_position != 'default'
+              assign content_position = item.settings.content_position
+            endif
+          endif
+        -%}
+        <li class="{{ desktop_col_span }} relative bg-{{ section_color }}-background w-full">
+          <a class="group h-full block relative" href="{{ collection.url }}">
+            <div class="flex h-full justify-center items-center {% unless settings.fill_image_to_border_edge %}p-2 lg:p-4{% endunless %}">
+              <div class="w-full relative">
+                {% if collection.image != blank or collection.products.first != blank %}
+                  {%- assign image = collection.image | default: collection.products.first.featured_image -%}
+                  {% render 'image-crop' with
+                    image: image,
+                    ratio: ratio
+                  %}
+                {%- else -%}
+                  {% render 'placeholder-crop' with
+                    ratio: ratio
+                  %}
+                {%- endif -%}
+              </div>
+            </div>
+            {%- assign text_size_class = section.settings.text_size -%}
+            <div class="absolute top-0 left-0 right-0 bottom-0 z-10 py-4 section-x-padding flex {{ content_position }}">
+              <div class="text-{{ text_color }}-text {% unless settings.fill_image_to_border_edge %}p-2 lg:p-4{% endunless %}">
+                <div class="{{ text_size_class }} font-heading">
+                  {%- if collection.title == blank -%}
+                    {{ 'homepage.onboarding.collection_title' | t }}
+                  {%- else -%}
+                    {{ collection.title }}
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </a>
+        </li>
+      {%- endfor -%}
+      {%- liquid
+        assign items_on_last_row = total | modulo: collection_per_row
+        assign col_span = 12 | divided_by: collection_per_row
+        assign placeholder_width = collection_per_row | minus: items_on_last_row | times: col_span
+      -%}
+      {%- if items_on_last_row != 0 -%}
+        <li class="none absolute lg:static lg:block lg:col-span-{{ placeholder_width }} bg-{{ section_color }}-background" aria-hidden="true" role="presentation"></li>
+      {%- endif -%}
+      </ul>
+  {%- else -%}
+    {% paginate collections by collection_limit %}
+    <ul class="grid grid-cols-1 lg:grid-cols-12 gap-gutter bg-border">
+    {%- for collection in collections -%}
+      {%- liquid
+        assign collection = item
+        if collection.handle == 'frontpage' and using_blocks == false
+          assign collection_limit = collection_limit | minus: 1
+        endif
+        if using_blocks
+          assign collection = collections[item.settings.collection]
+          assign text_color = section.settings.overlay_text_color
+          if item.settings.overlay_text_color != 'default'
+            assign text_color = item.settings.overlay_text_color
+          endif
+          assign content_position = section.settings.content_position
+          if item.settings.content_position != 'default'
+            assign content_position = item.settings.content_position
+          endif
+        endif
+      -%}
+
+      {%- unless collection.handle == 'frontpage' -%}
+        <li class="{{ desktop_col_span }} relative bg-{{ section_color }}-background w-full">
+          <a class="group h-full block relative" href="{{ collection.url }}">
+            <div class="flex h-full justify-center items-center {% unless settings.fill_image_to_border_edge %}p-2 lg:p-4{% endunless %}">
+              <div class="w-full relative">
+                {% if collection.image != blank or collection.products.first != blank %}
+                  {%- assign image = collection.image | default: collection.products.first.featured_image -%}
+                  {% render 'image-crop' with
+                    image: image,
+                    ratio: ratio
+                  %}
+                {%- else -%}
+                  {% render 'placeholder-crop' with
+                    ratio: ratio
+                  %}
+                {%- endif -%}
+              </div>
+            </div>
+            {%- assign text_size_class = section.settings.text_size -%}
+            <div class="absolute top-0 left-0 right-0 bottom-0 z-10 py-4 section-x-padding flex {{ content_position }}">
+              <div class="text-{{ text_color }}-text {% unless settings.fill_image_to_border_edge %}p-2 lg:p-4{% endunless %}">
+                <div class="{{ text_size_class }} font-heading">
+                  {%- if collection.title == blank -%}
+                    {{ 'homepage.onboarding.collection_title' | t }}
+                  {%- else -%}
+                    {{ collection.title }}
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </a>
+        </li>
+      {%- endunless -%}
+    {%- endfor -%}
+    {%- liquid
+      assign items_on_last_row = collection_limit | modulo: collection_per_row
+      assign col_span = 12 | divided_by: collection_per_row
+      assign placeholder_width = collection_per_row | minus: items_on_last_row | times: col_span
+    -%}
+    {%- if items_on_last_row != 0 -%}
+      <li class="none absolute lg:static lg:block lg:col-span-{{ placeholder_width }} bg-{{ section_color }}-background" aria-hidden="true" role="presentation"></li>
+    {%- endif -%}
+    </ul>
+
+    {% if paginate.pages > 1 %}
+      {% render 'pagination' with paginate: paginate, section_color: section_color %}
+    {% endif %}
+    {% endpaginate %}
+  {%- endif -%}
+
+</section>
+
+
+
+{%- if section.settings.override_header_footer_color_scheme -%}
+  {%- render 'header-footer-color-scheme-override', section_color: section_color -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collections list page",
+  "settings": [
+    {
+       "type": "paragraph",
+       "content": "All of your collections are listed by default. To customize your list, add collections as blocks."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show title",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "collection_per_row",
+      "label": "Collections per row on desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "rows",
+      "label": "Rows",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "crop",
+      "label": "Crop images",
+      "options": [
+        {
+          "value": "0",
+          "label": "No crop"
+        },
+        {
+          "value": "1.3",
+          "label": "Landscape"
+        },
+        {
+          "value": "1",
+          "label": "Square"
+        },
+        {
+          "value": "0.8",
+          "label": "Portrait"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type":      "header",
+      "content":   "Content"
+    },
+    {
+      "type": "select",
+      "id": "text_size",
+      "label": "Text size",
+      "options": [
+        { "value": "text-sm", "label": "S"},
+        { "value": "text-base", "label": "M"},
+        { "value": "text-lg", "label": "L"},
+        { "value": "text-xl", "label": "XL"},
+        { "value": "text-2xl", "label": "2XL"},
+        { "value": "text-2xl lg:text-3xl", "label": "2XL / desktop 3XL"},
+        { "value": "text-2xl lg:text-4xl", "label": "2XL / desktop 4XL"},
+        { "value": "text-2xl lg:text-5xl", "label": "2XL / desktop 5XL"}
+      ],
+      "default":   "text-2xl"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content position",
+      "options": [
+          { "value": "justify-start items-start text-left", "label": "Top left"},
+          { "value": "justify-center items-start text-center", "label": "Top center"},
+          { "value": "justify-end items-start text-right", "label": "Top right"},
+          { "value": "justify-start items-center text-left", "label": "Left"},
+          { "value": "justify-center items-center text-center", "label": "Center"},
+          { "value": "justify-end items-center text-right", "label": "Right"},
+          { "value": "justify-start items-end text-left", "label": "Bottom left"},
+          { "value": "justify-center items-end text-center", "label": "Bottom center"},
+          { "value": "justify-end items-end text-right", "label": "Bottom right"}
+      ],
+      "default":   "justify-center items-center text-center"
+    },
+    {
+       "type": "select",
+       "id": "overlay_text_color",
+       "label": "Overlay text color",
+       "info": "Default overlay text color. If using blocks, color is set in each block.",
+       "options": [
+         { "value": "primary", "label": "Primary text"},
+         { "value": "secondary", "label": "Secondary text"},
+         { "value": "tertiary", "label": "Tertiary text"},
+         { "value": "white", "label": "White"},
+         { "value": "black", "label": "Black"}
+       ]
+    },
+    {
+      "type":      "header",
+      "content":   "Color"
+    },
+    {
+       "type": "select",
+       "id": "color_scheme",
+       "label": "Color scheme",
+       "options": [
+          { "value": "primary", "label": "Primary"},
+          { "value": "secondary", "label": "Secondary"},
+          { "value": "tertiary", "label": "Tertiary"}
+       ]
+    },
+    {
+      "type": "checkbox",
+      "id": "override_header_footer_color_scheme",
+      "label": "Use this color scheme for header and footer",
+      "info": "This will only apply to the collection list template",
+      "default": false
+    }
+  ],
+  "blocks" :  [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+           "type": "collection",
+           "id": "collection",
+           "label": "Choose collection:"
+        },
+        {
+          "type": "select",
+          "id": "content_position",
+          "label": "Content position",
+          "options": [
+              { "value": "default", "label": "Use default"},
+              { "value": "justify-start items-start text-left", "label": "Top left"},
+              { "value": "justify-center items-start text-center", "label": "Top center"},
+              { "value": "justify-end items-start text-right", "label": "Top right"},
+              { "value": "justify-start items-center text-left", "label": "Left"},
+              { "value": "justify-center items-center text-center", "label": "Center"},
+              { "value": "justify-end items-center text-right", "label": "Right"},
+              { "value": "justify-start items-end text-left", "label": "Bottom left"},
+              { "value": "justify-center items-end text-center", "label": "Bottom center"},
+              { "value": "justify-end items-end text-right", "label": "Bottom right"}
+          ],
+          "default":   "default",
+          "info": "Override section content position"
+        },
+        {
+           "type": "select",
+           "id": "overlay_text_color",
+           "label": "Overlay text color",
+           "options": [
+             { "value": "default", "label": "Default"},
+             { "value": "primary", "label": "Primary text"},
+             { "value": "secondary", "label": "Secondary text"},
+             { "value": "tertiary", "label": "Tertiary text"},
+             { "value": "white", "label": "White"}
+           ],
+           "default": "default",
+           "info": "Override default section overlay text color"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

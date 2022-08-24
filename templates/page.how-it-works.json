@@ -1,0 +1,257 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "content_width": "lg:w-full",
+        "content_position": "lg:justify-start",
+        "color_scheme": "primary",
+        "override_header_footer_color_scheme": false
+      }
+    },
+    "16413184154565214e": {
+      "type": "text-columns-with-images",
+      "blocks": {
+        "1641318415d0af3434-0": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": false,
+            "image": "shopify:\/\/shop_images\/AER-144-Interior-RGB-WEB.jpg",
+            "subtitle": "— 01",
+            "title": "Arrive",
+            "text": "<p>Book an appointment for a consultation via our website or by telephone.<\/p><p>Arrive at our flagship AE.R Skinlab location at 1540 West 2nd Avenue #207 in beautiful Vancouver<\/p>",
+            "cta_link": "",
+            "cta_text": "",
+            "color_scheme": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "1641318415d0af3434-0"
+      ],
+      "settings": {
+        "title": "Step 1",
+        "crop": "0",
+        "text_size_mobile": "text-lg",
+        "text_size_desktop": "default",
+        "text_alignment": "text-left",
+        "stacked": true,
+        "small_first_column": true,
+        "border_top": false,
+        "border_bottom": false
+      }
+    },
+    "164144494767af4b89": {
+      "type": "text-columns-with-images",
+      "blocks": {
+        "16414449473e174693-0": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": true,
+            "image": "shopify:\/\/shop_images\/Light.jpg",
+            "subtitle": "— 02",
+            "title": "IMMERSE",
+            "text": "<p>After being greeted by our team, Immerse yourself in our thoughtfully designed clinic space inspired by raw natural materials.<\/p><p><\/p><p>At AE.R, we aspire to create a serene world for you to reflect and escape the day-to-day surrounded by beauty & calm.<\/p>",
+            "cta_link": "",
+            "cta_text": "",
+            "color_scheme": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "16414449473e174693-0"
+      ],
+      "settings": {
+        "title": "Step 2",
+        "crop": "0",
+        "text_size_mobile": "text-lg",
+        "text_size_desktop": "default",
+        "text_alignment": "text-left",
+        "stacked": true,
+        "small_first_column": true,
+        "border_top": false,
+        "border_bottom": false
+      }
+    },
+    "1641446636014efc00": {
+      "type": "text-columns-with-images",
+      "blocks": {
+        "1641446636ec1b5585-0": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": false,
+            "image": "shopify:\/\/shop_images\/CONSULT.jpg",
+            "subtitle": "— 03",
+            "title": "CONSULT",
+            "text": "<p>Speak with Dr. Charles Scudamore and our team of experts regarding your areas of concern in order to tailor a specific treatment plan for you.<\/p>",
+            "cta_link": "",
+            "cta_text": "",
+            "color_scheme": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "1641446636ec1b5585-0"
+      ],
+      "settings": {
+        "title": "Step 3",
+        "crop": "0",
+        "text_size_mobile": "text-lg",
+        "text_size_desktop": "default",
+        "text_alignment": "text-left",
+        "stacked": true,
+        "small_first_column": true,
+        "border_top": false,
+        "border_bottom": false
+      }
+    },
+    "164144709587313367": {
+      "type": "text-columns-with-images",
+      "blocks": {
+        "16414470952f1a79c8-2": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": true,
+            "image": "shopify:\/\/shop_images\/TREAT.jpg",
+            "subtitle": "— 04",
+            "title": "TREAT",
+            "text": "<p>On your treatment day, our team will escort you seamlessly from the moment of entrance to your procedure.<\/p>",
+            "cta_link": "",
+            "cta_text": "",
+            "color_scheme": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "16414470952f1a79c8-2"
+      ],
+      "settings": {
+        "title": "Step 4",
+        "crop": "0",
+        "text_size_mobile": "text-lg",
+        "text_size_desktop": "default",
+        "text_alignment": "text-left",
+        "stacked": true,
+        "small_first_column": true,
+        "border_top": false,
+        "border_bottom": false
+      }
+    },
+    "1641447172b30f2e46": {
+      "type": "text-columns-with-images",
+      "blocks": {
+        "16414471711b1d642d-0": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": false,
+            "image": "shopify:\/\/shop_images\/CONSIDER_cf098d48-0814-4b37-9955-a6356cc533e4.jpg",
+            "subtitle": "— 05",
+            "title": "CONSIDER",
+            "text": "<p>Our team of specialists and technicians will recommend aftercare  products that will benefit healing or maintenance to Re:Form your skincare regimen.<\/p><p>We stock a comprehensive lineup of ZO® Skin Health, SkinCeuticals® with our Canadian designed and manufactured AE.R Skin line coming soon.<\/p>",
+            "cta_link": "",
+            "cta_text": "",
+            "color_scheme": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "16414471711b1d642d-0"
+      ],
+      "settings": {
+        "title": "Step 5",
+        "crop": "0",
+        "text_size_mobile": "text-lg",
+        "text_size_desktop": "default",
+        "text_alignment": "text-left",
+        "stacked": true,
+        "small_first_column": true,
+        "border_top": false,
+        "border_bottom": false
+      }
+    },
+    "16414472367986a8e7": {
+      "type": "text-columns-with-images",
+      "blocks": {
+        "16414472365086c5fd-0": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": true,
+            "image": "shopify:\/\/shop_images\/THANKYOU.jpg",
+            "subtitle": "— 06",
+            "title": "ENJOY",
+            "text": "<p>Love the improvements realized on your face & body. Our team will follow up with you via telephone and in person to ensure that you are satisfied with your results.<\/p>",
+            "cta_link": "",
+            "cta_text": "",
+            "color_scheme": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "16414472365086c5fd-0"
+      ],
+      "settings": {
+        "title": "Step 6",
+        "crop": "0",
+        "text_size_mobile": "text-lg",
+        "text_size_desktop": "default",
+        "text_alignment": "text-left",
+        "stacked": true,
+        "small_first_column": true,
+        "border_top": false,
+        "border_bottom": false
+      }
+    },
+    "164144920956873d50": {
+      "type": "text-columns",
+      "settings": {
+        "title": "",
+        "text": "<p>[heading]HOURS[\/heading]<\/p><p>[plus] Monday to Saturday 9am to 7pm<\/p><p>[plus] Sunday [Closed]<\/p><p>[plus] Visit us Online 24\/7 365<\/p><p>[heading]CONTACT[\/heading]<\/p><p>1540 West 2nd Avenue <\/p><p>Vancouver BC Canada<\/p><p>e | hello@aerskinlab.com<\/p><p>i | aerskinlab<\/p><p><\/p>",
+        "desktop_columns": "lg:col-count-2",
+        "text_alignment": "text-left",
+        "desktop_text_size": "lg:text-sm",
+        "color_scheme": "primary"
+      }
+    },
+    "164144737579c0f073": {
+      "type": "image-with-text-overlay",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/AER-879-RGB-LowRes-1800x800_03fa650b-9062-4f7f-87ac-e95544c877cc.jpg",
+        "image_mobile": "shopify:\/\/shop_images\/AER-879-RGB-LowRes-800x1200.jpg",
+        "indent_image": false,
+        "height": "natural",
+        "image_focal_point": "object-center",
+        "title": "PRECISION INJECTIONS, THREADLIFTS, THE LATEST IN LASER TECHNOLOGY & BODY SCULPTING.",
+        "heading_size": "text-xl",
+        "text": "",
+        "content_position": "justify-center items-center text-center",
+        "content_width_desktop": "lg:w-1\/2",
+        "text_color": "white",
+        "background_color": "primary",
+        "btn_inline": false,
+        "arrow_position": "right",
+        "cta_link": "#",
+        "cta_text": "Book now",
+        "cta_style": "button",
+        "cta_rounded": false,
+        "cta_gradient": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "16413184154565214e",
+    "164144494767af4b89",
+    "1641446636014efc00",
+    "164144709587313367",
+    "1641447172b30f2e46",
+    "16414472367986a8e7",
+    "164144920956873d50",
+    "164144737579c0f073"
+  ]
+}

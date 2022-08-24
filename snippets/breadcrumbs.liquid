@@ -1,0 +1,114 @@
+
+{%- assign text_align = settings.breadcrumb_text_alignment %}
+{%- unless template == 'index' or template == 'cart' or template == 'list-collections' or template == '404' -%}
+<section class="featured-navigation bg-{{ section_color }}-background text-{{ section_color }}-text border-b-grid border-grid-color relative">
+  <div class="bg-gradient-to-r from-{{ section_color }}-background-0 via-{{ section_color }}-background to-{{ section_color }}-background w-8 absolute top-0 right-0 bottom-0 lg:hidden pointer-events-none"></div>
+  <div class="section-x-padding py-theme-half overflow-x-auto">
+    {% capture separator %}
+    {%- if settings.breadcrumb_separator == 'slash' -%}/{%- endif -%}
+    {%- if settings.breadcrumb_separator == 'hyphen' -%}-{%- endif -%}
+    {%- if settings.breadcrumb_separator == 'emdash' -%}&mdash;{%- endif -%}
+    {%- if settings.breadcrumb_separator == 'dot' -%}&middot;{%- endif -%}
+    {%- if settings.breadcrumb_separator == 'bullet' -%}&bull;{%- endif -%}
+    {% endcapture %}
+    {%- assign t = template | split: '.' | first -%}
+    <nav class="breadcrumbs" role="navigation" aria-label="breadcrumbs">
+      <ol class="flex lg:flex-wrap lg:{{ text_align }} whitespace-nowrap items-center">
+        <li>
+          <a class="block py-theme-half" href="{{ routes.root_url }}" title="{{ 'general.breadcrumbs.home' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+        </li>
+        {%- case t -%}
+          {%- when 'page' -%}
+            <li class="mx-2">
+              <span class="block py-theme-half" aria-hidden="true">{{ separator }}</span>
+            </li>
+            <li>
+              <a class="block py-theme-half" href="{{ page.url }}" aria-current="page">{{ page.title }}</a>
+            </li>
+          {%- when 'product' -%}
+            {%- if collection.url -%}
+              <li class="mx-2">
+                <span class="block py-theme-half" aria-hidden="true">{{ separator }}</span>
+              </li>
+              <li>
+                <a class="block py-theme-half" href="{{ collection.url }}">{{ collection.title }}</a>
+              </li>
+            {%- endif -%}
+            <li class="mx-2">
+              <span class="block py-theme-half" aria-hidden="true">{{ separator }}</span>
+            </li>
+            <li>
+              <a class="block py-theme-half" href="{{ product.url }}" aria-current="page">{{ product.title }}</a>
+            </li>
+          {%- when 'collection' and collection.handle -%}
+            {%- if current_tags -%}
+              <li class="mx-2">
+                <span class="block py-theme-half" aria-hidden="true">{{ separator }}</span>
+              </li>
+              <li>
+                <a class="block py-theme-half" href="{{ collection.url }}">{{ collection.title }}</a>
+              </li>
+              <li class="mx-2">
+                <span class="block py-theme-half" aria-hidden="true">{{ separator }}</span>
+              </li>
+              <li>
+                {%- capture tag_url -%}{{ collection.url }}/{{ current_tags | join: "+"}}{%- endcapture -%}
+                <a class="block py-theme-half" href="{{ tag_url }}" aria-current="page">{{ current_tags | join: " + " }}</a>
+              </li>
+            {%- else -%}
+              <li class="mx-2">
+                <span class="block py-theme-half" aria-hidden="true">{{ separator }}</span>
+              </li>
+              <li>
+                <a class="block py-theme-half" href="{{ collection.url }}" aria-current="page">{{ collection.title }}</a>
+              </li>
+            {%- endif -%}
+          {%- when 'blog' -%}
+            {%- if current_tags -%}
+              <li class="mx-2">
+                <span class="block py-theme-half" aria-hidden="true">{{ separator }}</span>
+              </li>
+              <li>
+                {{ blog.title | link_to: blog.url }}
+              </li>
+              <li class="mx-2">
+                <span class="block py-theme-half" aria-hidden="true">{{ separator }}</span>
+              </li>
+              <li>
+                {%- capture tag_url -%}{{blog.url}}/tagged/{{ current_tags | join: "+" }}{%- endcapture -%}
+                <a class="block py-theme-half" href="{{ tag_url }}" aria-current="page">{{ current_tags | join: " + " }}</a>
+              </li>
+            {%- else -%}
+              <li class="mx-2">
+                <span class="block py-theme-half" aria-hidden="true">{{ separator }}</span>
+              </li>
+              <li>
+                <a class="block py-theme-half" href="{{ blog.url }}" aria-current="page">{{ blog.title }}</a>
+              </li>
+            {%- endif -%}
+          {%- when 'article' -%}
+            <li class="mx-2">
+              <span class="block py-theme-half" aria-hidden="true">{{ separator }}</span>
+            </li>
+            <li>
+              {{ blog.title | link_to: blog.url }}
+            </li>
+            <li class="mx-2">
+              <span class="block py-theme-half" aria-hidden="true">{{ separator }}</span>
+            </li>
+            <li>
+              <a class="block py-theme-half" href="{{ article.url }}" aria-current="page">{{ article.title }}</a>
+            </li>
+          {%- else -%}
+            <li class="mx-2">
+              <span class="block py-theme-half" aria-hidden="true">{{ separator }}</span>
+            </li>
+            <li>
+              <a class="block py-theme-half" href="{{ request.path }}" aria-current="page">{{ page_title }}</a>
+            </li>
+        {%- endcase -%}
+      </ol>
+    </nav>
+  </div>
+</section>
+{%- endunless -%}

@@ -1,0 +1,20 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page-account-sign-in",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/ScreenShot2021-12-16at8.57.15PM.png",
+        "title": "Products",
+        "text": "<p>Purchase Products or Past Orders<\/p>",
+        "image_2": "shopify:\/\/shop_images\/Screen_Shot_2021-12-16_at_10.47.34_PM.png",
+        "title_2": "Treatments",
+        "text_2": "<p>Book a Treatment or Manage a Booking<\/p>",
+        "crop": "0.8",
+        "text_alignment": "text-center"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

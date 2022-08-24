@@ -1,0 +1,35 @@
+
+
+<div class="section-x-padding py-theme max-w-md mx-auto" x-data="BaselineLogin()" x-init="mounted()">
+  <h1 class="font-heading text-2xl mb-2">{{ 'customer.activate_account.title' | t }}</h1>
+  <p>{{ 'customer.activate_account.subtext' | t }}</p>
+
+  {% form 'activate_customer_password' %}
+    {% if form.errors %}
+      <div class="mt-4 text-primary-accent" tabindex="-1" data-login-error>{{ form.errors | default_errors }}</div>
+    {% endif %}
+
+      <label class="block mt-4" for="CustomerPassword">
+        {{ 'customer.activate_account.password' | t }}
+      </label>
+      <input type="password"
+        name="customer[password]"
+        id="CustomerPassword"
+        class="w-full py-1 bg-transparent border-b-text border-current">
+
+      <label class="block mt-4" for="CustomerPasswordConfirmation">
+        {{ 'customer.activate_account.password_confirm' | t }}
+      </label>
+      <input type="password"
+        name="customer[password_confirmation]"
+        id="CustomerPasswordConfirmation"
+        class="w-full py-1 bg-transparent border-b-text border-current">
+
+    <div class="mt-4">
+      <input type="submit" class="btn" value="{{ 'customer.activate_account.submit' | t }}">
+    </div>
+    <div class="mt-4">
+      <input type="submit" class="" name="decline" value="{{ 'customer.activate_account.cancel' | t }}">
+    </div>
+  {% endform %}
+</div>

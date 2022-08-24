@@ -1,0 +1,24 @@
+{% comment %}
+Displays a cropped placeholder if a ratio is passed, or an uncropped one if crop == 'none'.
+{% endcomment %}
+
+{%- if section.settings.crop == 'none' -%}
+  <div class="gallery-placeholder bg-placeholder-bg">
+    {%- if full_bleed -%}
+      {% assign placeholder_svg_tag = 'placeholder-svg placeholder-svg--no-border' %}
+    {%- else -%}
+      {% assign placeholder_svg_tag = 'placeholder-svg' %}
+    {%- endif -%}
+    {{ 'image' | placeholder_svg_tag: placeholder_svg_tag }}
+  </div>
+{%- else -%}
+  <div class="gallery-placeholder--cropped relative bg-placeholder-bg"
+    style="padding-top:{{ 1 | divided_by: ratio | times: 100 }}%;" >
+    {%- if full_bleed -%}
+      {% assign placeholder_svg_tag = 'placeholder-svg fill-current gallery-placeholder--cropped__svg placeholder-svg--no-border' %}
+    {%- else -%}
+      {% assign placeholder_svg_tag = 'placeholder-svg fill-current  gallery-placeholder--cropped__svg' %}
+    {%- endif -%}
+    <span class="absolute top-0 left-0 right-0 bottom-0 text-text">{{ 'image' | placeholder_svg_tag: placeholder_svg_tag }}</span>
+  </div>
+{%- endif -%}

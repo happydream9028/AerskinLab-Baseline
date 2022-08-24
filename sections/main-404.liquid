@@ -1,0 +1,11 @@
+{%- assign text = 'general.404.link' | t -%}
+
+<div class="section-x-padding py-theme text-center bg-primary-background text-primary-text">
+  <h1 class="font-heading {{ settings.template_heading_size }} mb-8">{{ 'general.404.title' | t }}</h1>
+  <p class="mt-4 mb-8">{{ 'general.404.subtext' | t }}</p>
+  {%- render 'link-underline',
+    section_color: 'primary',
+    text: text,
+    link: routes.root_url,
+  -%}
+</div>

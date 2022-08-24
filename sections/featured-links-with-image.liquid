@@ -1,0 +1,127 @@
+{%- liquid
+  assign border_radius = section.settings.border_radius
+  assign image_class = "object-cover object-center"
+  assign heading_size_class = section.settings.heading_size
+-%}
+<section class="feataured-links-with-image lg:px-16 px-4 pt-8 pb-12">
+  {% if section.settings.heading != '' %}
+    <h2 class="{% if settings.section_title_font == 'heading' %}font-heading{% else %}font-body{% endif %} {{ section.settings.section_heading_size }} {{ heading_width_class }} break-words">{{ section.settings.heading }}</h2>
+  {% endif %}
+
+  <div class="py-theme flex items-center justify-between overflow-x-auto">
+    {%-for block in section.blocks -%}
+      {% if block.settings.image != blank %}
+        <div class="featured-link-image relative block w-1/5" data-fade-in style="max-width: {{ section.settings.max_width }}px">
+          {%- if block.settings.link != blank -%}
+          <a href="{{ block.settings.link }}" class="block">
+          {%- endif -%} 
+            {% render 'responsive-image' with
+              image: block.settings.image,
+              image_class: image_class,
+              featured_links: true,
+              border_radius: border_radius
+            %}
+
+            {% if block.settings.title != blank %}
+							<h2 class="font-heading {{ heading_size_class }} break-words py-8"><span class="arrow-right inline-flex">{% render 'icon-arrow-right' %}</span>{{ block.settings.title }}</h2>
+						{% endif %}
+
+          {%- if block.settings.link != blank -%}
+          </a>
+          {%- endif -%}
+        </div>
+      {% else %}
+        <div class="relative block w-1/3 mt-4 lg:mt-0  px-5" data-fade-in style="max-width: {{ section.settings.max_width }}px">
+          {{ 'logo' | placeholder_svg_tag: 'placeholder-svg w-full h-full text-primary-text fill-current' }}
+        </div>
+      {% endif %}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Featured links with image",
+    "settings": [
+      {
+        "id": "heading",
+        "type": "text",
+        "label": "Heading"
+      },
+      {
+        "type": "range",
+        "id": "border_radius",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "label": "Border Radius",
+        "default": 30
+      },
+      {
+        "type": "select",
+        "id": "section_heading_size",
+        "label": "Section Heading size",
+        "options": [
+          { "value": "text-sm", "label": "S"},
+          { "value": "text-base", "label": "M"},
+          { "value": "text-lg", "label": "L"},
+          { "value": "text-xl", "label": "XL"},
+          { "value": "text-2xl", "label": "2XL"},
+          { "value": "text-2xl lg:text-3xl", "label": "2XL / desktop 3XL"},
+          { "value": "text-2xl lg:text-4xl", "label": "2XL / desktop 4XL"},
+          { "value": "text-2xl lg:text-5xl", "label": "2XL / desktop 5XL" },
+          { "value": "text-2xl lg:text-6xl", "label": "2XL / desktop 6XL" },
+          { "value": "text-2xl lg:text-7xl", "label": "2XL / desktop 7XL" }
+        ],
+        "default":   "text-lg"
+      },
+      {
+        "type": "select",
+        "id": "heading_size",
+        "label": "Image Heading size",
+        "options": [
+          { "value": "text-sm", "label": "S"},
+          { "value": "text-base", "label": "M"},
+          { "value": "text-lg", "label": "L"},
+          { "value": "text-xl", "label": "XL"},
+          { "value": "text-2xl", "label": "2XL"},
+          { "value": "text-2xl lg:text-3xl", "label": "2XL / desktop 3XL"},
+          { "value": "text-2xl lg:text-4xl", "label": "2XL / desktop 4XL"},
+          { "value": "text-2xl lg:text-5xl", "label": "2XL / desktop 5XL" },
+          { "value": "text-2xl lg:text-6xl", "label": "2XL / desktop 6XL" },
+          { "value": "text-2xl lg:text-7xl", "label": "2XL / desktop 7XL" }
+        ],
+        "default":   "text-lg"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured links with images"
+      }
+  ]
+  }
+{% endschema %}

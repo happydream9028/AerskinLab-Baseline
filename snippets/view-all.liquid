@@ -1,0 +1,19 @@
+{%- liquid
+  assign display_view_all_underneath = false 
+  if title == '' and show_link 
+    assign display_view_all_underneath = true 
+  endif 
+  if title != '' and show_link and settings.section_title_align == 'center' 
+    assign display_view_all_underneath = true 
+  endif 
+-%}
+
+{% if display_view_all_underneath %}
+<div class="bg-{{ section_color }}-background text-{{ section_color }}-text section-x-padding pb-theme-double pt-theme {% if settings.section_title_align == 'center' %}text-center{% else %}text-right{% endif %} border-t-grid border-grid-color">
+  {%- render 'link-underline',
+    section_color: section_color,
+    text: link_text,
+    link: link_url,
+  -%}
+</div>
+{% endif %}

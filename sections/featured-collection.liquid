@@ -1,0 +1,187 @@
+{%- comment -%}
+  This is a required section for the Shopify Theme Store.
+  It is available in the "Featured Collection" section in the theme editor.
+
+  Theme Store required settings
+  - Collection
+
+  Theme Store optional settings
+  - Heading: title of the featured collection section
+{%- endcomment -%}
+{%- liquid
+  assign section_color = section.settings.color_scheme
+  assign collection = collections[section.settings.collection]
+  assign product_limit = section.settings.grid | times: section.settings.rows
+  assign products_per_row = section.settings.grid
+  assign products_per_row_mobile = section.settings.grid_mobile | plus: 0
+  assign show_view_all = section.settings.show_view_all
+  assign view_all_text = 'collections.general.view_all' | t
+  assign counter = 0
+  assign grid_cols = 12
+
+  case products_per_row
+    when 2
+      assign desktop_col_span = 'lg:col-span-6'
+    when 3
+      assign desktop_col_span = 'lg:col-span-4'
+    when 4
+      assign desktop_col_span = 'lg:col-span-3'
+    when 5
+      assign grid_cols = 10
+      assign desktop_col_span = 'lg:col-span-2'
+  endcase
+
+  case products_per_row_mobile
+    when 1
+      assign mobile_col_span = 'col-span-2'
+    when 2
+      assign mobile_col_span = 'col-span-1'
+  endcase
+
+  assign desktop_grid_class = 'lg:grid-cols-' | append: grid_cols
+-%}
+
+<section class="featured-collection border-t-grid border-grid-color">
+  {% if section.settings.title != '' %}
+    {%- render 'section-title',
+      title: section.settings.title,
+      show_link: show_view_all,
+      link_text: view_all_text,
+      link_url: collection.url,
+      section_color: section_color
+    -%}
+  {% endif %}
+
+  <div class="bg-{{ section_color }}-background">
+    <ul class="grid grid-cols-2 {{ desktop_grid_class }} gap-gutter bg-border">
+      {% for product in collection.products limit: product_limit %}
+        {%- assign counter = counter | plus: 1 -%}
+        <li class="{{ mobile_col_span }} {{ desktop_col_span }} bg-{{ section_color }}-background text-{{ section_color }}-text">
+          {%- render 'product-grid-item',
+              product: product,
+              section_color: section_color,
+              products_per_row: products_per_row,
+              products_per_row_mobile: products_per_row_mobile,
+              responsive_image_counter: forloop.index
+          -%}
+        </li>
+      {% else %}
+        {% for i in (1..product_limit) %}
+          <li class="{{ mobile_col_span }} {{ desktop_col_span }} bg-{{ section_color }}-background text-{{ section_color }}-text">
+            <a href="#" class="featured-collection-item block">
+              {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+              <div class="border-b-grid border-grid-color {% unless settings.fill_image_to_border_edge %}}p-2 lg:p-4{% endunless %}">
+                <div class="bg-placeholder-bg">
+                  {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg placeholder-svg--small' }}
+                </div>
+              </div>
+              <div class="flex justify-between p-4">
+                <p class="w-3/4">{{ 'homepage.onboarding.product_title' | t }}</p>
+                <p>{{ 1999 | money }}</p>
+              </div>
+            </a>
+          </li>
+        {% endfor %}
+      {% endfor %}
+      {%- if collection.products.size > 0 -%}
+        {%- liquid
+          assign items_on_last_row = counter | modulo: products_per_row
+          assign col_span = grid_cols | divided_by: products_per_row
+          assign placeholder_width = products_per_row | minus: items_on_last_row | times: col_span
+          assign items_on_last_row_mobile = counter | modulo: products_per_row_mobile
+          assign col_span_mobile = 2 | divided_by: products_per_row_mobile 
+          assign placeholder_width_mobile = products_per_row_mobile | minus: items_on_last_row_mobile | times: col_span_mobile
+        -%}
+        {%- if items_on_last_row != 0 -%}
+          <li class="none absolute lg:static lg:block lg:col-span-{{ placeholder_width }} bg-{{ section_color }}-background" aria-hidden="true" role="presentation"></li>
+        {%- endif -%}
+        {%- if items_on_last_row_mobile != 0 -%}
+          <li class="block lg:none lg:absolute col-span-{{ placeholder_width_mobile }} bg-{{ section_color }}-background" aria-hidden="true" role="presentation"></li>
+        {%- endif -%}
+      {%- endif -%}
+    </ul>
+  </div>
+
+  {%- render 'view-all' with
+    title: section.settings.title,
+    show_link: show_view_all,
+    link_text: view_all_text,
+    link_url: collection.url,
+    section_color: section_color
+  -%}
+</section>
+
+{% schema %}
+  {
+    "name": "Featured collection",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Featured collection"
+      },
+      {
+        "id": "collection",
+        "type": "collection",
+        "label": "Collection"
+      },
+      {
+        "type": "range",
+        "id": "grid",
+        "label": "Products per row",
+        "min": 2,
+        "max": 5,
+        "step": 1,
+        "default": 3
+      },
+      {
+        "type": "range",
+        "id": "rows",
+        "label": "Rows",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 2
+      },
+      {
+        "type": "select",
+        "id": "grid_mobile",
+        "label": "Products per row - mobile",
+        "options": [
+            { "value": "1", "label": "1"},
+            { "value": "2", "label": "2"}
+        ],
+        "default":   "1"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_view_all",
+        "label": {
+          "en": "Show 'View all' link"
+        },
+        "default": false
+      },
+      {
+        "type":      "header",
+        "content":   "Color"
+      },
+      {
+        "type": "select",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "options": [
+            { "value": "primary", "label": "Primary"},
+            { "value": "secondary", "label": "Secondary"},
+            { "value": "tertiary", "label": "Tertiary"}
+        ],
+        "default":   "primary"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured collection"
+      }
+    ]
+  }
+{% endschema %}

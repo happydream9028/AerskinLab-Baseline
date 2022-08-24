@@ -1,0 +1,229 @@
+{%- assign section_color = 'primary' -%}
+<section id="main-cart-items" x-data="ThemeSection_Cart()" x-init="mounted()" data-section-id="{{ section.id }}" data-id="{{ section.id }}" data-section-type="cart" class="transition-opacity duration-200 ease-in-out">
+  <div class="js-contents">
+  {% if cart.item_count > 0 %}
+    <div class="relative section-x-padding pt-theme-double pb-theme md:pb-0">
+      <h1 class="font-heading {{ settings.base_heading_size }} md:absolute md:bottom-0 md:transform md:translate-y-7">{{ 'cart.general.title' | t }}</h1>
+    </div>
+    <form action="{{ routes.cart_url }}" method="post" novalidate id="cart">
+      <table class="cart-table js-contents">
+        <thead class="">
+          <tr>
+            <th scope="col">
+              <span class="visually-hidden">{{ 'cart.label.product' | t }}</span>
+            </th>
+            <th scope="col" class="font-normal">{{ 'cart.label.price' | t }}</th>
+            <th scope="col" class="font-normal">{{ 'cart.label.quantity' | t }}</th>
+            <th scope="col" class="font-normal">{{ 'cart.label.total' | t }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart.items %}
+            <tr class="" x-data="{ 'quantity_{{ item.key | replace: ':', '' }}': {{ item.quantity }}, ...QuantityControls() }" x-init="mounted('quantity_{{ item.key | replace: ':', '' }}')" id="CartItem-{{ item.index | plus: 1 }}">
+              <td data-label="{{ 'customer.order.product' | t }}">
+                <div class="flex">
+                  {% if item.image != blank %}
+                    <div class="w-10 md:w-20 mr-4">
+                      <a href="{{ item.url | within: collections.all }}">
+                        {{ item | img_url: '240x240' | img_tag: item.title }}
+                      </a>
+                    </div>
+                  {% endif %}
+                  <div>
+                    <a class="inline-block" href="{{ item.url }}">{{ item.product.title }}</a>
+                    {% if settings.cart_vendor_enable %}
+                      <p class="text-sm">{{ item.vendor }}</p>
+                    {% endif %}
+
+                    {% unless item.product.has_only_default_variant %}
+                      <p class="text-sm">{{ item.variant.title }}</p>
+                    {% endunless %}
+
+                    {% if item.selling_plan_allocation %}
+                      <p class="text-sm">{{ item.selling_plan_allocation.selling_plan.name }}</p>
+                    {% endif %}
+
+                    {% comment %} <p class="text-sm">{{ item.vendor }}</p> {% endcomment %}
+
+                    {%- assign property_size = item.properties | size -%}
+
+                    {% if property_size > 0 %}
+                      <div class="text-sm mt-2">
+                        {% for p in item.properties %}
+                          {% unless p.last == blank %}
+                          {{ p.first }}:
+
+                          {% if p.last contains '/uploads/' %}
+                            <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+                          {% else %}
+                            {{ p.last }}
+                          {% endif %}
+
+                          {% endunless %}
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+
+                    <p class="text-sm cart-item-error my-2 hidden" id="Line-item-error-{{ item.index | plus: 1 }}">
+                      <span class="cart-item-error-text text-{{ section_color }}-accent"></span>
+                    </p>
+
+                    <div class="flex my-2 items-center lg:hidden">
+                      <button
+                        type="submit"
+                        name="minus_mobile"
+                        class="w-6 p-1 js-enabled"
+                        @click.prevent="qtyAdjust($event, -1, 'quantity_{{ item.key | replace: ':', '' }}')"
+                        :aria-label="'{{ 'general.accessibility.decrement_one' | t }} ' + '{{ item.title }}'">
+                        {% render 'icon-minus' %}
+                      </button>
+                      <input type="text"
+                        data-index="{{ item.index | plus: 1 }}"
+                        value="{{ item.quantity }}"
+                        class="min-w-0 w-6 py-1 text-center text-sm border-b-text border-current bg-transparent"
+                        min="0"
+                        id="Quantity-{{ item.index | plus: 1 }}"
+                        aria-label="{{ 'cart.label.quantity' | t }}"
+                        pattern="[0-9]*"
+                        x-model.number="quantity_{{ item.key | replace: ':', '' }}"
+                        x-ref="quantity"
+                        autocomplete="off" />
+                      <button
+                        type="submit"
+                        name="plus_mobile"
+                        class="w-6 p-1 js-enabled"
+                        @click.prevent="qtyAdjust($event, 1, 'quantity_{{ item.key | replace: ':', '' }}')"
+                        :aria-label="'{{ 'general.accessibility.increment_one' | t }} ' + '{{ item.title }}'">
+                      {% render 'icon-plus' %}
+                      </button>
+                    </div>
+
+                    <a @click.prevent="removeItem" class="hidden md:block mt-2" href="/cart/change?line={{ forloop.index }}&amp;quantity=0">
+                      <small>{{ 'cart.general.remove' | t }}</small>
+                    </a>
+                  </div>
+                </div>
+              </td>
+              <td data-price data-label="{{ 'cart.label.price' | t }}">
+                {% if item.original_line_price != item.line_price %}
+                  <span class="visually-hidden">{{ 'cart.label.discounted_price' | t }}</span>
+                  {{ item.price | money }}
+                  <span class="visually-hidden">{{ 'cart.label.original_price' | t }}</span>
+                  <s>{{ item.original_price | money }}</s>
+                {% else %}
+                  {{ item.price | money }}
+                {% endif %}
+                {%- if item.unit_price_measurement -%}
+                  <div class="text-xs">
+                    {{ item.unit_price | money }} /&nbsp;
+                    {%- if item.unit_price_measurement.reference_value != 1 -%}
+                      {{- item.unit_price_measurement.reference_value -}}
+                    {%- endif -%}
+                    {{ item.unit_price_measurement.reference_unit }}
+                  </div>
+                {%- endif -%}
+              </td>
+              <td data-quantity data-label="{{ 'cart.label.quantity' | t }}">
+                <div class="flex  items-center hidden lg:block">
+                  <button
+                    type="submit"
+                    name="minus"
+                    class="w-6 p-1 align-middle js-enabled"
+                    @click.prevent="qtyAdjust($event, -1, 'quantity_{{ item.key | replace: ':', '' }}')"
+                    :aria-label="'{{ 'general.accessibility.decrement_one' | t }} ' + '{{ item.title }}'">
+                    {% render 'icon-minus' %}
+                  </button>
+                  <input type="text"
+                    name="updates[]"
+                    id="updates_{{ item.key }}"
+                    value="{{ item.quantity }}"
+                    class="min-w-0 w-6 pb-1 text-center text-sm lg:text-base border-b-text border-current bg-transparent"
+                    min="0"
+                    aria-label="{{ 'cart.label.quantity' | t }}"
+                    pattern="[0-9]*"
+                    x-model.number="quantity_{{ item.key | replace: ':', '' }}"
+                    autocomplete="off" />
+                  <button
+                    name="plus"
+                    type="submit"
+                    class="w-6 p-1 align-middle js-enabled"
+                    @click.prevent="qtyAdjust($event, 1, 'quantity_{{ item.key | replace: ':', '' }}')"
+                    :aria-label="'{{ 'general.accessibility.increment_one' | t }} ' + '{{ item.title }}'">
+                  {% render 'icon-plus' %}
+                  </button>
+                </div>
+              </td>
+              <td data-total data-label="{{ 'cart.label.total' | t }}">
+                <div>
+                  {%- if item.original_line_price != item.final_line_price -%}
+                    <del class="">{{ item.original_line_price | money }}</del>
+                    <span class="">{{ item.final_line_price | money }}</span>
+                  {%- else -%}
+                    <span>{{ item.original_line_price | money }}</span>
+                  {%- endif -%}
+                  {%- if item.unit_price_measurement -%}
+                    <div class="text-xs">
+                      {{ item.unit_price | money }} /&nbsp;
+                      {%- if item.unit_price_measurement.reference_value != 1 -%}
+                        {{- item.unit_price_measurement.reference_value -}}
+                      {%- endif -%}
+                      {{ item.unit_price_measurement.reference_unit }}
+                    </div>
+                  {%- endif -%}
+
+                  {%- if item.line_level_discount_allocations != blank -%}
+                    <ul class="mt-1 text-sm text-{{ section_color }}-accent" aria-label="{{ 'customer.order.discount' | t }}">
+                      {%- for discount_allocation in item.line_level_discount_allocations -%}
+                        <li class="order-discount__item">
+                          {{ discount_allocation.discount_application.title }} -{{ discount_allocation.amount | money }}
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+              </td>
+            </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+      <p class="visually-hidden" id="cart-live-region-text" aria-live="polite" role="status"></p>
+      <p class="visually-hidden" id="shopping-cart-line-item-status" aria-live="polite" aria-hidden="true" role="status">{{ 'general.accessibility.loading' | t }}</p>
+    </form>
+  {% else %}
+    <div class="py-theme section-x-padding">
+      <h1 class="font-heading {{ settings.base_heading_size }}">{{ 'cart.general.title' | t }}</h1>
+      {% comment %}
+      Cart empty state
+      {% endcomment %}
+      <div class="mt-8">
+        <div class="supports-cookies">
+          <p class="mb-8">{{ 'cart.general.empty' | t }}</p>
+          {% assign continue_shopping = 'cart.general.continue_shopping' | t %}
+          {%- render 'link-underline',
+                section_color: section_color,
+                text: continue_shopping,
+                link: routes.root_url,
+              -%}
+        </div>
+
+        {% comment %}
+        Cart no cookies state
+        ---------------------
+        Browser cookies are required to use the cart. If cookies aren't enabled in the
+        browser a message is displayed prompting the user to enable them.
+        {% endcomment %}
+        <div class="supports-no-cookies">
+          <p>{{ 'cart.general.cookies_required' | t }}</p>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Cart items"
+  }
+{% endschema %}

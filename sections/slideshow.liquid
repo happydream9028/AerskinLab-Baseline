@@ -1,0 +1,315 @@
+{%- liquid
+  assign section_color = section.settings.color_scheme
+  assign heading_size_class = section.settings.heading_size
+-%}
+<section class="relative bg-{{ section_color }}-background text-{{ section_color }}-text {% if settings.fill_image_to_border_edge %}pb-theme{% else %}pb-theme{% endif %}" data-section-type="slideshow" data-section-id="{{ section.id }}" data-slide-speed="{{ section.settings.slide_speed }}" {% if section.settings.auto_rotate %}data-auto-rotate="true"{% endif %}>
+  <div class="splide" data-splide='{"autoplay":{{ section.settings.auto_rotate }}, "interval": {{ section.settings.slide_speed }} }'>
+    <button class="splide__autoplay-control absolute top-0 left-0 z-10 p-2 opacity-0 transition-opacity"
+            aria-label="{{ 'sections.slideshow.pause_slideshow' | t }}"
+            data-play="{{ 'sections.slideshow.rotate_slideshow' | t }}"
+            data-pause="{{ 'sections.slideshow.pause_slideshow' | t }}">
+      <span class="flex items-center justify-center relative">
+        <span class="splide__pause inline-block w-6">{% render 'icon-pause' %}</span>
+        <span class="splide__play inline-block w-6">{% render 'icon-play' %}</span>
+      </span>
+    </button>
+    <div class="splide__track {% if settings.fill_image_to_border_edge %}border-b-grid border-grid-color{% endif %}">
+      <div class="splide__list">
+        {% for block in section.blocks %}
+          {%- liquid
+            assign height = section.settings.height
+            unless forloop.first
+              assign height = 'full_height'
+            endunless
+            assign image_focal_point = block.settings.image_focal_point
+            assign content_position = block.settings.content_position
+            assign content_width_desktop = block.settings.content_width_desktop
+            assign text_color = block.settings.text_color
+            assign background = block.settings.section_coolor
+            assign image = block.settings.image
+            assign image_mobile = block.settings.image_mobile
+            assign indent_image = block.settings.indent_image
+            assign title = block.settings.title
+            assign text = block.settings.text
+            assign cta_link = block.settings.cta_link
+            assign cta_text  = block.settings.cta_text
+            assign cta_style  = block.settings.cta_style
+          -%}
+          <div class="splide__slide" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            {%- render 'image-with-text-overlay',
+                height: height,
+                image_focal_point: image_focal_point,
+                image: image,
+                image_mobile: image_mobile,
+                indent_image: indent_image,
+                content_position: content_position,
+                heading_size_class: heading_size_class,
+                text_color: text_color,
+                background: background,
+                content_width_desktop: content_width_desktop,
+                title: title,
+                text: text,
+                cta_link: cta_link,
+                cta_text: cta_text,
+                cta_style: cta_style,
+                responsive_image_counter: forloop.index
+            -%}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="js-enabled splide__arrows text-{{ section_color }}-text mr-1 lg:mr-4 text-right {% if settings.fill_image_to_border_edge %}mt-2{% endif %}">
+      <button class="splide__arrow splide__arrow--prev w-8">
+        <span class="visually-hidden">{{ 'sections.slideshow.previous_slide' | t }}</span>
+        <span class="block">
+          {% render 'icon-previous' %}
+        </span>
+      </button>
+      <button class="splide__arrow splide__arrow--next w-8">
+        <span class="visually-hidden">{{ 'sections.slideshow.next_slide' | t }}</span>
+        <span class="block">
+          {% render 'icon-next' %}
+        </span>
+      </button>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Slideshow",
+  "class": "has-full-screen-setting",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+          { "value": "primary", "label": "Primary"},
+          { "value": "secondary", "label": "Secondary"},
+          { "value": "tertiary", "label": "Tertiary"}
+      ],
+      "default":   "primary"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Height",
+      "options": [
+        { "value": "natural", "label": "Adapt to first slide"},
+        { "value": "full_screen", "label": "Full screen"}
+      ],
+      "default":   "natural"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "text-sm", "label": "S"},
+        { "value": "text-base", "label": "M"},
+        { "value": "text-lg", "label": "L"},
+        { "value": "text-xl", "label": "XL"},
+        { "value": "text-2xl", "label": "2XL"},
+        { "value": "text-2xl lg:text-3xl", "label": "2XL / desktop 3XL"},
+        { "value": "text-2xl lg:text-4xl", "label": "2XL / desktop 4XL"},
+        { "value": "text-2xl lg:text-5xl", "label": "2XL / desktop 5XL" },
+        { "value": "text-2xl lg:text-6xl", "label": "2XL / desktop 6XL" },
+        { "value": "text-2xl lg:text-7xl", "label": "2XL / desktop 7XL" }
+      ],
+      "default":   "text-2xl lg:text-5xl"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_rotate",
+      "label": "Auto-rotate slides",
+      "info": "This will show a play and pause button and disable dragging."
+    },
+    {
+      "type": "select",
+      "id": "slide_speed",
+      "label": "Change slides every",
+      "options": [
+        {
+          "value": "5000",
+          "label": "5 Seconds"
+        },
+        {
+          "value": "6000",
+          "label": "6 Seconds"
+        },
+        {
+          "value": "7000",
+          "label": "7 Seconds"
+        },
+        {
+          "value": "8000",
+          "label": "8 Seconds"
+        },
+        {
+          "value": "9000",
+          "label": "9 Seconds"
+        },
+        {
+          "value": "10000",
+          "label": "10 Seconds"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "id": "image",
+          "type": "image_picker",
+          "label": "Image",
+          "info": "1800 x 800px .jpg recommended"
+        },
+        {
+          "id": "image_mobile",
+          "type": "image_picker",
+          "label": "Image - mobile",
+          "info": "800 x 1200px .jpg recommended"
+        },
+        {
+          "type": "checkbox",
+          "id": "indent_image",
+          "label": "Indent image",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "image_focal_point",
+          "label": "Image focal point",
+          "options": [
+              { "value": "object-left-top", "label": "Top left"},
+              { "value": "object-top", "label": "Top center"},
+              { "value": "object-right-top", "label": "Top right"},
+              { "value": "object-left", "label": "Left"},
+              { "value": "object-center", "label": "Center"},
+              { "value": "object-right", "label": "Right"},
+              { "value": "object-left-bottom", "label": "Bottom left"},
+              { "value": "object-bottom", "label": "Bottom center"},
+              { "value": "object-right-bottom", "label": "Bottom right"}
+          ],
+          "default":   "object-center",
+          "info": "Only applies when image is cropped. Keeps image subject in view."
+        },
+        {
+          "type":      "header",
+          "content":   "Content"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Image slide"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "content_position",
+          "label": "Content position",
+          "options": [
+              { "value": "justify-start items-start text-left", "label": "Top left"},
+              { "value": "justify-center items-start text-center", "label": "Top center"},
+              { "value": "justify-end items-start text-right", "label": "Top right"},
+              { "value": "justify-start items-center text-left", "label": "Left"},
+              { "value": "justify-center items-center text-center", "label": "Center"},
+              { "value": "justify-end items-center text-right", "label": "Right"},
+              { "value": "justify-start items-end text-left", "label": "Bottom left"},
+              { "value": "justify-center items-end text-center", "label": "Bottom center"},
+              { "value": "justify-end items-end text-right", "label": "Bottom right"}
+          ],
+          "default":   "justify-center items-center text-center"
+        },
+        {
+          "type": "select",
+          "id": "content_width_desktop",
+          "label": "Content width on desktop",
+          "default": "lg:w-2/3",
+          "options": [
+            {
+              "value": "lg:w-1/3",
+              "label": "One third"
+            },
+            {
+              "value": "lg:w-1/2",
+              "label": "One half"
+            },
+            {
+              "value": "lg:w-2/3",
+              "label": "Two thirds"
+            },
+            {
+              "value": "lg:w-full",
+              "label": "Full width"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "label": "Text color",
+          "options": [
+              { "value": "primary", "label": "Primary"},
+              { "value": "secondary", "label": "Secondary"},
+              { "value": "tertiary", "label": "Tertiary"},
+              { "value": "white", "label": "White"},
+              { "value": "black", "label": "Black"}
+          ],
+          "default":   "primary"
+        },
+        {
+          "type":      "header",
+          "content":   "Call to action"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "cta_style",
+          "label": "Style",
+          "options": [
+            { "value": "link", "label": "Link"},
+            { "value": "button", "label": "Button"}
+          ],
+          "default":   "link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Slideshow",
+      "blocks": [
+        {
+          "type": "slide"
+        },
+        {
+          "type": "slide"
+        },
+        {
+          "type": "slide"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

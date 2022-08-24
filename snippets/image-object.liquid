@@ -1,0 +1,20 @@
+{%- liquid
+  assign image_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.'
+  assign aspect_ratio = image.aspect_ratio
+  assign position_class = 'absolute left-0 top-0 bottom-0 right-0'
+  assign object_class = 'object-cover'
+  if contain
+    assign object_class = 'object-contain'
+  endif
+-%}
+
+<img class="responsive-image block lazyload w-full h-full {{ position_class }} {{ object_class }} {{ focal_point }} transition-opacity duration-200 ease-in-out"
+  data-src="{{ image_url }}"
+  data-aspectratio="{{ aspect_ratio }}"
+  data-sizes="auto"
+  tabindex="-1"
+  alt="{{ image.alt }}">
+<div class="responsive-image-placeholder {{ position_class }}"></div>
+<noscript>
+  <img class="{{ position_class }} {{ object_class }} {{ focal_point }}  w-full h-full" src="{{ image | img_url: '2048x2048' }}" alt="{{ image.alt | escape }}">
+</noscript>

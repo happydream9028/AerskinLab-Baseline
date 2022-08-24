@@ -1,0 +1,39 @@
+{%- if block.settings.text_color == 'text' -%}
+  {% capture color_class %}text-{{ section_color }}-text group hover:text-{{ section_color }}-accent{% endcapture %}
+  {% capture border_class %}border-{{ section_color }}-text group-hover:border-{{ section_color }}-accent {% endcapture %}
+{%- else -%}
+  {% capture color_class %}text-{{ section_color }}-meta group hover:text-{{ section_color }}-accent{% endcapture %}
+  {% capture border_class %}border-{{ section_color }}-meta group-hover:border-{{ section_color }}-accent{% endcapture %}
+{%- endif -%}
+<div class="product-page-popup-link  mt-8 " x-data="ThemeComponent_PopUp()" x-init="mounted()">
+  <div class="js-enabled" {{ block.shopify_attributes }}>
+    <button
+      @click="open = true"
+      x-ref="trigger"
+      aria-haspopup="dialog"
+      class="cursor-pointer  {{ color_class }} {% if block.settings.icon != 'none' %}inline-flex justify-start items-center{% endif %}">
+      {% if block.settings.icon != 'none' %}<span class="inline-block w-5 h-5 mr-2">{% render 'product-icon', icon: block.settings.icon %}</span>{% endif %}
+      <span class="{% if settings.links_show_underline %}border-b-text {{ border_class }}{% endif %} py-1 ">{{ block.settings.text }}</span>
+    </button>
+  </div>
+  <div x-show="open" x-ref="modal" class="product-popup-modal fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center p-8 lg:p-24 z-100" x-cloak>
+    <div @click.away.prevent="open = false" class="section-x-padding py-theme border-grid border-grid-color bg-{{ section_color }}-background text-{{ section_color }}-text w-full max-w-2xl relative max-h-full overflow-auto"
+        role="dialog" aria-label="{{ block.settings.link_label }}" aria-modal="true" tabindex="-1">
+      <button x-ref="close" @click="open = false" type="button"  class="block p-1 w-8 ml-auto absolute top-2 right-2" autofocus>
+        <span class="visually-hidden">{{ 'general.accessibility.close_modal' | t }}</span>
+        <span class="inline-block w-5 h-5">{% render 'icon-close' %}</span>
+      </button>
+      <div class="product-popup-modal__content-info">
+        <h2 class="font-heading {{ settings.base_heading_size }}">{{ block.settings.page.title }}</h2>
+        <div class="rte mt-8">{{ block.settings.page.content }}</div>
+      </div>
+    </div>
+  </div>
+  <div x-show="open" class="bg-{{ section_color }}-text fixed top-0 left-0 right-0 bottom-0 z-99 opacity-40" x-cloak></div>
+  <noscript>
+    <a href="{{ block.settings.page.url }}" class="{% if block.settings.icon != 'none' %}inline-flex justify-start items-center{% endif %}">
+      {% if block.settings.icon != 'none' %}<span class="inline-block w-5 h-5 mr-2">{% render 'product-icon', icon: block.settings.icon %}</span>{% endif %}
+      <span class="{% if settings.links_show_underline %}border-b-text {{ border_class }}{% endif %} py-1 ">{{ block.settings.text }}</span>
+    </a>
+  </noscript>
+</div>

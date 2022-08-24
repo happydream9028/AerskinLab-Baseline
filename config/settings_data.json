@@ -1,0 +1,577 @@
+{
+  "current": {
+    "color_border": "#000000",
+    "color_primary_text": "#000000",
+    "color_primary_background": "#ffffff",
+    "color_primary_accent": "#b7b4b7",
+    "color_primary_meta": "#e3d9f2",
+    "color_secondary_text": "#ffffff",
+    "color_secondary_background": "#000000",
+    "color_secondary_accent": "#b7b4b7",
+    "color_secondary_meta": "#e3d9f2",
+    "color_tertiary_text": "#000000",
+    "color_tertiary_background": "#b7b4b7",
+    "color_tertiary_accent": "#ffffff",
+    "color_tertiary_meta": "#000000",
+    "button_color": "transparent_background_text_border",
+    "button_style": "square",
+    "base_font_size": 14,
+    "font_heading": "abril_fatface_n4",
+    "heading_uppercase": true,
+    "heading_underline": false,
+    "heading_letterspacing": 25,
+    "base_heading_size": "text-xl",
+    "template_heading_size": "text-2xl lg:text-3xl",
+    "secondary_heading_size": "text-base",
+    "font_body": "abel_n4",
+    "base_line_height": 1.5,
+    "section_title_font": "heading",
+    "section_title_align": "left",
+    "header_uppercase": true,
+    "product_grid_uppercase": true,
+    "button_uppercase": true,
+    "buttons_show_arrow": true,
+    "links_uppercase": true,
+    "links_show_arrow": true,
+    "links_show_underline": false,
+    "spacing": "small",
+    "fill_image_to_border_edge": true,
+    "border_width": 1,
+    "product_grid_image_size": "1",
+    "title_price_display": "under_image",
+    "under_image_display_format": "title_left_price_right",
+    "products_show_second_image_on_hover": true,
+    "sharing_display": "text",
+    "social_instagram_link": "https:\/\/www.instagram.com\/aerskinlab\/?hl=en",
+    "social_facebook_link": "",
+    "social_twitter_link": "",
+    "social_pinterest_link": "",
+    "social_snapchat_link": "",
+    "social_tiktok_link": "",
+    "social_tumblr_link": "",
+    "social_youtube_link": "",
+    "social_vimeo_link": "",
+    "cart_color_scheme": "primary",
+    "logo": "shopify:\/\/shop_images\/aer-logo.png",
+    "favicon": "shopify:\/\/shop_images\/AER-SKINLAB-Favicon-RGB.png",
+    "checkout_accent_color": "#dce7ff",
+    "checkout_button_color": "#ebefdd",
+    "checkout_error_color": "#e3d9f2",
+    "full_bleed_grid": true,
+    "heading_line_height": 1,
+    "sections": {
+      "sidebar": {
+        "type": "sidebar",
+        "settings": {
+          "menu": "main-menu",
+          "secondary_menu": "",
+          "text_size": "text-lg",
+          "show_borders": true,
+          "icon": "plus",
+          "show_search": true,
+          "show_social": true,
+          "color_scheme": "primary"
+        }
+      },
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {
+          "show_announcement_bar": false,
+          "home_page_only": true,
+          "display": "static",
+          "text": "Free shipping on all orders over $100",
+          "link": "",
+          "color_scheme": "primary",
+          "speed": 280,
+          "direction": "reverse",
+          "repeat_text": true
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo": "shopify:\/\/shop_images\/AER-SKINLAB-Logo-White-RGB-Wide_46e71af9-3800-4ce5-a894-11eb5c49073e.png",
+          "logo_max_width": 170,
+          "menu": "main-menu",
+          "layout": "logo_left_menu_left",
+          "dropdown_text_align": "left",
+          "show_all_navigation_links": false,
+          "show_search": true,
+          "sticky_header": true,
+          "show_icons": false,
+          "custom_link_text": "Book a Consult",
+          "custom_link": "https:\/\/aerskinlab.janeapp.com\/",
+          "color_scheme": "secondary",
+          "overlay_homepage": false,
+          "overlay_text_color": "black"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "7902405c-d6cf-4e4b-8309-cd98a1b5d0e3": {
+            "type": "menu",
+            "settings": {
+              "main_linklist": "footer",
+              "show_heading": false
+            }
+          },
+          "63b9bcd1-a071-4ad5-b349-7f8b06874601": {
+            "type": "richtext",
+            "settings": {
+              "title": "Have a question?",
+              "richtext": "<p>Email us at hello@aerskinlab.com<br\/>or call 604 262 4111<br\/><br\/><\/p>"
+            }
+          },
+          "46665c4d-698e-44dd-bccc-2eb9e93c07dc": {
+            "type": "richtext",
+            "settings": {
+              "title": "Visit the AE.R Studio",
+              "richtext": "<p>1540 West 2nd Avenue # 207<br\/>Vancouver BC V6J 1H2<\/p>"
+            }
+          }
+        },
+        "block_order": [
+          "7902405c-d6cf-4e4b-8309-cd98a1b5d0e3",
+          "63b9bcd1-a071-4ad5-b349-7f8b06874601",
+          "46665c4d-698e-44dd-bccc-2eb9e93c07dc"
+        ],
+        "settings": {
+          "show_payment_icons": false,
+          "show_locale_selector": true,
+          "show_currency_selector": true,
+          "show_social": true,
+          "social_title": "",
+          "show_newsletter": true,
+          "newsletter_section_title": "Subscribe To Receive Special Offers",
+          "newsletter_subheading": "",
+          "newsletter_color_scheme": "tertiary",
+          "image": "shopify:\/\/shop_images\/AeRSkinLab-ColourBar-Animation_333f2a09-9c9d-4668-b8d5-84ba8209d346.gif",
+          "color_gradient_left": "#dce7ff",
+          "color_gradient_center": "#ebefdd",
+          "color_gradient_right": "#e3d9f2",
+          "show_grid_border": true,
+          "color_scheme": "primary"
+        }
+      },
+      "popup": {
+        "type": "popup",
+        "settings": {
+          "display_mode": "enabled",
+          "delay": 4,
+          "frequency": 30,
+          "title": "",
+          "text": "<p>Receive special offers and first look at new products.<\/p>",
+          "text_size": "text-lg",
+          "call_to_action": "newsletter",
+          "cta_link": "",
+          "cta_text": "Shop Now",
+          "color_scheme": "primary",
+          "color_gradient_left": "#dce7ff",
+          "color_gradient_center": "#ebefdd",
+          "color_gradient_right": "#e3d9f2"
+        }
+      }
+    },
+    "content_for_index": [],
+    "blocks": {
+      "855628211100114053": {
+        "type": "shopify:\/\/apps\/klaviyo-email-marketing-sms\/blocks\/klaviyo-onsite-embed\/2632fe16-c075-4321-a88b-50b567f42507",
+        "disabled": false,
+        "settings": {}
+      }
+    }
+  },
+  "presets": {
+    "Bold": {
+      "color_primary_text": "#000000",
+      "color_primary_background": "#f4f4f4",
+      "color_primary_accent": "#ff0a82",
+      "color_primary_meta": "#000000",
+      "color_secondary_text": "#000000",
+      "color_secondary_background": "#17fe07",
+      "color_secondary_accent": "#ffffff",
+      "color_secondary_meta": "#000000",
+      "color_tertiary_text": "#fcfcfc",
+      "color_tertiary_background": "#000000",
+      "color_tertiary_accent": "#ff0a82",
+      "color_tertiary_meta": "#fcfcfc",
+      "base_font_size": 22,
+      "font_heading": "swiss_721_n4",
+      "heading_uppercase": false,
+      "heading_underline": false,
+      "heading_letterspacing": 0,
+      "font_body": "swiss_721_n4",
+      "buttons_show_arrow": true,
+      "links_uppercase": false,
+      "links_show_arrow": true,
+      "links_show_underline": true,
+      "border_width": 2,
+      "product_grid_image_size": "natural",
+      "under_image_display_format": "title_left_price_right",
+      "products_show_second_image_on_hover": true,
+      "sharing_display": "text",
+      "social_instagram_link": "",
+      "social_facebook_link": "",
+      "social_twitter_link": "",
+      "social_pinterest_link": "",
+      "social_snapchat_link": "",
+      "social_tiktok_link": "",
+      "social_tumblr_link": "",
+      "social_youtube_link": "",
+      "social_vimeo_link": "",
+      "cart_color_scheme": "primary",
+      "full_bleed_grid": true,
+      "heading_line_height": 1,
+      "sections": {
+        "sidebar": {
+          "type": "sidebar",
+          "settings": {
+            "menu": "main-menu",
+            "secondary_menu": "footer",
+            "text_size": "text-2xl",
+            "show_borders": true,
+            "icon": "chevron",
+            "show_search": true,
+            "show_social": true,
+            "color_scheme": "primary"
+          }
+        },
+        "announcement-bar": {
+          "type": "announcement-bar",
+          "settings": {
+            "show_announcement_bar": true,
+            "home_page_only": false,
+            "display": "marquee",
+            "text": "Announce something here",
+            "color_scheme": "tertiary",
+            "speed": 280,
+            "direction": "reverse"
+          }
+        },
+        "header": {
+          "type": "header",
+          "settings": {
+            "logo_max_width": 80,
+            "menu": "main-menu",
+            "layout": "logo_left_menu_spread",
+            "dropdown_text_align": "left",
+            "show_all_navigation_links": false,
+            "show_search": false,
+            "sticky_header": false,
+            "show_icons": false,
+            "color_scheme": "primary",
+            "overlay_homepage": false,
+            "overlay_text_color": "white"
+          }
+        },
+        "footer": {
+          "type": "footer",
+          "blocks": {
+            "7902405c-d6cf-4e4b-8309-cd98a1b5d0e3": {
+              "type": "menu",
+              "settings": {
+                "main_linklist": "footer",
+                "show_heading": false
+              }
+            }
+          },
+          "block_order": [
+            "7902405c-d6cf-4e4b-8309-cd98a1b5d0e3"
+          ],
+          "settings": {
+            "show_payment_icons": true,
+            "show_locale_selector": true,
+            "show_currency_selector": true,
+            "show_social": true,
+            "social_title": "",
+            "show_newsletter": true,
+            "newsletter_section_title": "",
+            "newsletter_subheading": "<p>Subscribe to our newsletter to receive special offers and first look at new products.<\/p>",
+            "newsletter_color_scheme": "secondary",
+            "show_grid_border": false,
+            "color_scheme": "primary"
+          }
+        },
+        "popup": {
+          "type": "popup",
+          "settings": {
+            "display_mode": "enabled",
+            "delay": 4,
+            "frequency": 30,
+            "title": "",
+            "text": "<p>Receive special offers and first look at new products.<\/p>",
+            "text_size": "text-base",
+            "call_to_action": "newsletter",
+            "color_scheme": "tertiary"
+          }
+        }
+      }
+    },
+    "Minimal": {
+      "color_border": "#030303",
+      "color_primary_text": "#030303",
+      "color_primary_background": "#ffffff",
+      "color_primary_accent": "#eb3163",
+      "color_primary_meta": "#9d9d9d",
+      "color_secondary_text": "#030303",
+      "color_secondary_background": "#f1ffa7",
+      "color_secondary_accent": "#eb3163",
+      "color_secondary_meta": "#9d9d9d",
+      "color_tertiary_text": "#030303",
+      "color_tertiary_background": "#f8f8f8",
+      "color_tertiary_accent": "#eb3163",
+      "color_tertiary_meta": "#9d9d9d",
+      "button_color": "transparent_background_text_border",
+      "button_style": "square",
+      "base_font_size": 16,
+      "font_heading": "sans-serif",
+      "heading_uppercase": true,
+      "heading_underline": false,
+      "heading_letterspacing": 0,
+      "base_heading_size": "text-base",
+      "template_heading_size": "text-xl",
+      "secondary_heading_size": "text-base",
+      "font_body": "sans-serif",
+      "base_line_height": 1.2,
+      "body_copy_uppercase": true,
+      "section_title_font": "heading",
+      "section_title_align": "left",
+      "header_uppercase": true,
+      "button_uppercase": true,
+      "buttons_show_arrow": false,
+      "links_uppercase": true,
+      "links_show_arrow": false,
+      "links_show_underline": true,
+      "spacing": "medium",
+      "fill_image_to_border_edge": false,
+      "border_width": 1,
+      "title_price_display": "under_image",
+      "under_image_display_format": "title_left_price_under",
+      "products_show_second_image_on_hover": true,
+      "social_instagram_link": "",
+      "social_facebook_link": "",
+      "social_pinterest_link": "",
+      "cart_color_scheme": "primary",
+      "full_bleed_grid": true,
+      "heading_text_size": "text-2xl lg:text-3xl",
+      "heading_template_text_size": "text-2xl lg:text-5xl",
+      "sections": {
+        "sidebar": {
+          "type": "sidebar",
+          "settings": {
+            "menu": "main-menu",
+            "secondary_menu": "footer",
+            "text_size": "text-base",
+            "show_borders": true,
+            "icon": "plus",
+            "show_search": true,
+            "show_social": true,
+            "color_scheme": "primary"
+          }
+        },
+        "announcement-bar": {
+          "type": "announcement-bar",
+          "settings": {
+            "show_announcement_bar": true,
+            "home_page_only": false,
+            "display": "marquee",
+            "text": "Announce something here",
+            "color_scheme": "primary",
+            "speed": 230,
+            "direction": ""
+          }
+        },
+        "header": {
+          "type": "header",
+          "settings": {
+            "logo_max_width": 250,
+            "menu": "main-menu",
+            "layout": "logo_left_menu_left",
+            "dropdown_text_align": "left",
+            "show_all_navigation_links": false,
+            "show_search": true,
+            "sticky_header": false,
+            "show_icons": false,
+            "color_scheme": "primary",
+            "overlay_homepage": false,
+            "overlay_text_color": "white"
+          }
+        },
+        "footer": {
+          "type": "footer",
+          "blocks": {
+            "eb1dbd88-faad-451d-a656-319121b5e6e9": {
+              "type": "menu",
+              "settings": {
+                "main_linklist": "",
+                "show_heading": false
+              }
+            },
+            "61f6da74-bcf2-4d94-ba46-efd4d0c42f9a": {
+              "type": "menu",
+              "settings": {
+                "main_linklist": "footer",
+                "show_heading": false
+              }
+            }
+          },
+          "block_order": [
+            "eb1dbd88-faad-451d-a656-319121b5e6e9",
+            "61f6da74-bcf2-4d94-ba46-efd4d0c42f9a"
+          ],
+          "settings": {
+            "show_payment_icons": true,
+            "show_locale_selector": true,
+            "show_currency_selector": true,
+            "show_social": true,
+            "social_title": "",
+            "show_newsletter": true,
+            "newsletter_section_title": "",
+            "newsletter_subheading": "<p>Subscribe to our newsletter to receive special offers and first look at new products.<\/p>",
+            "newsletter_color_scheme": "secondary",
+            "show_grid_border": true,
+            "color_scheme": "primary"
+          }
+        },
+        "popup": {
+          "type": "popup",
+          "settings": {
+            "display_mode": "disabled",
+            "delay": 4,
+            "frequency": 30,
+            "title": "",
+            "text": "<p>Receive special offers and first look at new products.<\/p>",
+            "text_size": "text-base",
+            "call_to_action": "newsletter",
+            "color_scheme": "secondary"
+          }
+        }
+      }
+    },
+    "Modern": {
+      "color_border": "#5e18ff",
+      "color_primary_text": "#540aff",
+      "color_primary_background": "#ffffff",
+      "color_primary_accent": "#060606",
+      "color_primary_meta": "#540aff",
+      "color_secondary_text": "#ffffff",
+      "color_secondary_background": "#5e18ff",
+      "color_secondary_accent": "#5e18ff",
+      "color_secondary_meta": "#ffffff",
+      "color_tertiary_text": "#540aff",
+      "color_tertiary_background": "#fbf9ff",
+      "color_tertiary_accent": "#000000",
+      "color_tertiary_meta": "#540aff",
+      "button_color": "text_background",
+      "button_style": "rounded",
+      "base_font_size": 20,
+      "font_heading": "neue_swift_i5",
+      "heading_underline": true,
+      "base_heading_size": "text-2xl",
+      "template_heading_size": "text-2xl lg:text-5xl",
+      "font_body": "sans-serif",
+      "base_line_height": 1.1,
+      "section_title_align": "center",
+      "buttons_show_arrow": true,
+      "links_show_underline": true,
+      "spacing": "small",
+      "fill_image_to_border_edge": true,
+      "border_width": 1,
+      "title_price_display": "over_image_top",
+      "under_image_display_format": "title_left_price_right",
+      "products_show_second_image_on_hover": true,
+      "social_instagram_link": "",
+      "social_facebook_link": "",
+      "social_snapchat_link": "",
+      "social_tiktok_link": "",
+      "social_youtube_link": "",
+      "cart_color_scheme": "primary",
+      "sections": {
+        "sidebar": {
+          "type": "sidebar",
+          "settings": {
+            "menu": "main-menu",
+            "secondary_menu": "footer",
+            "text_size": "text-2xl",
+            "show_borders": true,
+            "icon": "chevron",
+            "show_search": true,
+            "show_social": true,
+            "color_scheme": "primary"
+          }
+        },
+        "announcement-bar": {
+          "type": "announcement-bar",
+          "settings": {
+            "show_announcement_bar": false,
+            "home_page_only": false,
+            "display": "marquee",
+            "text": "Announce something here",
+            "color_scheme": "primary",
+            "speed": 260,
+            "direction": ""
+          }
+        },
+        "header": {
+          "type": "header",
+          "settings": {
+            "logo_max_width": 50,
+            "menu": "main-menu",
+            "layout": "logo_center_menu_left",
+            "dropdown_text_align": "left",
+            "show_all_navigation_links": false,
+            "show_search": true,
+            "sticky_header": true,
+            "show_icons": false,
+            "color_scheme": "primary",
+            "overlay_homepage": true,
+            "overlay_text_color": "primary"
+          }
+        },
+        "footer": {
+          "type": "footer",
+          "blocks": {
+            "d7e58979-b1fe-4510-b1f4-425e73b37062": {
+              "type": "menu",
+              "settings": {
+                "main_linklist": "footer",
+                "show_heading": false
+              }
+            }
+          },
+          "block_order": [
+            "d7e58979-b1fe-4510-b1f4-425e73b37062"
+          ],
+          "settings": {
+            "show_payment_icons": true,
+            "show_locale_selector": true,
+            "show_currency_selector": true,
+            "show_social": true,
+            "social_title": "",
+            "show_newsletter": false,
+            "newsletter_section_title": "",
+            "newsletter_subheading": "<p>Subscribe to our newsletter to receive special offers and first look at new products.<\/p>",
+            "newsletter_color_scheme": "secondary",
+            "show_grid_border": false,
+            "color_scheme": "primary"
+          }
+        },
+        "popup": {
+          "type": "popup",
+          "settings": {
+            "display_mode": "disabled",
+            "delay": 4,
+            "frequency": 30,
+            "title": "",
+            "text": "<p>Receive special offers and first look at new products.<\/p>",
+            "text_size": "text-base",
+            "call_to_action": "newsletter",
+            "cta_text": "Shop Now",
+            "color_scheme": "secondary"
+          }
+        }
+      }
+    }
+  }
+}

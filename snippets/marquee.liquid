@@ -1,0 +1,43 @@
+{%- liquid
+  assign speed_number = 320 | minus: speed_number
+-%}
+{%- capture speed -%}marquee {{ speed_number}}s linear infinite{%- endcapture -%}
+<div id="marquee-{{ id }}" class="{% if text_size_class contains 'xl' %}py-4{% else %}py-2{% endif %} marquee bg-{{ section_color }}-background text-{{ section_color }}-text overflow-hidden">
+  {%- if link != blank -%}
+  <a href="{{ link }}" class="text-{{ section_color }}-text hover:text-{{ section_color }}-accent">
+  {%- endif -%}
+  <div class="marquee-container inline-block whitespace-nowrap pl-100 font-{{ font }} {{ text_size_class }}">
+    {%- if repeat_text -%}
+      {% for i in (1..4) %}
+      <span {% if i > 1 %}aria-hidden="true"{% endif %}>{{ text }}</span>
+      {% endfor %}
+    {%- else -%}
+      <span>{{ text }}</span>
+    {%- endif -%}
+  </div>
+  {%- if link != blank -%}
+  </a>
+  {% endif %}
+</div>
+
+<style>
+@media (prefers-reduced-motion: no-preference) {
+  #marquee-{{ id }} .marquee-container {
+    animation: {{ speed }} {{ direction }};
+  }
+}
+  {% if bg_image != blank %}
+    #marquee-{{ id }}.marquee{
+      background-image: url({{ bg_image | img_url: '2000x' }});
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+  {% else %}
+    {% if color_gradient_left and color_gradient_right %}
+      #marquee-{{ id }}.marquee{
+        background: linear-gradient(45deg, {{ section.settings.color_gradient_left }} 0%, {{ section.settings.color_gradient_center }} 50%, {{ section.settings.color_gradient_right }} 100%);
+      }
+    {% endif %}
+  {% endif %}
+</style>

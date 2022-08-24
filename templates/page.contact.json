@@ -1,0 +1,79 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page-contact",
+      "blocks": {
+        "730dd865-0141-499c-a1a8-67709a77aebb": {
+          "type": "info",
+          "settings": {
+            "content": "<p><strong>CONTACT US<\/strong><\/p><p>604.262.4111<br\/>hello@aerskinlab.com<br\/>ig aerskinlab<\/p>"
+          }
+        },
+        "0a9ad256-ea8a-4aec-a23e-fb82b96a3e09": {
+          "type": "info",
+          "disabled": true,
+          "settings": {
+            "content": ""
+          }
+        },
+        "c641092f-eee9-4259-8fa5-898826d61b6c": {
+          "type": "info",
+          "settings": {
+            "content": "<p><strong>VISIT THE AE.R STUDIO<\/strong><\/p><p>1540 West 2nd Avenue # 207<br\/>Vancouver BC V6J 1H2<\/p><p>Mon - Sat 9am to 7pm<\/p>"
+          }
+        },
+        "e054d788-a73e-465c-b27f-9c8339534f50": {
+          "type": "info",
+          "settings": {
+            "content": ""
+          }
+        }
+      },
+      "block_order": [
+        "730dd865-0141-499c-a1a8-67709a77aebb",
+        "0a9ad256-ea8a-4aec-a23e-fb82b96a3e09",
+        "c641092f-eee9-4259-8fa5-898826d61b6c",
+        "e054d788-a73e-465c-b27f-9c8339534f50"
+      ],
+      "settings": {
+        "color_scheme": "primary",
+        "override_header_footer_color_scheme": false,
+        "button_style": "solid",
+        "cta_text": "FAQ",
+        "cta_link": "shopify:\/\/pages\/faqs",
+        "color_btn_text": "#ffffff",
+        "gradient_1": "#000000",
+        "gradient_2": "#000000",
+        "gradient_3": "#000000"
+      }
+    },
+    "16606559111e44f0ad": {
+      "type": "image-with-text-overlay",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/AER-626-RGB-LowRes-1800x800.png",
+        "image_mobile": "shopify:\/\/shop_images\/AER-626-RGB-LowRes-800x800.png",
+        "indent_image": false,
+        "height": "natural",
+        "image_focal_point": "object-center",
+        "title": "",
+        "heading_size": "text-2xl lg:text-5xl",
+        "text": "",
+        "content_position": "justify-center items-center text-center",
+        "content_width_desktop": "lg:w-2\/3",
+        "text_color": "primary",
+        "background_color": "primary",
+        "btn_inline": false,
+        "arrow_position": "right",
+        "cta_link": "",
+        "cta_text": "",
+        "cta_style": "link",
+        "cta_rounded": false,
+        "cta_gradient": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "16606559111e44f0ad"
+  ]
+}

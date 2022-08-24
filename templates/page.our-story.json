@@ -1,0 +1,162 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "content_width": "lg:w-full",
+        "content_position": "lg:justify-start",
+        "color_scheme": "primary",
+        "override_header_footer_color_scheme": false
+      }
+    },
+    "16414508049311dd11": {
+      "type": "image-with-text",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/AER-207-RGB-LowRes-800x800_aac59842-01df-487e-ab89-f412214d470f.jpg",
+        "image_position": "right",
+        "image_size": "half",
+        "indent_image": false,
+        "fill_image": false,
+        "hide_borders": false,
+        "background_color": "primary",
+        "title": "About",
+        "richtext": "<p>AE.R SKINLAB is Vancouver's premier medical aesthetics clinic located at 1540 West 2nd Avenue, Vancouver, BC at the iconic Waterfall Building. AE.R provides the latest and finest medical aesthetic technologies and techniques from Canada & South Korea.<\/p><p>Explore our AE.R SKIN product lineup featuring a comprehensive array of skincare products featuring a fusion of the finest ingredients from Canada & South Korea, formulated and manufactured in our beautiful city of Vancouver, BC.<\/p><p><\/p>",
+        "text_size": "text-base",
+        "font": "body",
+        "text_alignment": "text-left",
+        "text_position": "items-center",
+        "color_scheme": "primary",
+        "cta_link": "",
+        "cta_text": "",
+        "cta_style": "link",
+        "cta_rounded": false,
+        "cta_gradient": false
+      }
+    },
+    "1641451336ab0cc783": {
+      "type": "our-team",
+      "disabled": true,
+      "blocks": {
+        "16414513362ed776b8-0": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": true,
+            "image": "shopify:\/\/shop_images\/AER-068-RGB-LowRes-800x1200.jpg",
+            "title": "Fred Salari",
+            "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<\/p>",
+            "cta_link": "#",
+            "cta_text": "Read More",
+            "color_scheme": "secondary"
+          }
+        },
+        "16414513362ed776b8-1": {
+          "type": "column",
+          "settings": {
+            "show_image": true,
+            "reverse": true,
+            "image": "shopify:\/\/shop_images\/AER-887-RGB-LowRes-800x1200.jpg",
+            "title": "Michael Wong",
+            "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<\/p>",
+            "cta_link": "#",
+            "cta_text": "Read More",
+            "color_scheme": "secondary"
+          }
+        }
+      },
+      "block_order": [
+        "16414513362ed776b8-0",
+        "16414513362ed776b8-1"
+      ],
+      "settings": {
+        "title": "",
+        "crop": "0.8",
+        "text_alignment": "text-left",
+        "hide_borders": false,
+        "cta_style": "button",
+        "text_size_mobile": "text-sm"
+      }
+    },
+    "1641452106b4d2322f": {
+      "type": "image-with-text",
+      "disabled": true,
+      "settings": {
+        "image": "shopify:\/\/shop_images\/AER-144-RGB-LowRes-1200x800.jpg",
+        "image_position": "left",
+        "image_size": "half",
+        "indent_image": false,
+        "fill_image": false,
+        "hide_borders": false,
+        "background_color": "primary",
+        "title": "Latest news",
+        "richtext": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <br\/><\/p>",
+        "text_size": "text-base",
+        "font": "body",
+        "text_alignment": "text-left",
+        "text_position": "items-center",
+        "color_scheme": "primary",
+        "cta_link": "#",
+        "cta_text": "Our Journal",
+        "cta_style": "button",
+        "cta_rounded": true,
+        "cta_gradient": false
+      }
+    },
+    "16414525976a0d9e80": {
+      "type": "image-with-text",
+      "disabled": true,
+      "settings": {
+        "image": "shopify:\/\/shop_images\/AER-Staff-RGB-LowRes-1200x800.jpg",
+        "image_position": "right",
+        "image_size": "half",
+        "indent_image": false,
+        "fill_image": false,
+        "hide_borders": false,
+        "background_color": "primary",
+        "title": "People",
+        "richtext": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.<\/p>",
+        "text_size": "text-base",
+        "font": "body",
+        "text_alignment": "text-left",
+        "text_position": "items-center",
+        "color_scheme": "primary",
+        "cta_link": "shopify:\/\/pages\/our-team",
+        "cta_text": "Our Team",
+        "cta_style": "button",
+        "cta_rounded": true,
+        "cta_gradient": true
+      }
+    },
+    "1641453430336089db": {
+      "type": "image-with-text-overlay",
+      "settings": {
+        "image": "shopify:\/\/shop_images\/AER-793-RGB-LowRes-1800x800.jpg",
+        "indent_image": false,
+        "height": "natural",
+        "image_focal_point": "object-center",
+        "title": "Clean injections and high-tech facials <br> done in 30 minutes <br>",
+        "heading_size": "text-2xl lg:text-4xl",
+        "text": "",
+        "content_position": "justify-start items-end text-left",
+        "content_width_desktop": "lg:w-2\/3",
+        "text_color": "white",
+        "background_color": "primary",
+        "btn_inline": true,
+        "arrow_position": "right",
+        "cta_link": "#",
+        "cta_text": "Book Now",
+        "cta_style": "button",
+        "cta_rounded": true,
+        "cta_gradient": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "16414508049311dd11",
+    "1641451336ab0cc783",
+    "1641452106b4d2322f",
+    "16414525976a0d9e80",
+    "1641453430336089db"
+  ]
+}

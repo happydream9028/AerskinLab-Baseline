@@ -1,0 +1,24 @@
+{% liquid
+  assign show_view_all = false
+  if link_text != '' and link_url != '' and settings.section_title_align == 'left' and show_link
+    assign show_view_all = true
+  endif
+  assign heading_width_class = ''
+  if settings.section_title_align == 'left'
+    if settings.base_heading_size contains '2xl' and show_view_all == true
+      assign heading_width_class = 'lg:w-1/2'
+    endif
+  endif
+%}
+<div class="bg-{{ section_color }}-background text-{{ section_color }}-text section-x-padding py-theme {% if stacked %}h-full items-center justify-center {% else %}border-b-grid border-grid-color justify-between{% endif %} {% if settings.section_title_align == 'left' %}lg:flex items-end {% else %}text-center{% endif %}">
+  <h2 class="{% if settings.section_title_font == 'heading' %}font-heading{% else %}font-body{% endif %}{% if stacked %} lg:text-xl lg:transform lg:-rotate-90{% else %} text-xl{% endif %} {{ heading_width_class }} break-words">{{ title }}</h2>
+  {%- if show_view_all -%}
+  <div class="mt-4 lg:mt-0 {% if settings.section_title_align == 'left' %}lg:w-1/2 lg:text-right{% endif %}">
+    {%- render 'link-underline',
+      section_color: section_color,
+      text: link_text,
+      link: link_url,
+    -%}
+  </div>
+{%- endif -%}
+</div>

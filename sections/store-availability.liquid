@@ -1,0 +1,48 @@
+{%- assign pick_up_availabilities = product_variant.store_availabilities | where: 'pick_up_enabled', true -%}
+
+  <script type="application/json" data-availability-json>
+    {%- liquid
+      assign closest_location = pick_up_availabilities.first
+      assign pickup_text = 'store_availability.general.pick_up_unavailable_at_html' | t: location_name: closest_location.location.name
+      assign modal_text = 'store_availability.general.check_other_stores' | t
+
+      if closest_location.available
+        assign pickup_text = 'store_availability.general.pick_up_available_at_html' | t: location_name: closest_location.location.name
+
+        if pick_up_availabilities.size == 1
+          assign modal_text = 'store_availability.general.view_store_info' | t
+        else
+          assign modal_text = 'store_availability.general.check_other_stores' | t
+        endif
+      endif
+    -%}
+    {
+      "variant": {{ product_variant.id }}{% if pick_up_availabilities.size > 0 %},{% endif %}
+      {% if pick_up_availabilities.size > 0 %}
+        "availability": {
+          "closest_location": {
+            "available": {{ closest_location.available }},
+            "pickup_text": "{{ pickup_text }}",
+            "pickup_time": "{{ closest_location.pick_up_time }}",
+            "modal_text": "{{ modal_text }}"
+          },
+          "list": [
+            {% for availability in pick_up_availabilities %}
+              {%- if availability.available -%}
+                {%- capture text -%}{{ 'store_availability.general.pick_up_available' | t }}, {{ availability.pick_up_time | downcase }}{%- endcapture -%}
+              {%- else -%}
+                {%- capture text -%}{{ 'store_availability.general.pick_up_currently_unavailable' | t }}{%- endcapture -%}
+              {%- endif -%}
+              {
+                "available": {{ availability.available }},
+                "name": "{{ availability.location.name }}",
+                "text": "{{ text }}",
+                "address": "{{ availability.location.address | format_address }}",
+                "phone": "{{ availability.location.address.phone }}"
+              }{% unless forloop.last == true %},{% endunless %}
+            {% endfor %}
+          ]
+        }
+      {% endif %}
+    }
+  </script>

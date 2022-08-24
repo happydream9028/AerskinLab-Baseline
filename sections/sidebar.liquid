@@ -1,0 +1,284 @@
+{%- liquid
+  assign section_color = section.settings.color_scheme
+  assign show_borders = section.settings.show_borders
+  assign counter = 0
+-%}
+{%- capture accordion_transition -%}
+  x-cloak
+{%- endcapture -%}
+
+<section class="section-sidebar" x-data="ThemeSection_{{ section.id }}()" x-init="mounted()" data-section-id="{{ section.id }}" data-section-type="sidebar" x-cloak>
+  <noscript>
+    <div class="section-x-padding py-2 bg-{{ section_color }}-background text-{{ section_color }}-text text-right">
+      <button class="py-2 inline-flex items-center justify-center {% if settings.header_uppercase %}uppercase{% endif %}"
+        data-menu-drawer-toggle>
+      <span class="inline-block w-5 h-5 align-middle mr-2">{%- render 'icon-menu' -%}</span>
+      <span>{{ 'layout.navigation.menu' | t }}</span>
+      </button>
+    </div>
+  </noscript>
+  <div class="sidebar-container  z-60 fixed top-0 left-0 bottom-0 w-11/12 max-w-xl bg-{{ section_color }}-background text-{{ section_color }}-text border-r-grid border-grid-color transform transition-transform overflow-y-auto"
+    x-show="$store.drawer.menuDrawerOpen"
+    x-transition:enter="transition ease duration-300"
+    x-transition:enter-start="opacity-0 -translate-x-full"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition ease duration-300"
+    x-transition:leave-end="opacity-100 -translate-x-full"
+    @click.away.prevent="$store.drawer.menuDrawerOpen = false"
+    role="dialog"
+    aria-modal="true"
+    data-menu-drawer>
+    <div class="js-enabled top-0 relative flex items-center justify-end py-4 section-x-padding bg-{{ section_color }}-background {% unless show_borders %}border-b-grid border-grid-color{% endunless %}">
+      <button @click.prevent="$store.drawer.menuDrawerOpen = false" class="block w-5 h-5 top-0">
+        <span class="visually-hidden">{{ 'general.accessibility.close_modal' | t }}</span>
+        {% render 'icon-close' %}
+      </button>
+    </div>
+    <nav class="{% unless show_borders %}py-theme{% endunless %}" aria-label="Primary">
+      <ul>
+        {%- for link in linklists[section.settings.menu].links -%}
+          {%- capture link_class -%}inline-block py-4 w-full {{ section.settings.text_size }}{%- endcapture -%}
+          <li class="no-js-focus-wrapper section-x-padding {% if show_borders %}border-t-grid border-grid-color{% endif %}">
+            {%- if link.links != blank -%}
+              {%- capture child_link_class -%}inline-block py-1{%- endcapture -%}
+              <button data-accordion
+                      class="block relative w-full text-left  {{ link_class }} pr-10 transition ease font-body"
+                      x-bind:aria-expanded="accordionOpen.accordion{{ counter }}? true: 'false'"
+                      @click="accordionOpen.accordion{{ counter }} = !accordionOpen.accordion{{ counter }}"
+                      aria-controls="accordion{{ counter }}">
+                {{ link.title }}
+                <span class="absolute right-0 w-5 top-1/2 transform -translate-y-1/2 flex items-center">
+                  {%- if section.settings.icon == 'chevron' -%}
+                    <span class="inline-block transform transition origin-center" :class="{'rotate-180': accordionOpen.accordion{{ counter }}}">
+                      {%- render 'icon-chevron-down' -%}
+                    </span>
+                  {%- else -%}
+                    <span class="inline-block transform transition origin-center" x-show="!accordionOpen.accordion{{ counter }}">
+                      {%- render 'icon-plus' -%}
+                    </span>
+                    <span class="inline-block transform transition origin-center" x-show="accordionOpen.accordion{{ counter }}">
+                      {%- render 'icon-minus' -%}
+                    </span>
+                  {%- endif -%}
+                </span>
+              </button>
+              <ul id="accordion{{ counter }}"
+                  class="pb-2 pl-4 no-js-focus-container"
+                  x-show="accordionOpen.accordion{{ counter }}"
+                  {{ accordion_transition }}>
+                {%- assign counter = counter | plus: 1 -%}
+                {%- for child_link in link.links -%}
+                  <li class="no-js-focus-wrapper">
+                    {%- if child_link.links != blank -%}
+                      <button data-accordion
+                              class="relative w-full text-left {{ child_link_class }} pr-10"
+                              x-bind:aria-expanded="accordionOpen.accordion{{ counter }}? true: 'false'"
+                              @click="accordionOpen.accordion{{ counter }} = !accordionOpen.accordion{{ counter }}"
+                              aria-controls="accordion{{ counter }}">
+                            {{ child_link.title }}
+                        <span class="absolute w-5 h-5 right-0 top-1/2 transform -translate-y-1/2 flex items-center">
+                          {%- if section.settings.icon == 'chevron' -%}
+                            <span class="inline-block mr-1 transform transition origin-center" :class="{'rotate-180': accordionOpen.accordion{{ counter }}}">
+                              {%- render 'icon-chevron-down' -%}
+                            </span>
+                          {%- else -%}
+                            <span class="inline-block mr-1 transform transition origin-center" x-show="!accordionOpen.accordion{{ counter }}">
+                              {%- render 'icon-plus' -%}
+                            </span>
+                            <span class="inline-block mr-1 transform transition origin-center" x-show="accordionOpen.accordion{{ counter }}">
+                              {%- render 'icon-minus' -%}
+                            </span>
+                          {%- endif -%}
+                        </span>
+                      </button>
+                      <ul id="accordion{{ counter }}"
+                          class="pt-1 px-2 pb-2 no-js-focus-container"
+                          x-show="accordionOpen.accordion{{ counter }}"
+                          {{ accordion_transition }}>
+                      {%- assign counter = counter | plus: 1 -%}
+                        {%- for grandchild_link in child_link.links -%}
+                        <li>
+                          <a class="{{ child_link_class }}" href="{{ grandchild_link.url }}">
+                            {{ grandchild_link.title }}
+                          </a>
+                        </li>
+                      {%- endfor -%}
+                      </ul>
+                    {%- else -%}
+                      <a class="{{ child_link_class }}" href="{{ child_link.url }}">
+                        {{ child_link.title }}
+                      </a>
+                    {%- endif -%}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- else -%}
+              <a class="{{ link_class }}" href="{{ link.url }}">
+                {{ link.title }}
+              </a>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+    <div class="border-t-grid border-grid-color">
+      <nav class="my-6" aria-label="Secondary">
+        <ul>
+          {%- for link in linklists[section.settings.secondary_menu].links -%}
+            <li class="section-x-padding">
+              <a class="inline-block py-1" href="{{ link.url }}">
+                {{ link.title }}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+
+      {% if shop.customer_accounts_enabled %}
+        <ul class="section-x-padding space-y-1">
+          {% if customer %}
+            <li>
+              <a href="{{ routes.account_url }}">{{ 'layout.customer.account' | t }}</a>
+            </li>
+            <li>
+              {{ 'layout.customer.log_out' | t | customer_logout_link }}
+            </li>
+          {% else %}
+            <li>
+              {{ 'layout.customer.log_in' | t | customer_login_link }}
+            </li>
+            <li>
+              {{ 'layout.customer.create_account' | t | customer_register_link }}
+            </li>
+          {% endif %}
+        </ul>
+      {% endif %}
+
+      {%- if section.settings.show_search -%}
+        <form class="my-6 section-x-padding" action="{{ routes.search_url }}" method="get" role="search">
+          <div class="flex w-full max-w-xs items-end">
+            <label for="{{ section.id }}-search" class="visually-hidden">{{ 'general.search.placeholder' | t }}</label>
+            <input
+              class="min-w-0 flex-auto bg-transparent border-current border-b-text placeholder-current py-1.5"
+              id="{{ section.id }}-search"
+              type="text"
+              name="q"
+              placeholder="{{ 'general.search.placeholder' | t }}"
+            />
+            <button class="px-1"
+              type="submit">
+              <span class="inline-block w-5 h-5">{%- render 'icon-search' -%}</span>
+              <span class="visually-hidden">{{ 'general.search.submit' | t }}</span>
+            </button>
+          </div>
+        </form>
+      {%- endif -%}
+      {% if section.settings.show_social %}
+        {% assign social_style = settings.social_style %}
+        <div class="section-x-padding my-8">
+          {% render 'social-icons' with social_style: social_style, link_class: 'py-1', section_color: section_color %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<noscript>
+<style>
+  .section-sidebar {
+    display: block !important;
+  }
+  
+  @media (min-width: 1024px) {
+    .section-sidebar {
+      display: none!important;
+    }
+  }
+  
+  .sidebar-container {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    border-right: 0;
+    display: none;
+  }
+
+  .section-sidebar:focus-within .sidebar-container {
+    display: block !important;
+  }
+</style>
+</noscript>
+{% schema %}
+  {
+    "name": "Sidebar",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "menu",
+        "label": "Menu",
+        "default": "main-menu"
+      },
+      {
+        "type": "link_list",
+        "id": "secondary_menu",
+        "label": "Secondary menu"
+      },
+      {
+        "type": "select",
+        "id": "text_size",
+        "label": "Text size",
+        "options": [
+          { "value": "text-sm", "label": "S"},
+          { "value": "text-base", "label": "M"},
+          { "value": "text-lg", "label": "L"},
+          { "value": "text-xl", "label": "XL"},
+          { "value": "text-2xl", "label": "2XL"},
+          { "value": "text-2xl lg:text-3xl", "label": "2XL / desktop 3XL"},
+          { "value": "text-2xl lg:text-4xl", "label": "2XL / desktop 4XL"},
+          { "value": "text-2xl lg:text-5xl", "label": "2XL / desktop 5XL" }
+        ],
+        "info": "Applies to first level links only.",
+        "default":   "text-2xl"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_borders",
+        "label": "Show borders on main menu",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "icon",
+        "label": "Dropdown icon",
+        "options": [
+            { "value": "chevron", "label": "Chevron"},
+            { "value": "plus", "label": "Plus"}
+        ],
+        "info": "Applies to first level links only.",
+        "default": "chevron"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_search",
+        "label": "Show search bar",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_social",
+        "label": "Show social media"
+      },
+      {
+        "type": "select",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "options": [
+            { "value": "primary", "label": "Primary"},
+            { "value": "secondary", "label": "Secondary"},
+            { "value": "tertiary", "label": "Tertiary"}
+        ],
+        "default":   "primary"
+      }
+    ]
+  }
+{% endschema %}

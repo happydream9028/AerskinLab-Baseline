@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "hide_title": false,
+        "show_image": false,
+        "indent_image": false,
+        "crop": "1.3",
+        "image_size": "one-half",
+        "description_position": "under_title",
+        "description_color_scheme": "primary",
+        "grid": 2,
+        "rows": 4,
+        "grid_mobile": "1",
+        "enable_filtering": false,
+        "enable_sorting": false,
+        "linklist": "",
+        "capitalize_filters": false,
+        "color_scheme": "primary",
+        "override_header_footer_color_scheme": false
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

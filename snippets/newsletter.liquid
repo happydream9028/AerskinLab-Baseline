@@ -1,0 +1,59 @@
+<style>
+  {% if bg_image != blank %}
+    #newsletterFooter-{{ section.id }}{
+      background-image: url({{ bg_image | img_url: '2000x' }});
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+  {% else %}
+    {% if color_gradient_left and color_gradient_right %}
+      #newsletterFooter-{{ section.id }}{
+        background: linear-gradient(45deg, {{ section.settings.color_gradient_left }} 0%, {{ section.settings.color_gradient_center }} 50%, {{ section.settings.color_gradient_right }} 100%);
+      }
+    {% endif %}
+  {% endif %}
+</style>
+<section id="newsletterFooter-{{ section.id }}" class="py-theme bg-{{ section_color }}-background text-{{ section_color }}-text">
+  <div class="section-x-padding lg:flex justify-center lg:items-center lg:justify-between">
+    <div class=" {{ text_size_class }} {% if text_size_class contains 'xl' %}lg:w-1/2{% endif %}">
+      {% if section_title != blank %}
+        <h2 class="font-heading {{ settings.base_heading_size }}" for="Email">{{ section_title | escape }}</h2>
+      {% endif %}
+
+      {% if subheading != blank %}
+        <div class="{% if section_title != blank %}mt-2{% endif %}">{{ subheading }}</div>
+      {% endif %}
+    </div>
+
+    <div class="mt-theme-half lg:mt-0 {% if text_size_class contains 'xl' %}lg:w-1/2{% endif %}">
+      {% form 'customer' %}
+
+      {% if form.errors and template.suffix != 'contact' %}
+        {{ form.errors | default_errors }}
+      {% endif %}
+      
+      {% if form.posted_successfully? %}
+        <p class="lg:ml-theme-half">{{ 'general.newsletter_form.confirmation' | t }}</p>
+      {% else %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="lg:ml-4 lg:flex items-end">
+          <label class="visually-hidden" for="Email-{{ section.id }}">{{ 'general.newsletter_form.email_placeholder' | t }}</label>
+          <input type="email"
+            class="placeholder-current font-body border-b-text border-current w-full block bg-transparent pb-1"
+            name="contact[email]"
+            id="Email-{{ section.id }}"
+            value="{% if customer.email != blank %}{{ customer.email }}{% endif %}"
+            placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
+            autocorrect="off"
+            autocapitalize="off">
+
+          <button class="mt-2 lg:mt-0 lg:ml-2 pb-1 font-body font-bold align-top inline-flex items-center justify-center hover:text-{{ section_color }}-accent {% if settings.links_show_underline %}border-b-text border-{{ section_color }}-text  hover:border-{{ section_color }}-accent pb-1{% endif %}" type="submit" name="commit" id="Subscribe">
+            <span class="{% if settings.links_uppercase %}uppercase{% endif %} whitespace-nowrap">{{ 'general.newsletter_form.submit' | t }}{% if settings.links_show_arrow %}&nbsp;&rarr;{% endif %}</span>
+          </button>
+        </div>
+      {% endif %}
+    {% endform %}
+    </div>
+  </div>
+</section>

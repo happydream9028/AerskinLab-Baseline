@@ -1,0 +1,187 @@
+<section class="image-columns-with-text">
+
+  {% if section.settings.heading != '' %}
+  <h2 class="{% if settings.section_title_font == 'heading' %}font-heading{% else %}font-body{% endif %} {{ section.settings.section_heading_size }} {{ heading_width_class }} break-words lg:pl-16 pl-4 pt-8 pb-8">{{ section.settings.heading }}</h2>
+  {% endif %}
+
+  <div class="flex flex-wrap">
+    {% for block in section.blocks %}
+
+    {%- liquid
+				assign heading_size_class = block.settings.heading_size
+				assign content_position = block.settings.content_position
+				assign text_color = block.settings.text_color
+				assign title = block.settings.title 
+				assign text = block.settings.text 
+				assign cta_link = block.settings.cta_link 
+				assign cta_text  = block.settings.cta_text
+				assign image_class = "object-cover object-center"
+			-%}
+
+    <div class="relative w-1/2 border-bottom border-right border-white slide-dispatcher wm-full">
+      {% if block.settings.image != blank %}
+      {% render 'responsive-image' with
+						image: block.settings.image,
+      image_columns: true,
+      image_class: image_class
+      %}
+      {% else %}
+      <div class="bg-placeholder-bg p-8 text-placeholder">
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg w-full h-full text-text fill-current' }}
+      </div>
+      {% endif %}
+
+      <div class="absolute top-0 left-0 right-0 bottom-0 z-10 section-x-padding py-theme">
+        <div class="w-full h-full  flex {{ content_position }}">
+          <div class="text-{{ text_color }}-text">
+            {% if title != blank %}
+            <h2 class="font-heading {{ heading_size_class }} break-words">{{ title }}</h2>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="absolute left-0 right-0 bottom-0 z-10 w-full flex border-top border-white slide-up">
+        {% if text != blank %}
+          <div class="pxm-4 pym-4 p-4 px-8 w-1/2 border-right border-white wm-3/4">
+            <div class="text-{{ text_color }}-text">
+              <div class="rte text-sm lg:max-w-ss">
+                {{ text }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+        {% if cta_link != blank and cta_text != '' %}
+        <a href="{{ cta_link }}" class="w-1/2">
+          <div class="p-4 pl-4 px-8 flex align-center lg:pl-16{% if text != blank %} border-right border-white{% endif %}">
+            <span class="lg:textm-sm hover:text-{{ section_color }}-accent flex text-{{ text_color }}-text text-xl items-center">
+              <span class="{% if settings.links_uppercase %}uppercase{% endif %} inline-flex items-center">{{ cta_text }} {% if settings.links_show_arrow %}<span class="arrow-right-long inline-flex">{% render 'icon-arrow-right-long' %}</span>{% endif %}</span>
+            </span>
+          </div>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Image columns with text",
+    "settings": [
+      {
+        "id": "heading",
+        "type": "text",
+        "label": "Heading"
+      },
+      {
+        "type": "select",
+        "id": "section_heading_size",
+        "label": "Section Heading size",
+        "options": [
+          { "value": "text-sm", "label": "S"},
+          { "value": "text-base", "label": "M"},
+          { "value": "text-lg", "label": "L"},
+          { "value": "text-xl", "label": "XL"},
+          { "value": "text-2xl", "label": "2XL"},
+          { "value": "text-2xl lg:text-3xl", "label": "2XL / desktop 3XL"},
+          { "value": "text-2xl lg:text-4xl", "label": "2XL / desktop 4XL"},
+          { "value": "text-2xl lg:text-5xl", "label": "2XL / desktop 5XL" },
+          { "value": "text-2xl lg:text-6xl", "label": "2XL / desktop 6XL" },
+          { "value": "text-2xl lg:text-7xl", "label": "2XL / desktop 7XL" }
+        ],
+        "default":   "text-lg"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image-column",
+        "name": "Image column",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "header",
+            "content": "Content"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading"
+          },
+          {
+            "type": "select",
+            "id": "heading_size",
+            "label": "Heading size",
+            "options": [
+              { "value": "text-sm", "label": "S"},
+              { "value": "text-base", "label": "M"},
+              { "value": "text-lg", "label": "L"},
+              { "value": "text-xl", "label": "XL"},
+              { "value": "text-2xl", "label": "2XL"},
+              { "value": "text-2xl lg:text-3xl", "label": "2XL / desktop 3XL"},
+              { "value": "text-2xl lg:text-4xl", "label": "2XL / desktop 4XL"},
+              { "value": "text-2xl lg:text-5xl", "label": "2XL / desktop 5XL" },
+              { "value": "text-2xl lg:text-6xl", "label": "2XL / desktop 6XL" },
+              { "value": "text-2xl lg:text-7xl", "label": "2XL / desktop 7XL" }
+            ],
+            "default":   "text-2xl lg:text-5xl"
+          },
+          {
+            "type": "select",
+            "id": "content_position",
+            "label": "Content position",
+            "options": [
+              { "value": "justify-start items-start text-left", "label": "Top left"},
+              { "value": "justify-center items-start text-center", "label": "Top center"},
+              { "value": "justify-end items-start text-right", "label": "Top right"},
+              { "value": "justify-start items-center text-left", "label": "Left"},
+              { "value": "justify-center items-center text-center", "label": "Center"},
+              { "value": "justify-end items-center text-right", "label": "Right"},
+              { "value": "justify-start items-end text-left", "label": "Bottom left"},
+              { "value": "justify-center items-end text-center", "label": "Bottom center"},
+              { "value": "justify-end items-end text-right", "label": "Bottom right"}
+            ],
+            "default":   "justify-center items-center text-center"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text"
+          },
+          {
+            "type": "select",
+            "id": "text_color",
+            "label": "Text color",
+            "options": [
+              { "value": "primary", "label": "Primary"},
+              { "value": "secondary", "label": "Secondary"},
+              { "value": "tertiary", "label": "Tertiary"},
+              { "value": "white", "label": "White"},
+              { "value": "black", "label": "Black"}
+            ],
+            "default":   "primary"
+          },
+          {
+            "type": "url",
+            "id": "cta_link",
+            "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "cta_text",
+            "label": "Button Text",
+            "default": "Learn More"
+          }
+        ]
+      }
+    ],
+    "presets": [{
+      "name": "Image columns with text"
+    }]
+  }
+{% endschema %}

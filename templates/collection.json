@@ -1,0 +1,66 @@
+{
+  "sections": {
+    "16397663936ee04870": {
+      "type": "marquee",
+      "settings": {
+        "text": "Free shipping on all orders over $100",
+        "repeat_text": false,
+        "link": "",
+        "text_size": "text-lg",
+        "font": "heading",
+        "speed": 300,
+        "direction": "",
+        "color_scheme": "primary",
+        "image": "shopify:\/\/shop_images\/AeRSkinLab-ColourBar-Animation_835597d9-53d4-47bb-8f92-bca7d5fa6940.gif",
+        "color_gradient_left": "#dce7ff",
+        "color_gradient_center": "#ebefdd",
+        "color_gradient_right": "#e3d9f2"
+      }
+    },
+    "main": {
+      "type": "main-collection",
+      "blocks": {
+        "a4c5dbb7-8fda-44f9-84ad-35859602d38a": {
+          "type": "marquee",
+          "disabled": true,
+          "settings": {
+            "position": "top",
+            "text": "Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.",
+            "repeat_text": true,
+            "link": "",
+            "text_size": "text-base",
+            "font": "body",
+            "speed": 200,
+            "direction": "",
+            "color_scheme": "secondary"
+          }
+        }
+      },
+      "block_order": [
+        "a4c5dbb7-8fda-44f9-84ad-35859602d38a"
+      ],
+      "settings": {
+        "hide_title": false,
+        "show_image": false,
+        "indent_image": false,
+        "crop": "1",
+        "image_size": "one-half",
+        "description_position": "under_title",
+        "description_color_scheme": "primary",
+        "grid": 3,
+        "rows": 4,
+        "grid_mobile": "1",
+        "enable_filtering": true,
+        "enable_sorting": true,
+        "linklist": "collection-menu",
+        "capitalize_filters": true,
+        "color_scheme": "primary",
+        "override_header_footer_color_scheme": false
+      }
+    }
+  },
+  "order": [
+    "16397663936ee04870",
+    "main"
+  ]
+}

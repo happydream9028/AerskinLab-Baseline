@@ -1,0 +1,64 @@
+<div class="product-media-height {% unless settings.fill_image_to_border_edge %}p-2 lg:p-0{% else %}w-full{% endunless %}">
+  <div class="product-media-object w-full relative"
+        data-media-id="{{ media.id }}"
+        data-product-single-media-wrapper
+        {% if media.media_type == 'image' %}
+        data-product-media-type-image data-product-image-index="{{ image_index }}"
+        {% if section.settings.enable_image_zoom %}
+          @click.prevent="openZoom({{ image_index }})" @keyup.enter.prevent="openZoom({{ image_index }})" tabindex="0" role="button"
+        {% endif %}
+        {% endif %}
+        {% if media.media_type == 'video' or media.media_type == 'external_video' %} role="figure" data-product-media-type-video data-enable-video-looping="{{ enable_video_looping }}"{% endif %}
+        {% if media.media_type == 'model' %} data-product-media-type-model{% endif %}
+        {% if media.media_type == 'external_video' %} data-video-id="{{ media.external_id }}"{% endif %}>
+    {% case media.media_type %}
+      {% when 'image' %}
+        {% render 'responsive-image' with
+          image: media.image
+          image_attributes: "data-product-featured-image",
+          wrapper_attributes: "data-product-image-wrapper"
+        %}
+        {% assign image_index = image_index | plus: 1 %}
+      {% when 'external_video' or 'video' %}
+        {%- assign featured_video = media -%}
+        <div x-data='ThemeComponent_Video("productFeaturedVideo-{{ section.id }}", {{ featured_video.media_type | json }}, {{ featured_video.host | json }}, {{ section.settings.autoplay_videos_on_desktop | json }})' x-init="mounted()">
+          <div x-ref="video_container" class="relative" style="padding-top: {{ 1 | divided_by: featured_video.aspect_ratio | times: 100 }}%">
+            <template x-if="!enabled">
+              <button  @click="enableVideo()" class="absolute top-0 left-0 right-0 bottom-0 h-full w-full" type="button">
+                <span
+                  class="z-40 absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 rounded-full w-14 h-14 lg:w-18 lg:h-18 bg-{{ section_color }}-background text-{{ section_color }}-background-overlay  flex items-center justify-center hover:bg-{{ section_color }}-accent hover:text-{{ section_color }}-accent-overlay transition-opacity"
+                >
+                  <span class="w-8 h-8 inline-block" >{% render 'icon-play' %}</span>
+                </span>
+                {% render 'image-object' with
+                  image: featured_video.preview_image
+                %}
+              </button>
+            </template>
+            <template x-if="enabled">
+              {%- liquid
+                assign video_class = 'video absolute top-0 left-0 right-0 bottom-0 h-full w-full js-'
+                case featured_video.media_type
+                when 'external_video'
+                  assign video_class = video_class | append: featured_video.host
+                  if featured_video.host == 'youtube'
+                    echo featured_video | external_video_url: enablejsapi: 1, autoplay: true, loop: enable_video_looping, playlist: featured_video.external_id | external_video_tag: class: video_class, loading: "lazy"
+                  else
+                    echo featured_video | external_video_url: autoplay: true, loop: enable_video_looping | external_video_tag: class: video_class, loading: "lazy"
+                  endif
+                when 'video'
+                  echo featured_video | media_tag: image_size: "2048x", autoplay: true, loop: enable_video_looping, controls: true, preload: "none", autoplay: true, class: video_class, muted: false
+                endcase
+              -%}
+            </template>
+          </div>
+        </div>
+      {% when 'model' %}
+        <div class="relative w-full" style="padding-top: 100%">
+          <div class="absolute top-0 left-0 w-full h-full">
+            {{ media | model_viewer_tag: image_size: '1000x', reveal: 'interaction', toggleable: true, data-model-id: media.id, image_size: '300x300' }}
+          </div>
+        </div>
+    {% endcase %}
+  </div>
+</div>

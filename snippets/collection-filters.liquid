@@ -1,0 +1,141 @@
+<div class="relative flex justify-between items-center py-theme-half section-x-padding border-b-grid border-grid-color">
+  <form id="CollectionFiltersForm"  class="md:flex flex-wrap" @submit.prevent="filterFormSubmit">
+
+    <div class="mt-theme mr-16">
+      <a href="{{ collection.url }}" class="hover:text-{{ section_color }}-accent">{{ 'collections.filters.clear' | t }}</a>
+      {% comment %}
+        {%- for filter in collection.filters -%}
+          {% if filter.type == "price_range"  %}
+            {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+              <a class="active-filters__remove-filter" href="{{ filter.url_to_remove }}">
+                {%- assign min_value = filter.min_value.value | default: 0 -%}
+                {%- assign max_value = filter.max_value.value | default: filter.range_max -%}
+                {{ min_value | money }} - {{ max_value | money }} X
+              </a>
+            {%- endif -%}
+          {% else %}
+            <ul class="mt-2 space-y-1">
+              <li class="flex justify-start items-center">
+                {%- for filter_value in filter.active_values -%}
+                  <a class="active-filters__remove-filter" href="{{ filter_value.url_to_remove }}">
+                    {{ filter_value.label }} X
+                  </a>
+                {%- endfor -%}
+              </li>
+            </ul>
+          {% endif %}
+        {%- endfor -%}
+      {% endcomment %}
+    </div>
+
+    {%- for filter in collection.filters -%}
+    <div class="js-filter mt-theme mr-16" data-index="{{ forloop.index }}">
+      <h3 class="font-heading">{{ filter.label }} {%- if filter.active_values.size > 0 -%}<span>({{ filter.active_values.size }})</span>{%- endif -%}</h3>
+      {%- case filter.type -%}
+        {%- when 'list' -%}
+        <ul class="mt-2 space-y-1">
+          {%- for filter_value in filter.values -%}
+            <li class="flex justify-start items-center"">
+              <input type="checkbox"
+                class="visually-hidden filter-checkbox"
+                name="{{ filter_value.param_name }}"
+                value="{{ filter_value.value }}"
+                @input.debounce="filterFormSubmit"
+                id="Filter-{{ filter.label }}-{{ forloop.index }}"
+                {% if filter_value.active -%}checked{%- endif %}
+                {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
+              >
+              <label for="Filter-{{ filter.label }}-{{ forloop.index }}" class="cursor-pointer capitalize flex items-center hover:text-{{ section_color }}-accent {% if filter_value.count == 0 and filter_value.active == false -%}text-{{ section_color }}-meta line-through{%- endif %}" {% if filter_value.count == 0 and filter_value.active == false -%}disabled{% endif %}>
+                <span class="w-2 h-2 mr-1 inline-block rounded-full border-checkbox border-current"></span>
+                {{ filter_value.label }}
+              </label>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <noscript>
+          <div class="mt-4">
+            <input class="cursor-pointer px-8 py-2 {% render 'button-style', section_color: section_color %}  {% render 'button-color', section_color: section_color %}" type="submit" value="Apply">
+          </div>
+        </noscript>
+      {%- endcase -%}
+    </div>
+    {%- endfor -%}
+
+    {%- for filter in collection.filters -%}
+      <div class="mt-theme mr-16 hidden">
+
+        <div class="filter-group-display">
+          <div class="filter-group-display__header">
+            <span class="filter-group-display__header-selected">{{ filter.active_values.size }} selected</span>
+
+            {%- if filter.active_values.size > 0 -%}
+              <a href="{{ filter.url_to_remove }}" class="filter-group-display__header-reset">Reset</span>
+            {%- endif -%}
+          </div>
+
+          {%- case filter.type -%}
+            {%- when 'list' -%}
+              <ul class="filter-group-display__list">
+                {%- for filter_value in filter.values -%}
+                  <li class="filter-group-display__list-item flex items-center justify-start">
+                    <input type="checkbox"
+                      name="{{ filter_value.param_name }}"
+                      value="{{ filter_value.value }}"
+                      id="Filter-{{ filter.label }}-{{ forloop.index }}"
+                      {% if filter_value.active -%}checked{%- endif %}
+                      {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
+                    >
+                      {{ filter_value.label }}
+                  </li>
+                {%- endfor -%}
+              </ul>
+
+              <div class="filter-group-display__submit">
+                <input type="submit" value="Apply">
+              </div>
+            {%- when 'price_range' -%}
+              <div class="filter-group-display__price-range">
+                <div class="filter-group-display__price-range-from">
+                  <span>{{ cart.currency.symbol }}</span>
+
+                  <input name="{{ filter.min_value.param_name }}"
+                    id="Filter-{{ filter.label }}-{{ forloop.index }}"
+                    {% if filter.min_value.value -%}
+                      value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                    {%- endif %}
+                    type="number"
+                    placeholder="0"
+                    min="0"
+                    max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                  >
+
+                  <label for="Filter-{{ filter.label }}-{{ forloop.index }}">From</label>
+                </div>
+                <div class="filter-group-display__price-range-to">
+                  <span>{{ cart.currency.symbol }}</span>
+
+                  <input name="{{ filter.max_value.param_name }}"
+                    id="Filter-{{ filter.label }}-{{ forloop.index }}"
+                    {% if filter.max_value.value -%}
+                      value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                    {%- endif %}
+                    type="number"
+                    placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                    min="0"
+                    max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                  >
+
+                  <label for="Filter-{{ filter.label }}-{{ forloop.index }}">To</label>
+                </div>
+              </div>
+
+              <div class="filter-group-display__submit">
+                <input type="submit" value="Apply">
+              </div>
+          {%- endcase -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  
+  </form>
+</div>

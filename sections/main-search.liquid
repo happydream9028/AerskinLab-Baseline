@@ -1,0 +1,142 @@
+{% paginate search.results by 12 %}
+<div class="bg-primary-background text-primary-text">
+
+  <div class="grid lg:grid-cols-12 bg-border gap-gutter">
+
+    <div class="lg:col-span-12 section-x-padding pt-theme-double pb-theme bg-primary-background text-primary-text">
+      <h1 class="font-heading {{ settings.base_heading_size }} {% if settings.section_title_align == 'center' %}text-center{% endif %}">
+        {% if search.performed %}
+          <span class="visually-hidden">{{ 'general.search.heading' | t: count: search.results_count }}:</span>
+            {{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+        {% else %}
+          {{ 'general.search.title' | t }}
+        {% endif %}
+      </h1>
+    </div>
+
+    <div class="lg:col-span-12 section-x-padding py-2 bg-primary-background text-primary-text">
+      <form action="{{ routes.search_url }}" method="get" class="input-group search" role="search">
+        <label for="search" class="hidden">{{ 'general.search.placeholder' | t }}</label>
+        <div class="flex items-center justify-between">
+          <button class="py-2 mr-4"
+            type="submit">
+            <span class="inline-block w-5 h-5">{%- render 'icon-search' -%}</span>
+            <span class="visually-hidden">{{ 'general.search.submit' | t }}</span>
+          </button>
+          <input autofocus id="search" type="text" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" class="placeholder-current font-body w-full block bg-transparent pb-1" aria-label="{{ 'general.search.placeholder' | t }}" data-search-input>
+        </div>
+      </form>
+    </div>
+
+    {% if search.performed %}
+      {% if search.results_count == 0 %}
+      <div class="lg:col-span-12 section-x-padding py-theme bg-primary-background text-primary-text">
+        <p>{{ 'general.search.no_results' | t }}</p>
+      </div>
+      {% else %}
+        {% assign article_results = false %}
+        {% assign page_results = false %}
+        {% for item in search.results %}
+          {% if item.object_type == 'article' %}
+            {% assign article_results = true %}
+          {% endif %}
+          {% if item.object_type == 'page' %}
+            {% assign page_results = true %}
+          {% endif %}
+        {% endfor %}
+
+        <div class="{% if article_results or page_results %}lg:col-span-9{% else %}lg:col-span-12{% endif %} bg-primary-background text-primary-text">
+          <h2 class="visually-hidden">{{ 'general.search.heading' | t: count: search.results_count }}</h2>
+          <ul class="grid grid-cols-1 lg:grid-cols-3 gap-gutter bg-border">
+            {% assign counter = 0 %}
+            {% for item in search.results %}
+              {% if item.object_type == 'product' %}
+                {%- assign counter = counter | plus: 1 -%}
+                <li class="bg-primary-background text-primary-text">
+                  {% assign product = item %}
+                  {%- render 'product-grid-item',
+                      product: product,
+                      section_color: 'primary',
+                      products_per_row: 3,
+                      products_per_row_mobile: 1,
+                      responsive_image_counter: forloop.index
+                  -%}
+                </li>
+              {% endif %}
+            {% endfor %}
+            {%- assign items_on_last_row = counter | modulo: 3 -%}
+            {%- assign placeholder_width = 3 | minus: items_on_last_row -%}
+            {%- if items_on_last_row != 0 -%}
+              <li class="none absolute lg:static lg:block lg:col-span-{{ placeholder_width }} bg-primary-background" aria-hidden="true" role="presentation"></li>
+            {%- endif -%}
+          </ul>
+        </div>
+        {% if article_results or page_results %}
+          <div class="lg:col-span-3 bg-primary-background text-primary-text">
+            {% if article_results %}
+            <div class="section-x-padding pt-theme-double pb-theme bg-primary-background text-primary-text border-b-grid border-grid-color">
+              <h2 class="font-heading text-lg">Articles</h2>
+            </div>
+            <div class="relative grid grid-cols-1 gap-gutter bg-border {% if page_results %}border-b-grid border-grid-color{% endif %}">
+              {% for item in search.results %}
+                {% if item.object_type == 'article' %}
+                {% assign article = item %}
+                <div class="relative section-x-padding py-theme bg-primary-background text-primary-text flex justify-star items-center">
+                  {%- if article.image != blank -%}
+                  <div class="w-16 mr-4">
+                    {% render 'image-crop' with
+                      image: article.image,
+                      ratio: 1
+                    %}
+                  </div>
+                  {%- endif -%}
+                  <div>
+                    <a href="{{ article.url }}" class="increase-target font-heading">{{ article.title }}</a>
+                    <p class="mt-2">
+                      {{ article.published_at | time_tag: format: 'month_day_year' }}
+                    </p>
+                  </div>
+                </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            {% endif %}
+            {% if page_results %}
+            <div class="section-x-padding pt-theme-double pb-theme bg-primary-background text-primary-text border-b-grid border-grid-color">
+              <h2 class="font-heading text-lg">Pages</h2>
+            </div>
+            <div class="grid grid-cols-1 gap-gutter bg-border">
+              {% for item in search.results %}
+                {% if item.object_type == 'page' %}
+                {% assign page = item %}
+                <div class="relative section-x-padding py-theme bg-primary-background text-primary-text flex justify-star items-center">
+                  <div>
+                    <a href="{{ page.url }}" class="increase-target font-heading">{{ page.title }}</a>
+                    <p class="mt-2">
+                      {{ page.content | strip_html | truncate: 100 }}
+                    </p>
+                  </div>
+                </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+
+  </div>
+
+  {% if paginate.pages > 1 %}
+    {% render 'pagination' with paginate: paginate, section_color: 'primary' %}
+  {% endif %}
+
+</div>
+{% endpaginate %}
+
+{% schema %}
+  {
+    "name": "Search results"
+  }
+{% endschema %}

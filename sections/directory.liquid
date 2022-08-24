@@ -1,0 +1,92 @@
+{%- liquid
+  assign section_color = section.settings.color_scheme 
+  assign menu = section.settings.menu 
+  assign text_align = section.settings.text_alignment
+  assign grid_cols = 12
+  assign divisible_by_five =  linklists[menu].links.size | modulo: 5 
+  assign divisible_by_four =  linklists[menu].links.size | modulo: 4 
+  assign divisible_by_three =  linklists[menu].links.size | modulo: 3 
+  assign divisible_by_two =  linklists[menu].links.size | modulo: 2 
+
+  if divisible_by_five == 0
+    assign grid_cols = 10
+    assign col_span = 'lg:col-span-2'
+  elsif divisible_by_four == 0
+    assign col_span = 'lg:col-span-3'
+  elsif divisible_by_three == 0
+    assign col_span = 'lg:col-span-4'
+    elsif divisible_by_two == 0
+    assign col_span = 'lg:col-span-6'
+  else
+    assign col_span = 'lg:col-span-full'
+  endif
+
+  assign desktop_grid_class = 'lg:grid-cols-' | append: grid_cols
+-%}
+
+<section class="directory bg-{{ section_color }}-background text-{{ section_color }}-text  border-t-grid border-grid-color">
+  <nav class="grid gap-gutter {{ desktop_grid_class }} bg-border" role="navigation" aria-label="{{ linklists[menu].title }}">
+    {% for link in linklists[menu].links %}
+    <div class="{{ col_span }} section-x-padding py-theme bg-{{ section_color }}-background text-{{ section_color }}-text {{ text_align }}">
+      <h2 class="font-heading {{ settings.secondary_heading_size }}"><a href="{{ link.url }}">{{ link.title }}</a></h2>
+      {% if link.links != blank %}
+        <ul class="mt-4 space-y-1 text-base">
+          {% for link in link.links %}
+            <li>
+              <a {% if link.active %}aria-current="page"{% endif %} href="{{ link.url }}" class="hover:text-{{ section_color }}-accent">
+                {{ link.title }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+    {% endif %}
+    </div>
+    {% endfor %}
+  </nav>
+</section>
+
+{% schema %}
+  {
+    "name": "Directory",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "menu",
+        "label": "Menu",
+        "default": "main-menu",
+        "info": "This menu has limited support for dropdown items"
+      },
+      {
+        "type": "select",
+        "id": "text_alignment",
+        "label": "Text alignment",
+        "options": [
+          { "value": "text-left", "label": "Left"},
+          { "value": "text-center", "label": "Center"},
+          { "value": "text-right", "label": "Right"}
+        ],
+        "default":   "text-center"
+      },
+      {
+        "type":      "header",
+        "content":   "Color"
+      },
+      {
+        "type": "select",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "options": [
+            { "value": "primary", "label": "Primary"},
+            { "value": "secondary", "label": "Secondary"},
+            { "value": "tertiary", "label": "Tertiary"}
+        ],
+        "default":   "primary"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Directory"
+      }
+    ]
+  }
+{% endschema %}
