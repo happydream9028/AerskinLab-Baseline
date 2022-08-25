@@ -1,33 +1,67 @@
-<section class="quote-gallery">
+<section class="press-gallery">
   
-  <div class="container-slider">
-  	<div class="quote-text fade-quote" style="display: none;">
-      {% for block in section.blocks %}
-        <h2>{{ block.settings.title }}</h2>
-      {% endfor %}
+  <div class="container-slider flex items-center justify-center">
+    {% for block in section.blocks %}
+      <div class="{% unless forloop.index == 1 %}hidden{% endunless %} text-center">
+        <h2 class="text-2xl">{{ block.settings.title }}</h2>
     </div>
+    {% endfor %}
   </div>
   
-  <div class="navigation-logos">
+  <div class="container-press grid lg:grid-cols-{{ section.blocks.size }} gap-gutter bg-border border-t-grid border-b-grid border-grid-color">
     {% for block in section.blocks %}
-  	<div class="quote-image dot" onclick="currentSlide({{ forloop.index }})">
-      {%- assign image = block.settings.image -%}
-      {% render 'image-crop' with
+  	<div class="{% if forloop.index == 1 %} bg-primary-accent{% else %} bg-primary-background{% endif %} m-auto p-4 w-full cursor-pointer" onclick="currentSlide({{ forloop.index }})">
+      {%- assign image = block.settings.logo -%}
+      {% comment %} {% render 'image-crop' with
         image: image,
         ratio: 0
-      %}      
+      %}       {% endcomment %}
+      <img class="lazyloaded m-auto" loading="lazy" src="{{ image | img_url: 'master'}}" style="max-height: 75px;">
     </div>
+    {% endfor %}
   </div>
 
 </section>
 
+<script type="text/javascript">
+  const intervalID = setInterval(titleSlider, 4000);
+  let index = 0, slides = document.querySelectorAll('.container-slider > div'), press = document.querySelectorAll('.container-press > div');
+
+  function titleSlider() {
+    slides[index % 3].classList.add('hidden');
+    slides[(index + 1) % 3].classList.remove('hidden');
+
+    press[index % 3].classList.remove('bg-primary-accent');
+    press[index % 3].classList.add('bg-primary-background');
+    press[(index + 1) % 3].classList.remove('bg-primary-background');
+    press[(index + 1) % 3].classList.add('bg-primary-accent');
+
+    index ++;
+  }
+
+  function currentSlide(curIndex) {
+    slides.forEach((el) => {
+      el.classList.add('hidden');
+    });
+    slides[curIndex - 1].classList.remove('hidden');
+
+    press.forEach((el) => {
+      el.classList.remove('bg-primary-accent');
+      el.classList.add('bg-primary-background');
+    });
+    press[curIndex - 1].classList.remove('bg-primary-background');
+    press[curIndex - 1].classList.add('bg-primary-accent');
+
+    index = curIndex + 1;
+  }
+</script>
+
 {% schema %}
   {
-    "name": "Text columns",
+    "name": "Press",
     "settings": [
-
     ],
-    "block": [
+    "blocks": [
       {
         "type": "press",
         "name": "Press",
@@ -46,7 +80,7 @@
       }
     ],
     "presets": [{
-      "name": "Text columns"
+      "name": "Press"
     }]
   }
-  {% endschema %}
+{% endschema %}

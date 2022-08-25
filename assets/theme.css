@@ -4876,3 +4876,11 @@ svg {
 .kl-private-quill-wrapper-Lkqws1.kl-private-quill-wrapper-Lkqws1.kl-private-quill-wrapper-Lkqws1 .ql-font-apercu-mono-pro{
   line-height: 23px !important;
 }
+
+.press-gallery .container-slider {
+  height: 180px;
+}
+
+.quote-active {
+  background-color: var(--color-header-accent);
+}
