@@ -1,0 +1,38 @@
+{%- assign modifier = modifier | default: '' -%}
+
+<div class="compare {{ modifier }}" data-images-holder data-start-position="50%" data-aos="img-in" data-aos-anchor="{{ animation_anchor }}" data-aos-duration="800" data-aos-easing="ease-out-quart">
+  <div class="compare__image">
+    <div class="compare__image__holder">
+      {% render 'responsive-image' with image: section.settings.before_image %}
+    </div>
+  </div>
+  
+  <div class="compare__image" data-image-holder>
+    <div class="compare__image__holder" data-image-element>
+      {% render 'responsive-image' with image: section.settings.after_image %}
+    </div>
+  </div>
+
+  <input type="range" min="0" max="100" value="50" class="absolute appearance-none w-full h-full m-0 left-0 top-0 z-10 opacity-0 cursor-move" name='slider' id="compare_slider">
+  <div class="compare__btn top-1/2 absolute" data-compare-btn></div>
+</div>
+
+<script type="text/javascript">
+  const compareHolder = document.querySelector('[data-images-holder]'), 
+        secondHolderInner = document.querySelector('[data-image-element]'), 
+        handleHolder = document.querySelector('#compare_slider'),
+        secondHolder = document.querySelector('[data-image-holder]'),
+        compareBtn = document.querySelector('[data-compare-btn]');
+  secondHolderInner.style.width = `${ compareHolder.offsetWidth }px`;
+  secondHolder.style.width = `${ 100 - handleHolder.value }%`;
+  compareBtn.style.left = `calc(${ handleHolder.value }% - 25px)`;
+
+  handleHolder.addEventListener('input', (e) => {
+    secondHolder.style.width = `${ 100 - e.target.value }%`;
+    compareBtn.style.left = `calc(${ e.target.value }% - 25px)`;
+  });
+
+  window.onresize = () => {
+    secondHolderInner.style.width = `${ compareHolder.offsetWidth }px`;
+  }
+</script>

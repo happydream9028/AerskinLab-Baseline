@@ -668,6 +668,10 @@
   cursor: pointer;
 }
 
+.cursor-move{
+  cursor: move;
+}
+
 .cursor-wait{
   cursor: wait;
 }
@@ -4881,6 +4885,60 @@ svg {
   height: 180px;
 }
 
-.quote-active {
-  background-color: var(--color-header-accent);
+.compare__btn {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-top: -25px;
+  background: white;
+  cursor: move;
+}
+
+.compare__btn:before, .compare__btn:after {
+  position: absolute;
+  top: 20px;
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-width: 0 0 2px 2px;
+  border-style: solid;
+  border-color: currentColor;
+  margin: 0;
+  vertical-align: middle;
+  transform: rotate(45deg);
+  transform-origin: 50% 50%;
+  transition: all 0s;
+}
+
+.compare__btn:after {
+  left: 28px;
+  transform: rotate(-135deg);
+}
+
+.compare__btn:before {
+  left: 12px;
+}
+
+.compare__image {
+  position: relative;
+  padding-top: 100%;
+}
+
+.compare__image__holder .image__fill, .compare__image:nth-child(2), .compare__image__holder {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  padding-top: 0!important;
+}
+
+#compare_slider {
+  background-color: rgba(255, 255, 255, 0);
 }
