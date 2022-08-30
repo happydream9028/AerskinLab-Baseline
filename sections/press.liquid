@@ -1,6 +1,6 @@
 <section class="press-gallery">
   
-  <div class="container-slider flex items-center justify-center p-4">
+  <div class="container-slider flex items-center justify-center p-4 {% if section.settings.top_border %}border-top{% endif %}">
     {% for block in section.blocks %}
       <div class="{% unless forloop.index == 1 %}hidden{% endunless %} text-center">
         <h2 class="text-2xl">{{ block.settings.title }}</h2>
@@ -8,7 +8,7 @@
     {% endfor %}
   </div>
   
-  <div class="container-press grid lg:grid-cols-{{ section.blocks.size }} gap-gutter bg-border border-t-grid border-b-grid border-grid-color">
+  <div class="container-press grid lg:grid-cols-{{ section.blocks.size }} gap-gutter bg-border border-t-grid {% if section.settings.bottom_border %}border-b-grid{% endif %} border-grid-color">
     {% for block in section.blocks %}
   	<div class="{% if forloop.index == 1 %} bg-primary-accent{% else %} bg-primary-background{% endif %} m-auto p-4 w-full cursor-pointer flex align-center h-full" onclick="currentSlide({{ forloop.index }})">
       {%- assign image = block.settings.logo -%}
@@ -60,6 +60,22 @@
   {
     "name": "Press",
     "settings": [
+      {
+        "type": "header",
+        "content": "Border"
+      },
+      {
+        "type": "checkbox",
+        "id": "top_border",
+        "label": "Top Border",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "bottom_border",
+        "label": "Bottom Border",
+        "default": false
+      }
     ],
     "blocks": [
       {
