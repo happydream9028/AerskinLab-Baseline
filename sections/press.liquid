@@ -1,6 +1,6 @@
 <section class="press-gallery">
   
-  <div class="container-slider flex items-center justify-center">
+  <div class="container-slider flex items-center justify-center p-4">
     {% for block in section.blocks %}
       <div class="{% unless forloop.index == 1 %}hidden{% endunless %} text-center">
         <h2 class="text-2xl">{{ block.settings.title }}</h2>
@@ -10,7 +10,7 @@
   
   <div class="container-press grid lg:grid-cols-{{ section.blocks.size }} gap-gutter bg-border border-t-grid border-b-grid border-grid-color">
     {% for block in section.blocks %}
-  	<div class="{% if forloop.index == 1 %} bg-primary-accent{% else %} bg-primary-background{% endif %} m-auto p-4 w-full cursor-pointer" onclick="currentSlide({{ forloop.index }})">
+  	<div class="{% if forloop.index == 1 %} bg-primary-accent{% else %} bg-primary-background{% endif %} m-auto p-4 w-full cursor-pointer flex align-center h-full" onclick="currentSlide({{ forloop.index }})">
       {%- assign image = block.settings.logo -%}
       {% comment %} {% render 'image-crop' with
         image: image,
@@ -25,16 +25,16 @@
 
 <script type="text/javascript">
   const intervalID = setInterval(titleSlider, 4000);
-  let index = 0, slides = document.querySelectorAll('.container-slider > div'), press = document.querySelectorAll('.container-press > div');
+  let index = 0, slides = document.querySelectorAll('.container-slider > div'), press = document.querySelectorAll('.container-press > div'), size = {{ section.blocks.size }};
 
   function titleSlider() {
-    slides[index % 3].classList.add('hidden');
-    slides[(index + 1) % 3].classList.remove('hidden');
+    slides[index % size].classList.add('hidden');
+    slides[(index + 1) % size].classList.remove('hidden');
 
-    press[index % 3].classList.remove('bg-primary-accent');
-    press[index % 3].classList.add('bg-primary-background');
-    press[(index + 1) % 3].classList.remove('bg-primary-background');
-    press[(index + 1) % 3].classList.add('bg-primary-accent');
+    press[index % size].classList.remove('bg-primary-accent');
+    press[index % size].classList.add('bg-primary-background');
+    press[(index + 1) % size].classList.remove('bg-primary-background');
+    press[(index + 1) % size].classList.add('bg-primary-accent');
 
     index ++;
   }
@@ -52,7 +52,7 @@
     press[curIndex - 1].classList.remove('bg-primary-background');
     press[curIndex - 1].classList.add('bg-primary-accent');
 
-    index = curIndex + 1;
+    index = curIndex - 1;
   }
 </script>
 

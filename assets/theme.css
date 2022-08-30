@@ -4882,7 +4882,7 @@ svg {
 }
 
 .press-gallery .container-slider {
-  height: 180px;
+  min-height: 180px;
 }
 
 .compare__btn {
